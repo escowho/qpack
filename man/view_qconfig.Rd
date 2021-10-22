@@ -2,20 +2,20 @@
 % Please edit documentation in R/create_qconfig.R
 \name{view_qconfig}
 \alias{view_qconfig}
-\title{FUNCTION_TITLE}
+\title{View and edit the contents of the current .qconfig file}
 \usage{
 view_qconfig()
 }
 \value{
-OUTPUT_DESCRIPTION
+Nothing is returned but the qconfig file is opened
 }
 \description{
-FUNCTION_DESCRIPTION
+View and edit the contents of the current .qconfig file, if found.
 }
 \examples{
 \dontrun{
 if(interactive()){
- #EXAMPLE1
+ view_qconfig()
  }
 }
 }

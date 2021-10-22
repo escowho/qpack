@@ -2,20 +2,20 @@
 % Please edit documentation in R/create_qconfig.R
 \name{delete_qconfig}
 \alias{delete_qconfig}
-\title{FUNCTION_TITLE}
+\title{Delete the current .qconfig file}
 \usage{
 delete_qconfig()
 }
 \value{
-OUTPUT_DESCRIPTION
+Nothing is returned but the qconfig file is deleted
 }
 \description{
-FUNCTION_DESCRIPTION
+Delete the current .qconfig file, if found.
 }
 \examples{
 \dontrun{
 if(interactive()){
- #EXAMPLE1
+ delete_qconfig()
  }
 }
 }

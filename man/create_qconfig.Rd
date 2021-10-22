@@ -2,20 +2,34 @@
 % Please edit documentation in R/create_qconfig.R
 \name{create_qconfig}
 \alias{create_qconfig}
-\title{FUNCTION_TITLE}
+\title{Create an invisible qconfig file with credentials necessary for qualtRics}
 \usage{
-create_qconfig()
+create_qconfig(key = NULL, url = NULL)
+}
+\arguments{
+\item{key}{the Qualtrics API Key.  It is assumed you will not specify this
+in syntax and so will be prompted to paste the value into the console for the
+function to set.  But provided as an option. Default: NULL}
+
+\item{url}{the Qualtrics Base URL.  It is assumed you will not specify this
+in syntax and so will be prompted to paste the value into the console for the
+function to set.  But provided as an option. Default: NULL}
 }
 \value{
-OUTPUT_DESCRIPTION
+creates a hidden text file named .qconfig in the working directory
 }
 \description{
-FUNCTION_DESCRIPTION
+Create an invisible .qconfig file in the current working directory
+that holds the credentials necessary to access Qualtrics surveys and data through
+the Qualtrics API using the qualtRics package.  It will prompt you to paste your
+API Key and your Base URL that will be stored in the .qconfig file.  This file
+is automatically read in as environment variables every time qpack::set_up is
+run.
 }
 \examples{
 \dontrun{
 if(interactive()){
- #EXAMPLE1
+ create_qconfig()
  }
 }
 }
