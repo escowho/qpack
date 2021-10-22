@@ -18,7 +18,7 @@ test_that("clean_names returns correct variables sheet",{
                           1, 2, 3, 4, 5, 6)
 
   expect_silent(
-    test1 <- clean_names(test, data_only=FALSE)$vars
+    test1 <- clean_names(test, create_list=TRUE)$vars
   )
 
   expect_equal(test1$clean_vars[[1]], "variable_1")
@@ -33,7 +33,7 @@ test_that("clean_names returns correct data sheet",{
                           1, 2, 3, 4, 5, 6)
 
   expect_silent(
-    test1 <- clean_names(test, data_only=FALSE)$data
+    test1 <- clean_names(test, create_list=TRUE)$data
   )
 
   expect_equal(names(test1), c("variable_1", "variable_two_next", "x321"))
