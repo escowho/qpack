@@ -46,37 +46,3 @@ rm()
 #
 #")
 }
-
-
-#' View .qconfig file
-#'
-#' @keywords internal
-#' @export
-
-view_qconfig <- function(){
-  file.edit(".qconfig")
-}
-
-#' Create .qconfig file
-#'
-#' @keywords internal
-#' @importFrom gtools ask
-#' @export
-
-create_qconfig <- function(){
-  key <- gtools::ask(msg="Enter the API Key:")
-  url <- gtools::ask(msg="Enter the Base URL:")
-  cat(paste0("QUALTRICS_API_KEY = \"", key, "\""), file="./.qconfig", sep="\n")
-  cat(paste0("QUALTRICS_BASE_URL = \"", url, "\""), file="./.qconfig", append=TRUE)
-}
-
-#' Delete .qconfig file
-#'
-#' @keywords internal
-#' @export
-
-delete_qconfig <- function(){
-  if(file.exists(".qconfig")){
-    file.remove(".qconfig")
-  }
-}
