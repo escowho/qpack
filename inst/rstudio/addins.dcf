@@ -1,0 +1,9 @@
+Name: set_up >> Project
+Description: Inserts qpack::set_up skeleton for project.
+Binding: addin_1_project_setup
+Interactive: false
+
+Name: set_up >> Client
+Description: Inserts qpack::set_up skeleton for project using Client as a parent.
+Binding: addin_2_project_setup
+Interactive: false
