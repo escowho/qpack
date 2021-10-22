@@ -4,27 +4,30 @@
 \alias{clean_names}
 \title{Wrapper function that uses janitor::clean_names on a data set}
 \usage{
-clean_names(data, data_only = TRUE)
+clean_names(data, create_list = FALSE)
 }
 \arguments{
 \item{data}{The dataframe whose variable names need cleaning.}
 
-\item{data_only}{A logical indicating if only the data should be returned
-without the list object. Default: TRUE.}
+\item{create_list}{A logical indicating if list object containing a table of
+the transformations and an object containing the transformed data should be
+returned (TRUE) or just the data (FALSE) Default: FALSE.}
 }
 \value{
-List containing two tibbles, one for the variable names and one with
-the cleaned data, unless data_only=TRUE option which returns just the data tibble.
+Either the cleaned dataframe or a list containing two tibbles, one for
+the variable names and one with the cleaned data, unless data_only=TRUE option
+which returns just the data tibble.
 }
 \description{
 Convenience wrapper that uses janitor::clean_names to clean up
-variable names and returns a list where vars = tibble of original variable
-names and data = the original data with cleaned variables names.
+variable names and returns the dataset.  Optional behavior to return a list
+where vars = tibble of original variable names and data = the original data
+with cleaned variables names.
 }
 \examples{
 \dontrun{
 clean_names(caddat)
-clean_names(caddat, data_only=FALSE)
+clean_names(caddat, create_list=TRUE)
 }
 
 }

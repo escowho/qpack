@@ -1,24 +1,27 @@
 #' @title Wrapper function that uses janitor::clean_names on a data set
 #' @description Convenience wrapper that uses janitor::clean_names to clean up
-#' variable names and returns a list where vars = tibble of original variable
-#' names and data = the original data with cleaned variables names.
+#' variable names and returns the dataset.  Optional behavior to return a list
+#' where vars = tibble of original variable names and data = the original data
+#' with cleaned variables names.
 #' @param data The dataframe whose variable names need cleaning.
-#' @param data_only A logical indicating if only the data should be returned
-#' without the list object. Default: TRUE.
-#' @return List containing two tibbles, one for the variable names and one with
-#' the cleaned data, unless data_only=TRUE option which returns just the data tibble.
+#' @param create_list A logical indicating if list object containing a table of
+#' the transformations and an object containing the transformed data should be
+#' returned (TRUE) or just the data (FALSE) Default: FALSE.
+#' @return Either the cleaned dataframe or a list containing two tibbles, one for
+#' the variable names and one with the cleaned data, unless data_only=TRUE option
+#' which returns just the data tibble.
 #'
 #' @examples
 #' \dontrun{
 #' clean_names(caddat)
-#' clean_names(caddat, data_only=FALSE)
+#' clean_names(caddat, create_list=TRUE)
 #' }
 #'
 #' @export
 #' @importFrom janitor clean_names
 #' @importFrom tibble tibble
 
-clean_names <- function(data, data_only=TRUE){
+clean_names <- function(data, create_list=FALSE){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
@@ -33,10 +36,10 @@ clean_names <- function(data, data_only=TRUE){
 
   vars <- tibble::tibble(original=old_names, clean_vars=new_names)
 
-  if (data_only==TRUE){
-    output <- data
-  } else {
+  if (create_list==TRUE){
     output <- list(vars=vars, data=data)
+  } else {
+    output <- data
   }
 
   return(output)
