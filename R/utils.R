@@ -46,3 +46,13 @@ rm()
 #
 #")
 }
+
+#' Update qpack utility
+#'
+#' @keywords internal
+#' @importFrom remotes install_github
+#' @export
+
+refresh <- function(){
+  remotes::install_github("mshefferq/qpack")
+}
