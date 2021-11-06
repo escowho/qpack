@@ -47,12 +47,15 @@ rm()
 #")
 }
 
-#' Update qpack utility
+#' Vector of custom colors
 #'
-#' @keywords internal
-#' @importFrom remotes install_github
+#' @examples
+#' qcolors["my_orange"]
+#'
 #' @export
-
-refresh <- function(){
-  remotes::install_github("mshefferq/qpack")
-}
+qcolors = c(
+  my_orange = '#ff6901',
+  my_purple = '#6f54a3',
+  my_green = '#53b647',
+  my_dark_green = '#118482'
+)

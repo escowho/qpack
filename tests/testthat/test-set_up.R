@@ -23,6 +23,7 @@ back_to_normal <- function(){
 Sys.setenv("QPACK_SETUP_ROOT"=tempdir())
 Sys.setenv("QPACK_SETUP_FOLDERS"="")
 Sys.setenv("QPACK_SETUP_EXTERNAL_DESCRIPTOR"="TRUE")
+Sys.setenv("OVERRIDE_FOR_TESTING"="TRUE")
 
 # Expect Warning ----------------------------------------------------------
 context("set_up: Expect Warning")

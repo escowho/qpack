@@ -22,7 +22,7 @@ back_to_normal <- function(){
 Sys.setenv("QPACK_SETUP_ROOT"=tempdir())
 Sys.setenv("QPACK_SETUP_FOLDERS"="data, output")
 Sys.setenv("QPACK_SETUP_EXTERNAL_DESCRIPTOR"="TRUE")
-
+Sys.setenv("OVERRIDE_FOR_TESTING"="TRUE")
 
 
 qpack::set_up(project="TAD-0001",

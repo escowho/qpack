@@ -28,6 +28,7 @@ codebook
 config
 crosstab
 formulary
+github
 keepna
 magrittr
 maxval
