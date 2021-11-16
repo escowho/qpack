@@ -50,6 +50,7 @@ create_codebook <- function(data, output=NULL){
 
   c2 <- purrr::map_dfr(data, pull_random) %>%
     dplyr::mutate_if(is.numeric, as.character) %>%
+    dplyr::mutate_if(is.logical, as.character) %>%
     dplyr::mutate_if(lubridate::is.POSIXt, as.character) %>%
     dplyr::mutate_if(lubridate::is.Date, as.character) %>%
     tidyr::pivot_longer(dplyr::everything(), names_to="Column", values_to="Example")
