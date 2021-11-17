@@ -153,20 +153,22 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
 
   # SET WORKING DIRECTORY ---------------------------------------------------
 
-  if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
-    if (file.exists(Sys.glob("*.Rproj")) & fs::path_dir(fs::path_abs(Sys.glob("*.Rproj"))) == getwd()){
+#  if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
+#    if (file.exists(Sys.glob("*.Rproj")) & fs::path_dir(fs::path_abs(Sys.glob("*.Rproj"))) == getwd()){
+#
+#      if (Sys.getenv('QPACK_SETUP_WORK_CHECK')!=FALSE & getwd() != file.path(inside_path)){
+#        warning(call. = FALSE,
+#                paste0("Working directory set by Rproj file is different from the location implied by mattr set_up."))
+#      }
+#
+#    } else {
+#      setwd(file.path(inside_path))
+#    }
+#  } else {
+#    setwd(file.path(inside_path))
+#  }
 
-      if (Sys.getenv('QPACK_SETUP_WORK_CHECK')!=FALSE & getwd() != file.path(inside_path)){
-        warning(call. = FALSE,
-                paste0("Working directory set by Rproj file is different from the location implied by mattr set_up."))
-      }
-
-    } else {
-      setwd(file.path(inside_path))
-    }
-  } else {
-    setwd(file.path(inside_path))
-  }
+  setwd(file.path(inside_path))
 
   # LOAD FUNCS AND CONFIG ---------------------------------------------------
 
