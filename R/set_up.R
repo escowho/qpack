@@ -147,28 +147,78 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
     }
   }
 
-  # CREATE PROJECT PATH -----------------------------------------------------
+  # RPROJ and Working Directory ---------------------------------------------
 
-  fs::dir_create(inside_path)
+  #Set up name of RPROJ File
+  if (task_true==1){
+    Rproj_file <- paste0(project, " (", task, ")")
+  } else {
+    Rproj_file <- project
+  }
+  Rproj_path <- fs::path(inside_path, paste0(Rproj_file, ".Rproj"))
+
+  already_in_wd <- FALSE
+  matches_setup <- TRUE
+
+  #if the override isn't set
+  if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
+    #if the Rproj file is found in the working directory
+    if (file.exists(paste0(Rproj_file, ".Rproj"))==TRUE){
+      #if the location of the Rproj file matches the current working directory
+      if (fs::path_dir(fs::path_abs(paste0(Rproj_file, ".Rproj"))) == getwd()){
+        already_in_wd <- TRUE
+      }
+      #if the current Rproj is where the set_up file thinks it should be
+      if (fs::path_dir(fs::path_abs(paste0(Rproj_file, ".Rproj"))) != inside_path){
+        matches_setup <- FALSE
+      }
+    }
+  }
 
   # SET WORKING DIRECTORY ---------------------------------------------------
 
-#  if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
-#    if (file.exists(Sys.glob("*.Rproj")) & fs::path_dir(fs::path_abs(Sys.glob("*.Rproj"))) == getwd()){
-#
-#      if (Sys.getenv('QPACK_SETUP_WORK_CHECK')!=FALSE & getwd() != file.path(inside_path)){
-#        warning(call. = FALSE,
-#                paste0("Working directory set by Rproj file is different from the location implied by mattr set_up."))
-#      }
-#
-#    } else {
-#      setwd(file.path(inside_path))
-#    }
-#  } else {
-#    setwd(file.path(inside_path))
-#  }
+  if (already_in_wd==TRUE & matches_setup==TRUE){
+    #do nothing
+  } else if (already_in_wd==TRUE & matches_setup==FALSE){
+    if (Sys.getenv('QPACK_SETUP_WORK_CHECK')!=FALSE){
+      warning(call. = FALSE,
+              paste0("Working directory set by Rproj file is different from the location implied by qpack::set_up."))
+    }
+    #fix paths to match current
+    inside_path <- fs::path_dir(fs::path_abs(paste0(Rproj_file, ".Rproj")))
+    outside_path <- fs::path_split(inside_path)[[1]]
+    outside_path <- fs::path_join(outside_path[1:length(outside_path)-1])
+    Rproj_path <- fs::path_abs(paste0(Rproj_file, ".Rproj"))
+    setwd(file.path(inside_path))
+  } else if (already_in_wd==FALSE) {
+    fs::dir_create(inside_path)
+    setwd(file.path(inside_path))
+  }
 
-  setwd(file.path(inside_path))
+  # CREATE RPROJ FILE -------------------------------------------------------
+
+  #If Rproj doesn't exist then create
+  if (!fs::file_exists(Rproj_path)) {
+    x <- c("Version: 1.0",
+           "",
+           "RestoreWorkspace: Default",
+           "SaveWorkspace: Default",
+           "AlwaysSaveHistory: Default",
+           "",
+           "EnableCodeIndexing: Yes",
+           "Encoding: UTF-8",
+           "",
+           "AutoAppendNewline: Yes",
+           "StripTrailingWhitespace: Yes",
+           "LineEndingConversion: Posix",
+           "",
+           "BuildType: Package",
+           "PackageUseDevtools: Yes",
+           "PackageInstallArgs: --no-multiarch --with-keep.source",
+           "PackageRoxygenize: rd,collate,namespace")
+
+    cat(paste(x, collapse="\n"), file=Rproj_path)
+  }
 
   # LOAD FUNCS AND CONFIG ---------------------------------------------------
 
@@ -208,37 +258,6 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
   }
 
   invisible(lapply(sub_directories, create_subdirectory, project_path=inside_path))
-
-  # CREATE RPROJ FILE -------------------------------------------------------
-
-  if (task_true==1){
-    Rproj_file <- paste0(project, " (", task, ")")
-  } else {
-    Rproj_file <- project
-  }
-  Rproj_path <- fs::path(inside_path, paste0(Rproj_file, ".Rproj"))
-
-  if (!fs::file_exists(Rproj_path)) {
-    x <- c("Version: 1.0",
-           "",
-           "RestoreWorkspace: Default",
-           "SaveWorkspace: Default",
-           "AlwaysSaveHistory: Default",
-           "",
-           "EnableCodeIndexing: Yes",
-           "Encoding: UTF-8",
-           "",
-           "AutoAppendNewline: Yes",
-           "StripTrailingWhitespace: Yes",
-           "LineEndingConversion: Posix",
-           "",
-           "BuildType: Package",
-           "PackageUseDevtools: Yes",
-           "PackageInstallArgs: --no-multiarch --with-keep.source",
-           "PackageRoxygenize: rd,collate,namespace")
-
-    cat(paste(x, collapse="\n"), file=Rproj_path)
-  }
 
   # CREATE EXTERIOR DESCRIPTOR ----------------------------------------------
 
