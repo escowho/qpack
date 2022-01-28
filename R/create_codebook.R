@@ -102,7 +102,7 @@ create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
     }
 
     data <- data %>%
-      dplyr::mutate_at(vars(all_of(flist)), too_many, level_cutoff)
+      dplyr::mutate_at(dplyr::vars(dplyr::all_of(flist)), too_many, level_cutoff)
 
     run_freq <- function(data, variable, value_labels){
       VARIABLE <- rlang::enquo(variable)
@@ -110,10 +110,12 @@ create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
         dplyr::rename(value = !!VARIABLE)
 
       if (stringr::str_detect(output[1,1], "frequency not generated")==FALSE){
-        labs <- dplyr::select(value_labels, value, !!VARIABLE) %>%
+
+      labs <- dplyr::select(value_labels, value, !!VARIABLE) %>%
           dplyr::mutate(value = as.character(value)) %>%
           tidyr::drop_na(!!VARIABLE)
-        foutput <- dplyr::full_join(output, labs, by="value") %>%
+        output <- dplyr::full_join(output, labs, by="value") %>%
+          #dplyr::mutate(!!VARIABLE := ifelse(is.na(!!VARIABLE) & value=="Total", "", !!VARIABLE))
           dplyr::select(value, !!VARIABLE, n, percent)
       }
       return(output)

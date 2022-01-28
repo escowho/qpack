@@ -18,6 +18,7 @@
 #' @importFrom stringr str_sub
 #' @importFrom magrittr set_colnames
 #' @importFrom tibble tibble
+#' @importFrom labelled remove_labels
 
 describe <- function(data){
 
@@ -27,6 +28,8 @@ describe <- function(data){
   }
 
   # Function ----------------------------------------------------------------
+  data <- labelled::remove_labels(data)
+
   all <- names(data)
 
   n <- data %>%
