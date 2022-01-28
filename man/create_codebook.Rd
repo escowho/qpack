@@ -4,13 +4,22 @@
 \alias{create_codebook}
 \title{Creates a codebook or data dictionary for a dataframe}
 \usage{
-create_codebook(data, output = NULL)
+create_codebook(data, output = NULL, level_cutoff = 55, freqs = FALSE)
 }
 \arguments{
 \item{data}{Name of the dataframe upon which to build the codebook.  Required.}
 
 \item{output}{Character string containing the complete path and file name of
-an XLSX file for exporting the resulting dataframe to Excel format.  Optional.}
+an XLSX file for exporting the resulting dataframe to Excel format.  If
+frequencies are also created, the name of the frequency file will be identical
+but have " - Frequencies" appended.  Optional.}
+
+\item{level_cutoff}{A cut-off value for printing frequencies.  A variable with
+this number of values or less will have a frequency table generated, if specified,
+otherwise a frequency table will not be generated. Default: 55}
+
+\item{freqs}{A logical value indicating if frequencies for each variable should
+also be generated. Default: FALSE}
 }
 \value{
 Either a dataframe or exports an Excel file in .xlsx format.
@@ -21,7 +30,8 @@ format that can be exported to Excel.  Provides a list of the variables (Column)
 randomly pulls an example value for each one (Example), indicates the type of
 variable (Type), identifies the number of unique levels (Unique) as well as
 the percent of records that are missing (Missing).  Leaves spaces for a
-Description and a Note in the file.
+Description and a Note in the file.  Option to also create frequencies for
+each variable in the dataframe and export to a separate Excel file.
 }
 \examples{
 \dontrun{

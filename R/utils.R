@@ -46,16 +46,3 @@ rm()
 #
 #")
 }
-
-#' Vector of custom colors
-#'
-#' @examples
-#' qcolors["my_orange"]
-#'
-#' @export
-qcolors = c(
-  my_orange = '#ff6901',
-  my_purple = '#6f54a3',
-  my_green = '#53b647',
-  my_dark_green = '#118482'
-)

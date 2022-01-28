@@ -4,10 +4,18 @@
 #' randomly pulls an example value for each one (Example), indicates the type of
 #' variable (Type), identifies the number of unique levels (Unique) as well as
 #' the percent of records that are missing (Missing).  Leaves spaces for a
-#' Description and a Note in the file.
+#' Description and a Note in the file.  Option to also create frequencies for
+#' each variable in the dataframe and export to a separate Excel file.
 #' @param data Name of the dataframe upon which to build the codebook.  Required.
 #' @param output Character string containing the complete path and file name of
-#' an XLSX file for exporting the resulting dataframe to Excel format.  Optional.
+#' an XLSX file for exporting the resulting dataframe to Excel format.  If
+#' frequencies are also created, the name of the frequency file will be identical
+#' but have " - Frequencies" appended.  Optional.
+#' @param level_cutoff A cut-off value for printing frequencies.  A variable with
+#' this number of values or less will have a frequency table generated, if specified,
+#' otherwise a frequency table will not be generated. Default: 55
+#' @param freqs A logical value indicating if frequencies for each variable should
+#' also be generated. Default: FALSE
 #' @return Either a dataframe or exports an Excel file in .xlsx format.
 #' @examples
 #' \dontrun{
@@ -16,22 +24,25 @@
 #'  }
 #' }
 #' @export
-#' @importFrom dplyr mutate_if na_if mutate everything slice n_distinct left_join
-#' @importFrom tibble tibble
-#' @importFrom purrr map_dfr
+#' @importFrom dplyr mutate_if na_if rename everything slice n_distinct mutate left_join filter select mutate_at full_join all_of
+#' @importFrom labelled remove_labels
+#' @importFrom purrr map_dfr pluck
 #' @importFrom lubridate is.POSIXt is.Date
-#' @importFrom tidyr pivot_longer
+#' @importFrom tidyr pivot_longer drop_na
+#' @importFrom rlang enquo
+#' @importFrom stringr str_detect str_replace
 #' @importFrom fs path_dir
-#' @importFrom sjlabelled remove_all_labels
+#' @importFrom openxlsx createStyle createWorkbook addWorksheet writeData setColWidths addStyle saveWorkbook
 
-create_codebook <- function(data, output=NULL){
+
+create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
     stop(call. = FALSE, "Data must be specified.")
   }
 
-  # Helper Function ---------------------------------------------------------
+  # Helper Functions --------------------------------------------------------
 
   pull_random <- function(v){
     v <- v[!is.na(v)]
@@ -42,11 +53,16 @@ create_codebook <- function(data, output=NULL){
 
   # Function ----------------------------------------------------------------
 
-  data <- dplyr::mutate_if(data, is.character, dplyr::na_if, "") %>%
-    sjlabelled::remove_all_labels()
+  data <- dplyr::mutate_if(data, is.character, dplyr::na_if, "")
 
-  c1 <- tibble::tibble(Column=names(data)) %>%
-    dplyr::mutate(Description="")
+  label_data <- pull_labels(data)
+
+  c1 <- label_data$variable_labels %>%
+    dplyr::rename(Column = variable, Description = variable_label)
+
+  data <- data %>%
+    #sjlabelled::remove_all_labels() %>%
+    labelled::remove_labels()
 
   c2 <- purrr::map_dfr(data, pull_random) %>%
     dplyr::mutate_if(is.numeric, as.character) %>%
@@ -72,22 +88,85 @@ create_codebook <- function(data, output=NULL){
     dplyr::left_join(c4, by="Column") %>%
     dplyr::left_join(c5, by="Column")
 
+  if (freqs==TRUE){
+    #Create a list of dataframes for each Frequency
+    frequencies <- vector(mode="list", length = 0)
+
+    flist <- codebook %>%
+      dplyr::filter(Unique > level_cutoff) %>%
+      dplyr::select(Column) %>%
+      purrr::pluck(1)
+
+    too_many <- function(x, cutoff=level_cutoff){
+      x <- paste0("More than ", cutoff, " levels detected, frequency not generated")
+    }
+
+    data <- data %>%
+      dplyr::mutate_at(vars(all_of(flist)), too_many, level_cutoff)
+
+    run_freq <- function(data, variable, value_labels){
+      VARIABLE <- rlang::enquo(variable)
+      output <- freq(data, !!VARIABLE) %>%
+        dplyr::rename(value = !!VARIABLE)
+
+      if (stringr::str_detect(output[1,1], "frequency not generated")==FALSE){
+        labs <- dplyr::select(value_labels, value, !!VARIABLE) %>%
+          dplyr::mutate(value = as.character(value)) %>%
+          tidyr::drop_na(!!VARIABLE)
+        foutput <- dplyr::full_join(output, labs, by="value") %>%
+          dplyr::select(value, !!VARIABLE, n, percent)
+      }
+      return(output)
+    }
+
+    for (var in names(data)){
+      frequencies[[var]] <- run_freq(data, dplyr::all_of(var), label_data$value_labels)
+    }
+
+  }
+
   if (is.null(output) == FALSE){
     if (file.exists(fs::path_dir(output))==FALSE){
       stop(call. = FALSE,
            paste0("Specified path does not exist:",
                   "\n",fs::path_dir(output)))
     } else {
-      write_xlsx(data=codebook, file=output, overfile=TRUE)
+
+      comma_style <- openxlsx::createStyle(numFmt="COMMA")
+      percent_style <- openxlsx::createStyle(numFmt="PERCENTAGE")
+
+      #write_xlsx(data=codebook, file=output, overfile=TRUE)
+      wb <- openxlsx::createWorkbook()
+      openxlsx::addWorksheet(wb, sheet="Codebook")
+      openxlsx::writeData(wb=wb, sheet="Codebook", x=codebook,
+                          keepNA=FALSE, rowNames=FALSE)
+      openxlsx::setColWidths(wb, sheet="Codebook", cols=c(1:7),
+                             widths=c(20, 50, 25, 10.78, 10.78, 10.78, 50))
+      openxlsx::addStyle(wb, sheet="Codebook", style=comma_style, rows=1:ncol(data)+1, cols=5)
+      openxlsx::addStyle(wb, sheet="Codebook", style=percent_style, rows=1:ncol(data)+1, cols=6)
+      openxlsx::saveWorkbook(wb, file = output, overwrite = TRUE)
+
+
+      if (freqs==TRUE){
+        output_f <- stringr::str_replace(output, ".xlsx", " - Frequencies.xlsx")
+
+        for (var in names(data)){
+          if (var == names(data)[1]) {
+            write_xlsx(data=frequencies[[var]], file=output_f, sheet=var, overfile=TRUE)
+          } else {
+            write_xlsx(data=frequencies[[var]], file=output_f, sheet=var, overfile=FALSE)
+          }
+        }
+      }
     }
   } else {
-    return(codebook)
+
+    if (freqs==FALSE){
+      return(codebook)
+    } else {
+      return(list(codebook=codebook, frequencies=frequencies))
+    }
+
+
   }
 }
-
-
-
-
-
-
-
