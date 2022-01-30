@@ -1,5 +1,4 @@
 # Expect Errors -----------------------------------------------------------
-context("freq: Testing Assertion Errors")
 
 test_that("Not specifying data results in error",{
   expect_error(
@@ -21,7 +20,6 @@ test_that("File not found will result in error",{
 
 
 # Clean Run with No Errors ------------------------------------------------
-context("freq: Clean Run with No Errors")
 
 test_that("Minimum specifications results in no error",{
   expect_silent(
@@ -41,7 +39,6 @@ test_that("Minimum specifications results in no error",{
 
 
 # Expect Errors -----------------------------------------------------------
-context("crosstab: Testing Assertion Errors")
 
 test_that("Not specifying data results in error",{
   expect_error(
@@ -63,7 +60,6 @@ test_that("File not found will result in error",{
 
 
 # Clean Run with No Errors ------------------------------------------------
-context("crosstab: Clean Run with No Errors")
 
 test_that("Minimum specifications results in no error",{
   expect_silent(
@@ -78,7 +74,6 @@ test_that("Minimum specifications results in no error",{
 })
 
 # Expect Errors -----------------------------------------------------------
-context("threeway: Testing Assertion Errors")
 
 test_that("Not specifying data results in error",{
   expect_error(
@@ -100,7 +95,6 @@ test_that("File not found will result in error",{
 
 
 # Clean Run with No Errors ------------------------------------------------
-context("threeway: Clean Run with No Errors")
 
 test_that("Minimum specifications results in no error",{
   expect_silent(

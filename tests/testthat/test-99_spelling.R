@@ -1,5 +1,3 @@
-context('Spelling')
-
 #NOTE: ../.. is necessary to point to the location of the directory for spelling
 #spell_test <- spelling::spell_check_package(pkg="../..")
 

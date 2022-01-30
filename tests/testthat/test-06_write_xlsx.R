@@ -1,5 +1,4 @@
 # Expect Errors -----------------------------------------------------------
-context("write_xlsx: Testing Assertion Errors")
 
 test_that("Not specifying data results in error",{
   expect_error(
@@ -17,7 +16,6 @@ test_that("Not specifying file results in error",{
 })
 
 # Clean Run with No Errors ------------------------------------------------
-context("write_xlsx: Clean Run with No Errors")
 
 test_that("Minimum specifications results in no error",{
 

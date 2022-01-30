@@ -1,5 +1,4 @@
 # Expect Errors -----------------------------------------------------------
-context("clean_names: Testing Assertion Errors")
 
 test_that("Not specifying replace results in error",{
   expect_error(
@@ -10,7 +9,6 @@ test_that("Not specifying replace results in error",{
 
 
 # Clean Run with No Errors ------------------------------------------------
-context("clean_names: Clean Run with No Errors")
 
 test_that("clean_names returns correct variables sheet",{
 

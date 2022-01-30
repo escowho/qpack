@@ -26,7 +26,6 @@ Sys.setenv("QPACK_SETUP_EXTERNAL_DESCRIPTOR"="TRUE")
 Sys.setenv("OVERRIDE_FOR_TESTING"="TRUE")
 
 # Expect Warning ----------------------------------------------------------
-context("set_up: Expect Warning")
 
 test_that("No PROJECT_PATH results in warning",{
   Sys.setenv("QPACK_SETUP_ROOT"="")
@@ -56,7 +55,6 @@ test_that("No folders specified & no QPACK_SETUP_FOLDERS in Renviron results in 
 
 
 # Expect Errors -----------------------------------------------------------
-context("set_up: Testing Assertion Errors")
 
 test_that("No project specified results in error",{
   Sys.setenv("QPACK_SETUP_ROOT"=tempdir())
@@ -112,8 +110,6 @@ test_that("Sources not found results in error",{
 
 # Clean Run with No Errors ------------------------------------------------
 
-context("set_up: Clean Run with No Errors")
-
 test_that("Project specification results in no error",{
   Sys.setenv("QPACK_SETUP_ROOT"=tempdir())
   Sys.setenv("QPACK_SETUP_FOLDERS"="data, output")
@@ -159,7 +155,6 @@ test_that("Listing sources results in no error",{
 })
 
 # Created Files & Directories ---------------------------------------------
-context("set_up: Created Files and Directories as Planned")
 
 Sys.setenv("QPACK_SETUP_ROOT"=tempdir())
 Sys.setenv("QPACK_SETUP_FOLDERS"="data, output")
@@ -257,8 +252,6 @@ Sys.setenv("QPACK_SETUP_ROOT"=tempdir())
 Sys.setenv("QPACK_SETUP_FOLDERS"="data, output")
 Sys.setenv("QPACK_SETUP_EXTERNAL_DESCRIPTOR"="FALSE")
 
-context("set_up: Working Directory, Packages Loaded and Checked")
-
 set_up(project="XXX-0008",
        descriptor="Clean Run 8",
        pack_load="fs", qpack=FALSE)
@@ -288,7 +281,6 @@ expect_warning(
 )
 
 # Manual Path -------------------------------------------------------------
-context("set_up: root Working Directory")
 
 dir.create(paste0(tempdir(), "/MP/"), showWarnings = FALSE)
 

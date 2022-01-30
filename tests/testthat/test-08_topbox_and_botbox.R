@@ -1,5 +1,4 @@
 # Expect Errors -----------------------------------------------------------
-context("topbox: Testing Assertion Errors")
 
 test_that("Not specifying replace results in error",{
   expect_error(
@@ -26,7 +25,6 @@ test_that("Not specifying maxval results in warning",{
 
 
 # Clean Run with No Errors ------------------------------------------------
-context("topbox: Clean Run with No Errors")
 
 test_that("Topbox runs ok",{
 
@@ -60,7 +58,6 @@ test_that("Topbox runs ok",{
 })
 
 # Expect Errors -----------------------------------------------------------
-context("botbox: Testing Assertion Errors")
 
 test_that("Not specifying replace results in error",{
   expect_error(
@@ -87,7 +84,6 @@ test_that("Not specifying maxval results in warning",{
 
 
 # Clean Run with No Errors ------------------------------------------------
-context("botbox: Clean Run with No Errors")
 
 test_that("Botbox runs ok",{
 

@@ -1,5 +1,4 @@
 # Expect Errors -----------------------------------------------------------
-context("rescale: Testing Assertion Errors")
 
 test_that("Not specifying replace results in error",{
   expect_error(
@@ -9,7 +8,6 @@ test_that("Not specifying replace results in error",{
 })
 
 # Expect Warning ----------------------------------------------------------
-context("rescale: Not specifying min or max results in warning")
 
 set.seed(1234)
 test <- data.frame(matrix(sample(c(NA, 1:10), 100, replace = TRUE), 10))
@@ -28,7 +26,6 @@ test_that("Warning when min and max not specified ut clean run 1",{
 })
 
 # Clean Run with No Errors ------------------------------------------------
-context("rescale: Clean Run with No Errors")
 
 test_that("clean run 2",{
 

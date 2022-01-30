@@ -35,7 +35,6 @@ qpack::set_up(client="TAD",
               qpack=FALSE)
 
 # Archive Expect Errors ---------------------------------------------------
-context("archive_project: Testing Archive Assertion Errors")
 
 test_that("No project specified results in error",{
     expect_error(
@@ -45,7 +44,7 @@ test_that("No project specified results in error",{
   })
 
 # Delete Expect Errors ----------------------------------------------------
-context("delete_project: Testing Delete Assertion Errors")
+
 test_that("No project specified results in error",{
   expect_error(
     delete_project(project=),
@@ -54,7 +53,6 @@ test_that("No project specified results in error",{
 })
 
 # Archive Clean Run with No Errors ----------------------------------------
-context("archive_project: Archive Clean Run with No Errors")
 
 test_that("Minimum specifications results in no error",{
   expect_silent(
@@ -83,7 +81,7 @@ test_that("Client/Number .zip file created",{
 setwd(tempdir())
 
 # Delete Clean Run with No Errors -----------------------------------------
-context("delete_project: Delete Clean Run with No Errors")
+
 test_that("Minimum specifications results in no error",{
   expect_silent(
     delete_project(project="TAD-0001", override_archive_check=TRUE)

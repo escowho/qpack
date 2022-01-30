@@ -1,5 +1,4 @@
 # Expect Errors -----------------------------------------------------------
-context("set_colnames: Testing Assertion Errors")
 
 test_that("Not specifying data results in error",{
   expect_error(
@@ -8,7 +7,6 @@ test_that("Not specifying data results in error",{
 })
 
 # Clean Run with No Errors ------------------------------------------------
-context("set_colnames: Clean Run with No Errors")
 
 test_that("Minimum specifications results in no error",{
 

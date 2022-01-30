@@ -5,7 +5,6 @@ testdat1 <- data.frame(v1 = c(4,3,2,1,NA,NA,NA,NA,NA,NA),
                        v4 = c(NA,NA,NA,NA,NA,9,8,7,6,5))
 
 # Expect Errors -----------------------------------------------------------
-context("create_id: Testing Assertion Errors")
 
 test_that("Not specifying data results in error",{
   expect_error(
@@ -52,7 +51,6 @@ test_that("create_id:  Duplicates in sort variables warning",{
 })
 
 # Clean Run with No Errors ------------------------------------------------
-context("create_id: Clean Run with No Errors")
 
 test_that("Minimum specifications results in no error",{
     expect_silent(

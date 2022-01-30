@@ -1,5 +1,4 @@
 # Expect Errors -----------------------------------------------------------
-context("fix_na: Testing Assertion Errors")
 
 test_that("Not specifying replace results in error",{
   expect_error(
@@ -24,7 +23,6 @@ test_that("File not found will result in error",{
 
 
 # Clean Run with No Errors ------------------------------------------------
-context("fix_na: Clean Run with No Errors")
 
 test_that("Fill with 0 results in no error",{
 
