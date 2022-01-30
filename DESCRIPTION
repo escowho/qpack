@@ -1,6 +1,6 @@
 Package: qpack
 Title: Set of functions written by Matt to assist in data science projects
-Version: 0.1.0.9007
+Version: 0.1.1
 Authors@R: 
     person("Matthew", "Sheffer", , "msheffer@qualtrics.com", role = c("aut", "cre"))
 Description: Set of functions to assist in data science projects.
@@ -19,7 +19,7 @@ Imports:
     remotes (>= 2.4.1),
     rlang (>= 0.4.5),
     rstudioapi (>= 0.11),
-    sjlabelled (>= 1.1.8),
+    labelled (>= 2.9.0),
     stringr (>= 1.4.0),
     tibble (>= 3.0.0),
     tidyr (>= 1.1.4)

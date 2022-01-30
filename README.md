@@ -6,7 +6,7 @@ An R Package to assist with CS data science projects at Qualtrics
 
 ## Functions
 
-### Project Functions
+### Study Functions
 
 -   archive_project
     -   Archives a project into a zip file
@@ -14,12 +14,39 @@ An R Package to assist with CS data science projects at Qualtrics
         folders inside a project folder. Ignores the .git and
         .Rproj.user folder. Creates a zip file names after the study in
         the general study directory.
+-   create_codebook
+    -   Creates a codebook or data dictionary for a dataframe
+    -   Creates a codebook or data dictionary for a dataframe in
+        dataframe format that can be exported to Excel. Provides a list
+        of the variables (Column), randomly pulls an example value for
+        each one (Example), indicates the type of variable (Type),
+        identifies the number of unique levels (Unique) as well as the
+        percent of records that are missing (Missing). Leaves spaces for
+        a Description and a Note in the file. Option to also create
+        frequencies for each variable in the dataframe and export to a
+        separate Excel file.
+-   create_qconfig
+    -   Create an invisible qconfig file with credentials necessary for
+        qualtRics
+    -   Create an invisible .qconfig file in the current working
+        directory that holds the credentials necessary to access
+        Qualtrics surveys and data through the Qualtrics API using the
+        qualtRics package. It will prompt you to paste your API Key and
+        your Base URL that will be stored in the .qconfig file. This
+        file is automatically read in as environment variables every
+        time qpack::set_up is run.
 -   delete_project
     -   Wrapper function that uses janitor::clean_names on a data set
     -   Convenience wrapper that uses janitor::clean_names to clean up
         variable names and returns a list where vars = tibble of
         original variable names and data = the original data with
         cleaned variables names.
+-   delete_qconfig
+    -   Delete the current .qconfig file, if found.
+-   refresh
+    -   Refreshes github install of qpack
+    -   Convenience function to perform a remotes::install_github for
+        qpack.
 -   set_up
     -   Set-up code to create project directories and load needed
         packages
@@ -27,16 +54,18 @@ An R Package to assist with CS data science projects at Qualtrics
         directories, sets the working directory, loads specified
         packages, and sources a functions file and config file, if
         specified. Option to load qpack package.
+-   view_qconfig
+    -   View and edit the contents of the current .qconfig file, if
+        found.
 
 ### Data Functions
 
--   botbox
-    -   Function to recode data into Bottom X Box ratings data
-    -   Works on vectors to recode the data into 0,1 values based on
-        Bot1, Bot2, Bot3, or BotX values. A minimum value can be
-        indicated (minval) but the function will find the minimum in the
-        data if not provided. The replacena logical allows for replacing
-        any NA with 0, if desired.
+c \* botbox + Function to recode data into Bottom X Box ratings data +
+Works on vectors to recode the data into 0,1 values based on Bot1, Bot2,
+Bot3, or BotX values. A minimum value can be indicated (minval) but the
+function will find the minimum in the data if not provided. The
+replacena logical allows for replacing any NA with 0, if desired.
+
 -   clean_names
     -   Wrapper function that uses janitor::clean_names on a data set
     -   Convenience wrapper that uses janitor::clean_names to clean up
@@ -84,30 +113,28 @@ An R Package to assist with CS data science projects at Qualtrics
         indicated (maxval) but the function will find the maximum in the
         data if not provided. The replacena logical allows for replacing
         any NA with 0, if desired.
--   write_xlsx
-    -   Wrapper function for openxlsx that exports a data frame to an
-        XLSX file
-    -   Takes a dataframe or other table and exports it as an XLSX file.
-        Sheet name can be specified to add to an existing sheet. Options
-        include ability to overwrite the sheet(oversheet), overwrite the
-        file (overfile), or to use a default (over = TRUE) that
-        overwrites both the sheet and the file. A keepna option controls
-        whether NA values appear in the sheet.
 
 ### Analysis Functions
 
 -   crosstab
+
     -   Wrapper for a 2-way table from janitor::tabyl
     -   Generates a 2-way frequency table that is outputed as a
         janitor::tabyl object that shows counts, row percents, column
         percents, and total percents. Also uses quasiquotation from
         rlang so that variables need not be quoted.
+
 -   freq
+
     -   Wrapper for a 1-way table from janitor::tabyl
     -   Generates a frequency table that is outputed as a janitor::tabyl
         object. Also uses quasiquotation from rlang so that variables
         need not be quoted.
+
+-   pull_labels
+
 -   threeway
+
     -   Performs 3-way crosstab using qpack::crosstab split on a third
         variable
     -   Generates a 3-way crosstab, or a qpack::crosstab for each value
@@ -118,6 +145,17 @@ An R Package to assist with CS data science projects at Qualtrics
         of third variable. Also uses quasiquotation from rlang so that
         variables need not be quoted. var1 and var2 specify the crosstab
         and var3 specifies the split.
+
+-   write_xlsx
+
+    -   Wrapper function for openxlsx that exports a data frame to an
+        XLSX file
+    -   Takes a dataframe or other table and exports it as an XLSX file.
+        Sheet name can be specified to add to an existing sheet. Options
+        include ability to overwrite the sheet(oversheet), overwrite the
+        file (overfile), or to use a default (over = TRUE) that
+        overwrites both the sheet and the file. A keepna option controls
+        whether NA values appear in the sheet.
 
 ### Skeleton
 

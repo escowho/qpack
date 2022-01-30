@@ -35,7 +35,6 @@ create_qconfig <- function(key=NULL, url=NULL){
 
 #' @title View and edit the contents of the current .qconfig file
 #' @description View and edit the contents of the current .qconfig file, if found.
-
 #' @return Nothing is returned but the qconfig file is opened
 #' @examples
 #' \dontrun{
@@ -55,7 +54,6 @@ view_qconfig <- function(){
 
 #' @title Delete the current .qconfig file
 #' @description Delete the current .qconfig file, if found.
-
 #' @return Nothing is returned but the qconfig file is deleted
 #' @examples
 #' \dontrun{
