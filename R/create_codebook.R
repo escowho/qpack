@@ -89,7 +89,6 @@ create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
     dplyr::left_join(c5, by="Column")
 
   if (freqs==TRUE){
-    #Create a list of dataframes for each Frequency
     frequencies <- vector(mode="list", length = 0)
 
     flist <- codebook %>%
@@ -109,20 +108,47 @@ create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
       output <- freq(data, !!VARIABLE) %>%
         dplyr::rename(value = !!VARIABLE)
 
-      if (stringr::str_detect(output[1,1], "frequency not generated")==FALSE){
-
       labs <- dplyr::select(value_labels, value, !!VARIABLE) %>%
-          dplyr::mutate(value = as.character(value)) %>%
-          tidyr::drop_na(!!VARIABLE)
+        dplyr::mutate(value = as.character(value)) %>%
+        tidyr::drop_na(!!VARIABLE)
+
+      if (nrow(labs) > 0) {
         output <- dplyr::full_join(output, labs, by="value") %>%
-          #dplyr::mutate(!!VARIABLE := ifelse(is.na(!!VARIABLE) & value=="Total", "", !!VARIABLE))
-          dplyr::select(value, !!VARIABLE, n, percent)
+          dplyr::rename(label = !!VARIABLE) %>%
+          dplyr::relocate(label, .after="value")
+
+        title <- tibble::tibble(x = character(),
+                                value = character(),
+                                label = character(),
+                                n = numeric(),
+                                percent = character())
+
+        output <- dplyr::bind_rows(title, output) %>%
+          dplyr::mutate(x = ifelse(is.na(x), "", x)) %>%
+          dplyr::rename(!!rlang::quo_name(VARIABLE) := x)  %>%
+          dplyr::mutate(label = ifelse(is.na(label) & value == "Total", "Total", label))
+
+      } else {
+        output <- output %>%
+          dplyr::mutate(label = "") %>%
+          dplyr::relocate(label, .after="value")
+
+        title <- tibble::tibble(x = character(),
+                                value = character(),
+                                label = character(),
+                                n = numeric(),
+                                percent = character())
+
+        output <- dplyr::bind_rows(title, output) %>%
+          dplyr::mutate(x = ifelse(is.na(x), "", x)) %>%
+          dplyr::rename(!!rlang::quo_name(VARIABLE) := x)
       }
+
       return(output)
     }
 
     for (var in names(data)){
-      frequencies[[var]] <- run_freq(data, dplyr::all_of(var), label_data$value_labels)
+      frequencies[[var]] <- run_freq(data, {{var}}, label_data$value_labels)
     }
 
   }
@@ -137,7 +163,7 @@ create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
       comma_style <- openxlsx::createStyle(numFmt="COMMA")
       percent_style <- openxlsx::createStyle(numFmt="PERCENTAGE")
 
-      #write_xlsx(data=codebook, file=output, overfile=TRUE)
+      #qpack::write_xlsx(data=codebook, file=output, overfile=TRUE)
       wb <- openxlsx::createWorkbook()
       openxlsx::addWorksheet(wb, sheet="Codebook")
       openxlsx::writeData(wb=wb, sheet="Codebook", x=codebook,
@@ -152,13 +178,30 @@ create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
       if (freqs==TRUE){
         output_f <- stringr::str_replace(output, ".xlsx", " - Frequencies.xlsx")
 
-        for (var in names(data)){
-          if (var == names(data)[1]) {
-            write_xlsx(data=frequencies[[var]], file=output_f, sheet=var, overfile=TRUE)
-          } else {
-            write_xlsx(data=frequencies[[var]], file=output_f, sheet=var, overfile=FALSE)
+        Key <- codebook %>%
+          dplyr::mutate(name_length = nchar(Column),
+                        Sheet = tolower(abbreviate(Column))) %>%
+          dplyr::select(Sheet, Variable=Column, name_length)
+
+        if (max(Key$name_length) > 30) {
+          Key <- dplyr::select(Key, -name_length)
+          qpack::write_xlsx(data=Key, file=output_f, sheet="Key", overfile=TRUE)
+          for (var in 1:length(names(data))){
+            qpack::write_xlsx(data=frequencies[[var]], file=output_f,
+                       sheet=Key$Sheet[var], keepna=TRUE, overfile=FALSE)
+          }
+
+        } else {
+          for (var in names(data)){
+            if (var == names(data)[1]) {
+              qpack::write_xlsx(data=frequencies[[var]], file=output_f, sheet=var, keepna=TRUE, overfile=TRUE)
+            } else {
+              qpack::write_xlsx(data=frequencies[[var]], file=output_f, sheet=var, keepna=TRUE, overfile=FALSE)
+            }
           }
         }
+
+
       }
     }
   } else {

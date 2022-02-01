@@ -2,12 +2,12 @@
 
 # Version History
 
-## 0.1.1 - 2022-01-30
+## 0.1.1 - 2022-02-01
 
 Added the following functions:
 
 -   create_codebook
--   create_qconfig
+-   create_qconfig, view_qconfig, delete_qconfig
 -   describe
 -   flip
 -   pull_labels
@@ -17,16 +17,13 @@ Added the following functions:
 
 Initial release, including the following functions:
 
--   archive_project
+-   archive_project, delete_project
 -   clean_names
 -   create_id
--   crosstab
--   delete_project
 -   fix_na
--   freq
+-   freq, crosstab, threeway
 -   rescale
 -   set_colnames
 -   set_up
--   threeway
--   topbox
+-   topbox, botbox
 -   write_xlsx
