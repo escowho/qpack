@@ -163,7 +163,7 @@ create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
       comma_style <- openxlsx::createStyle(numFmt="COMMA")
       percent_style <- openxlsx::createStyle(numFmt="PERCENTAGE")
 
-      #qpack::write_xlsx(data=codebook, file=output, overfile=TRUE)
+      #write_xlsx(data=codebook, file=output, overfile=TRUE)
       wb <- openxlsx::createWorkbook()
       openxlsx::addWorksheet(wb, sheet="Codebook")
       openxlsx::writeData(wb=wb, sheet="Codebook", x=codebook,
@@ -180,26 +180,26 @@ create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
 
         Key <- codebook %>%
           dplyr::mutate(name_length = nchar(Column),
-                        Sheet = tolower(abbreviate(Column))) %>%
+                        Sheet = 1:nrow(codebook)) %>%
           dplyr::select(Sheet, Variable=Column, name_length)
 
-        if (max(Key$name_length) > 30) {
+        #if (max(Key$name_length) > 30) {
           Key <- dplyr::select(Key, -name_length)
-          qpack::write_xlsx(data=Key, file=output_f, sheet="Key", overfile=TRUE)
+          write_xlsx(data=Key, file=output_f, sheet="Key", overfile=TRUE)
           for (var in 1:length(names(data))){
-            qpack::write_xlsx(data=frequencies[[var]], file=output_f,
-                       sheet=Key$Sheet[var], keepna=TRUE, overfile=FALSE)
+            write_xlsx(data=frequencies[[var]], file=output_f,
+                       sheet=as.character(Key$Sheet[[var]]), keepna=TRUE, overfile=FALSE)
           }
 
-        } else {
-          for (var in names(data)){
-            if (var == names(data)[1]) {
-              qpack::write_xlsx(data=frequencies[[var]], file=output_f, sheet=var, keepna=TRUE, overfile=TRUE)
-            } else {
-              qpack::write_xlsx(data=frequencies[[var]], file=output_f, sheet=var, keepna=TRUE, overfile=FALSE)
-            }
-          }
-        }
+        #} else {
+        #  for (var in names(data)){
+        #    if (var == names(data)[1]) {
+        #      write_xlsx(data=frequencies[[var]], file=output_f, sheet=var, keepna=TRUE, overfile=TRUE)
+        #    } else {
+        #      write_xlsx(data=frequencies[[var]], file=output_f, sheet=var, keepna=TRUE, overfile=FALSE)
+        #    }
+        #  }
+        #}
 
 
       }
