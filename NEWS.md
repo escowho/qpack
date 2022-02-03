@@ -2,6 +2,10 @@
 
 # Version History
 
+## 0.1.2 - 2022-02-03
+
+Added additional quartiles to the describe function
+
 ## 0.1.1 - 2022-02-01
 
 Added the following functions:

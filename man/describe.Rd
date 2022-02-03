@@ -15,9 +15,9 @@ Outputs a tibble with the summary statistics
 \description{
 Provides descriptive statistics for a dataframe, similar to Python's
 Describe.  Returns the variable name, mean, standard deviation, number of valid
-responses, number of missing responses, minimum value, 25% quartile, median,
-75% quartile, and maximum value.  Currently limited to numeric data only; will
-exclude any non-numeric data from output and listed as NA in output.
+responses, number of missing responses, minimum value, 10\%, 25\%, median,
+75\%, 90\%, and maximum value quartiles.  Currently limited to numeric data only;
+will exclude any non-numeric data from output and listed as NA in output.
 }
 \examples{
 \dontrun{

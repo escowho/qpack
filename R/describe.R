@@ -1,9 +1,9 @@
 #' @title Provides descriptive statistics for a dataframe, similar to Python's Describe
 #' @description Provides descriptive statistics for a dataframe, similar to Python's
 #' Describe.  Returns the variable name, mean, standard deviation, number of valid
-#' responses, number of missing responses, minimum value, 25% quartile, median,
-#' 75% quartile, and maximum value.  Currently limited to numeric data only; will
-#' exclude any non-numeric data from output and listed as NA in output.
+#' responses, number of missing responses, minimum value, 10\%, 25\%, median,
+#' 75\%, 90\%, and maximum value quartiles.  Currently limited to numeric data only;
+#' will exclude any non-numeric data from output and listed as NA in output.
 #' @param data Dataframe to be described.  Required.
 #' @return Outputs a tibble with the summary statistics
 #' @examples
@@ -43,9 +43,11 @@ describe <- function(data){
                               nnn = ~sum(!is.na(.)),
                               xxx = ~sum(is.na(.)),
                               min = ~min(., na.rm=TRUE),
+                              q10 = ~quantile(., probs=.10, na.rm=TRUE, names=FALSE),
                               q25 = ~quantile(., probs=.25, na.rm=TRUE, names=FALSE),
                               med = ~median(., na.rm=TRUE),
                               q75 = ~quantile(., probs=.75, na.rm=TRUE, names=FALSE),
+                              q90 = ~quantile(., probs=.90, na.rm=TRUE, names=FALSE),
                               max = ~max(., na.rm=TRUE)
     )) %>%
     tidyr::pivot_longer(dplyr::everything(), names_to="var", values_to="value") %>%
@@ -55,9 +57,9 @@ describe <- function(data){
     dplyr::mutate(var = factor(var, levels=vars )) %>%
     dplyr::arrange(var) %>%
     dplyr::mutate(var = as.character(var)) %>%
-    dplyr::select(var, avg, std, nnn, xxx, min, q25, med, q75, max) %>%
+    dplyr::select(var, avg, std, nnn, xxx, min, q10, q25, med, q75, q90, max) %>%
     magrittr::set_colnames(c("Variable", "Mean", "SD", "n", "Missing",
-                             "Min", "Q25", "Med", "Q75", "Max"))
+                             "Min", "Q10", "Q25", "Med", "Q75", "Q90", "Max"))
 
   n <- tibble::tibble(Variable=all) %>%
     dplyr::left_join(., n, by="Variable")

@@ -60,12 +60,13 @@ An R Package to assist with CS data science projects at Qualtrics
 
 ### Data Functions
 
-c \* botbox + Function to recode data into Bottom X Box ratings data +
-Works on vectors to recode the data into 0,1 values based on Bot1, Bot2,
-Bot3, or BotX values. A minimum value can be indicated (minval) but the
-function will find the minimum in the data if not provided. The
-replacena logical allows for replacing any NA with 0, if desired.
-
+-   botbox
+    -   Function to recode data into Bottom X Box ratings data
+    -   Works on vectors to recode the data into 0,1 values based on
+        Bot1, Bot2, Bot3, or BotX values. A minimum value can be
+        indicated (minval) but the function will find the minimum in the
+        data if not provided. The replacena logical allows for replacing
+        any NA with 0, if desired.
 -   clean_names
     -   Wrapper function that uses janitor::clean_names on a data set
     -   Convenience wrapper that uses janitor::clean_names to clean up
@@ -123,6 +124,18 @@ replacena logical allows for replacing any NA with 0, if desired.
         janitor::tabyl object that shows counts, row percents, column
         percents, and total percents. Also uses quasiquotation from
         rlang so that variables need not be quoted.
+
+-   describe
+
+    -   Provides descriptive statistics for a dataframe, similar to
+        Python’s Describe
+    -   Provides descriptive statistics for a dataframe, similar to
+        Python’s Describe. Returns the variable name, mean, standard
+        deviation, number of valid responses, number of missing
+        responses, minimum value, 10%, 25%, median, 75%, 90%, and
+        maximum value quartiles. Currently limited to numeric data only;
+        will exclude any non-numeric data from output and listed as NA
+        in output.
 
 -   freq
 
