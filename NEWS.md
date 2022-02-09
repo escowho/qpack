@@ -5,7 +5,7 @@
 ## 0.1.3 - 2202-02-08
 
 -   Added create_frequencies and separated function from create_codebook
--   Cleaned up News and Readme
+-   Cleaned up NEWS and README
 
 ## 0.1.2 - 2022-02-03
 
