@@ -2,6 +2,10 @@
 
 # Version History
 
+## 0.1.3 - 2202-02-08
+
+Added create_frequencies and separated function from create_codebook
+
 ## 0.1.2 - 2022-02-03
 
 Added additional quartiles to the describe function

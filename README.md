@@ -25,6 +25,12 @@ An R Package to assist with CS data science projects at Qualtrics
         a Description and a Note in the file. Option to also create
         frequencies for each variable in the dataframe and export to a
         separate Excel file.
+-   create_frequencies
+    -   Creates a set of frequency tables for each variable in a
+        dataframe
+    -   Creates a set of frequency tables for each variable in a
+        dataframe and exports a list of tables that can be exported to
+        Excel.
 -   create_qconfig
     -   Create an invisible qconfig file with credentials necessary for
         qualtRics

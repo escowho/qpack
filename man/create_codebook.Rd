@@ -18,8 +18,9 @@ but have " - Frequencies" appended.  Optional.}
 this number of values or less will have a frequency table generated, if specified,
 otherwise a frequency table will not be generated. Default: 55}
 
-\item{freqs}{A logical value indicating if frequencies for each variable should
-also be generated. Default: FALSE}
+\item{freqs}{A logical value indicating if create_frequencies should be called
+and the output incorporated into the codebook output set with frequencies for
+each variable also generated. Default: FALSE}
 }
 \value{
 Either a dataframe or exports an Excel file in .xlsx format.
@@ -37,6 +38,7 @@ each variable in the dataframe and export to a separate Excel file.
 \dontrun{
 if(interactive()){
  create_codebook(caddat)
+ create_codebook(test1, freqs=TRUE)
  }
 }
 }

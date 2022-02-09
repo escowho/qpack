@@ -26,9 +26,14 @@ An R Package to assist with CS data science projects at Qualtrics
   + Archives a project into a zip file
   + Uses base zip function to archive all the files and non-empty folders inside a project folder. Ignores the .git and .Rproj.user folder. Creates a zip file names after the study in the general study directory.
 
+
 * create_codebook
   + Creates a codebook or data dictionary for a dataframe
   + Creates a codebook or data dictionary for a dataframe in dataframe format that can be exported to Excel.  Provides a list of the variables (Column), randomly pulls an example value for each one (Example), indicates the type of variable (Type), identifies the number of unique levels (Unique) as well as the percent of records that are missing (Missing).  Leaves spaces for a Description and a Note in the file.  Option to also create frequencies for each variable in the dataframe and export to a separate Excel file.
+  
+* create_frequencies
+  + Creates a set of frequency tables for each variable in a dataframe
+  + Creates a set of frequency tables for each variable in a dataframe and exports a list of tables that can be exported to Excel.
 
 
 * create_qconfig
