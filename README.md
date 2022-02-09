@@ -56,8 +56,6 @@ An R Package to assist with CS data science projects at Qualtrics
         directories, sets the working directory, loads specified
         packages, and sources a functions file and config file, if
         specified. Option to load qpack package.
--   skeleton
-    -   Print an entire syntax example of set_up to console
 -   view_qconfig
     -   View and edit the contents of the current .qconfig file, if
         found.
