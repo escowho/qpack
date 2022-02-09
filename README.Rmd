@@ -50,11 +50,6 @@ An R Package to assist with CS data science projects at Qualtrics
   + Delete the current .qconfig file, if found.
 
 
-* refresh
-  + Refreshes github install of qpack
-  + Convenience function to perform a remotes::install_github for qpack.
-
-
 * set_up
   + Set-up code to create project directories and load needed packages
   + Part of the qpack package of functions, this sets up project directories, sets the working directory, loads specified packages, and sources a functions file and config file, if specified. Option to load qpack package.
@@ -123,6 +118,10 @@ An R Package to assist with CS data science projects at Qualtrics
 
 
 * pull_labels
+  + Generate Variable and Value Labels Exported Data Containing Labels
+  + Generates a list of two dataframes containing variable and value label 
+  information that is found from Qualtrics and exported via qualtRics::fetch_survey
+  or imported from an SPSS .sav file using haven::read_spss.
 
 
 * threeway
@@ -135,7 +134,13 @@ An R Package to assist with CS data science projects at Qualtrics
   + Takes a dataframe or other table and exports it as an XLSX file. Sheet name can be specified to add to an existing sheet. Options include ability to overwrite the sheet(oversheet), overwrite the file (overfile), or to use a default (over = TRUE) that overwrites both the sheet and the file. A keepna option controls whether NA values appear in the sheet.
   
 
-### Skeleton
+### Support Functions
+
+* refresh
+  + Refreshes github install of qpack
+  + Convenience function to perform a remotes::install_github for qpack.
 
 * skeleton()
     + creates complete skeleton syntax printed to the console for creating folder structures with all options
+    
+
