@@ -49,10 +49,6 @@ An R Package to assist with CS data science projects at Qualtrics
         cleaned variables names.
 -   delete_qconfig
     -   Delete the current .qconfig file, if found.
--   refresh
-    -   Refreshes github install of qpack
-    -   Convenience function to perform a remotes::install_github for
-        qpack.
 -   set_up
     -   Set-up code to create project directories and load needed
         packages
@@ -60,6 +56,8 @@ An R Package to assist with CS data science projects at Qualtrics
         directories, sets the working directory, loads specified
         packages, and sources a functions file and config file, if
         specified. Option to load qpack package.
+-   skeleton
+    -   Print an entire syntax example of set_up to console
 -   view_qconfig
     -   View and edit the contents of the current .qconfig file, if
         found.
@@ -124,15 +122,12 @@ An R Package to assist with CS data science projects at Qualtrics
 ### Analysis Functions
 
 -   crosstab
-
     -   Wrapper for a 2-way table from janitor::tabyl
     -   Generates a 2-way frequency table that is outputed as a
         janitor::tabyl object that shows counts, row percents, column
         percents, and total percents. Also uses quasiquotation from
         rlang so that variables need not be quoted.
-
 -   describe
-
     -   Provides descriptive statistics for a dataframe, similar to
         Python’s Describe
     -   Provides descriptive statistics for a dataframe, similar to
@@ -142,18 +137,19 @@ An R Package to assist with CS data science projects at Qualtrics
         maximum value quartiles. Currently limited to numeric data only;
         will exclude any non-numeric data from output and listed as NA
         in output.
-
 -   freq
-
     -   Wrapper for a 1-way table from janitor::tabyl
     -   Generates a frequency table that is outputed as a janitor::tabyl
         object. Also uses quasiquotation from rlang so that variables
         need not be quoted.
-
 -   pull_labels
-
+    -   Generate Variable and Value Labels Exported Data Containing
+        Labels
+    -   Generates a list of two dataframes containing variable and value
+        label information that is found from Qualtrics and exported via
+        qualtRics::fetch_survey or imported from an SPSS .sav file using
+        haven::read_spss.
 -   threeway
-
     -   Performs 3-way crosstab using qpack::crosstab split on a third
         variable
     -   Generates a 3-way crosstab, or a qpack::crosstab for each value
@@ -164,9 +160,7 @@ An R Package to assist with CS data science projects at Qualtrics
         of third variable. Also uses quasiquotation from rlang so that
         variables need not be quoted. var1 and var2 specify the crosstab
         and var3 specifies the split.
-
 -   write_xlsx
-
     -   Wrapper function for openxlsx that exports a data frame to an
         XLSX file
     -   Takes a dataframe or other table and exports it as an XLSX file.
@@ -176,8 +170,12 @@ An R Package to assist with CS data science projects at Qualtrics
         overwrites both the sheet and the file. A keepna option controls
         whether NA values appear in the sheet.
 
-### Skeleton
+### Support Functions
 
+-   refresh
+    -   Refreshes github install of qpack
+    -   Convenience function to perform a remotes::install_github for
+        qpack.
 -   skeleton()
     -   creates complete skeleton syntax printed to the console for
         creating folder structures with all options
