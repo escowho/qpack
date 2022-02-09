@@ -4,10 +4,14 @@
 \alias{refresh}
 \title{Refreshes github install of qpack}
 \usage{
-refresh(pack_list = "qpack")
+refresh(pack_list = "qpack", dev = FALSE)
 }
 \arguments{
 \item{pack_list}{A character vector with the names of packages to update. Default: qpack.}
+
+\item{dev}{A logical to indicate if the development version of qpack should be
+installed.  Will only work if qpack is the only package listed in the pack_list.
+Default: FALSE.}
 }
 \value{
 Nothing, updates package(s).
@@ -18,6 +22,6 @@ Convenience function to perform a remotes::install_github for qpack.
 \examples{
 \dontrun{
 refresh()
-refresh(c("qpack"))
+refresh(dev=TRUE)
 }
 }
