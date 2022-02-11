@@ -133,7 +133,7 @@ create_frequencies <- function(data, output=NULL, level_cutoff=55){
 
       for (var in 1:length(names(data))){
         qpack::write_xlsx(data=frequencies[[var]], file=output,
-                          sheet=as.character(Key$Variable[[var]]), keepna=TRUE, overfile=FALSE)
+                          sheet=as.character(Key$Number[[var]]), keepna=TRUE, overfile=FALSE)
       }
     }
   } else {
