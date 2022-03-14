@@ -98,6 +98,8 @@ archive_project <- function(project, client, root=NULL, silent=FALSE){
   file_list <- file_list[!grepl("Rproj.user", file_list$path),]
   file_list <- file_list[!grepl(".git", file_list$path),]
   file_list <- file_list[!grepl(".DS_Store", file_list$path),]
+  file_list <- file_list[!grepl(".tmp", file_list$path),]
+  file_list <- file_list[!grepl(".qconfig", file_list$path),]
   file_list$path <- fs::path_rel(file_list$path, start=archive_path)
   file_list <- file_list[["path"]]
 

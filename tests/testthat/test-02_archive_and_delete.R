@@ -34,6 +34,8 @@ qpack::set_up(client="TAD",
               descriptor="Testing Archive and Delete",
               qpack=FALSE)
 
+setwd(tempdir())
+
 # Archive Expect Errors ---------------------------------------------------
 
 test_that("No project specified results in error",{
@@ -77,8 +79,6 @@ test_that("Client/Number .zip file created",{
     file.exists(file.path(tempdir(), "TAD", "TAD 0001.zip"))
   )
 })
-
-setwd(tempdir())
 
 # Delete Clean Run with No Errors -----------------------------------------
 
