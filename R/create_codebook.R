@@ -63,10 +63,7 @@ create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
 
   c2 <- labelled::remove_labels(data) %>%
     purrr::map_dfr(., pull_random) %>%
-    dplyr::mutate_if(is.numeric, as.character) %>%
-    dplyr::mutate_if(is.logical, as.character) %>%
-    dplyr::mutate_if(lubridate::is.POSIXt, as.character) %>%
-    dplyr::mutate_if(lubridate::is.Date, as.character) %>%
+    dplyr::mutate(dplyr::across(dplyr::everything(), as.character)) %>%
     tidyr::pivot_longer(dplyr::everything(), names_to="Variable", values_to="Example")
 
   c3 <- labelled::remove_labels(data) %>%
@@ -80,7 +77,7 @@ create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
   c5 <- labelled::remove_labels(data) %>%
     purrr::map_dfr(., ~sum(is.na(.))/length(.)) %>%
     tidyr::pivot_longer(everything(), names_to="Variable", values_to="Missing") %>%
-    dplyr::mutate(Missing = round(Missing, digits=3), Note="")
+    dplyr::mutate(Missing = round(Missing, digits=3), Note=NA_character_)
 
   codebook <- dplyr::left_join(c1, c2, by="Variable") %>%
     dplyr::left_join(c3, by="Variable") %>%
