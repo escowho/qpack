@@ -15,7 +15,6 @@ An R Package to assist with CS data science projects at Qualtrics
         .Rproj.user folder. Creates a zip file names after the study in
         the general study directory.
 -   create_codebook
-    -   Creates a codebook or data dictionary for a dataframe
     -   Creates a codebook or data dictionary for a dataframe in
         dataframe format that can be exported to Excel. Provides a list
         of the variables (Column), randomly pulls an example value for
@@ -25,6 +24,19 @@ An R Package to assist with CS data science projects at Qualtrics
         a Description and a Note in the file. Option to also create
         frequencies for each variable in the dataframe and export to a
         separate Excel file.
+-   create_dictionary
+    -   wrapper function that uses sjPlot::view_df to create an html
+        data dictionary +Convenience wrapper that uses sjPlot::view_df
+        to create an html data dictionary. sjPlot::view_df is
+        particularly good at pulling out labelled data that is usually
+        found in Qualtrics datasets downloaded via the API or from an
+        SPSS file. The default output will list the variable name, type,
+        label (if found), number of missing, values, value labels (if
+        found), and frequencies. Options set to also display limited
+        number of character variables. A more basic version is also
+        available that just shows variable labels and values labels wit
+        the type option. Output is in html format and is best viewed by
+        launching outside R/Rstudio.
 -   create_frequencies
     -   Creates a set of frequency tables for each variable in a
         dataframe

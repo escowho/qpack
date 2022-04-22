@@ -16,6 +16,12 @@ knitr::opts_chunk$set(
 
 # Version History
 
+## 0.1.5 - 2202-0422
+
+* Removed data type issued for create_codebook that would sometimes cause an error
+* Added a progress bar and beepr:beep to create_frequencies
+* Added create_dictionary
+
 ## 0.1.4 - 2202-0314
 
 * Added filters to archive_project to remove .tmp and .qconfig files

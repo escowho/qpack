@@ -7,15 +7,19 @@ README
 Renviron
 Rescales
 Rproj
+Rstudio
 Tibble
 TopX
 XLSX
 YY
+beepr
 botbox
 caddat
 codebook
 config
 crosstab
+df
+dplyr
 github
 keepna
 labelled
@@ -40,6 +44,7 @@ rescaled
 rescaling
 rlang
 sav
+sjPlot
 spss
 tabyl
 threeway
