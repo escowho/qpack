@@ -88,13 +88,12 @@ create_frequencies <- function(data, output=NULL, level_cutoff=55){
                               percent = character())
 
       output <- dplyr::bind_rows(title, output) %>%
-        dplyr::mutate(x = ifelse(is.na(x), "", x)) %>%
         dplyr::rename(!!rlang::quo_name(VARIABLE) := x)  %>%
         dplyr::mutate(label = ifelse(is.na(label) & value == "Total", "Total", label))
 
     } else {
       output <- output %>%
-        dplyr::mutate(label = "") %>%
+        dplyr::mutate(label = NA) %>%
         dplyr::relocate(label, .after="value")
 
       title <- tibble::tibble(x = character(),
@@ -104,7 +103,7 @@ create_frequencies <- function(data, output=NULL, level_cutoff=55){
                               percent = character())
 
       output <- dplyr::bind_rows(title, output) %>%
-        dplyr::mutate(x = ifelse(is.na(x), "", x)) %>%
+        dplyr::mutate(x = ifelse(is.na(x), NA_character_, x)) %>%
         dplyr::rename(!!rlang::quo_name(VARIABLE) := x)
     }
 
@@ -131,9 +130,12 @@ create_frequencies <- function(data, output=NULL, level_cutoff=55){
         qpack::write_xlsx(data=Key, file=output, sheet="Key", overfile=TRUE)
       }
 
+      pb <- txtProgressBar(min = 0, max = length(names(data)), style = 3, width = 50, char = "=")
+
       for (var in 1:length(names(data))){
+        setTxtProgressBar(pb, var)
         qpack::write_xlsx(data=frequencies[[var]], file=output,
-                          sheet=as.character(Key$Number[[var]]), keepna=TRUE, overfile=FALSE)
+                          sheet=as.character(Key$Number[[var]]), keepna=FALSE, overfile=FALSE)
       }
     }
   } else {
@@ -143,4 +145,6 @@ create_frequencies <- function(data, output=NULL, level_cutoff=55){
       return(list(key=Key, frequencies=frequencies))
     }
   }
+
+  beepr::beep()
 }
