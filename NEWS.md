@@ -2,6 +2,10 @@
 
 # Version History
 
+## 0.1.6 - 2202-0423
+
+-   Updated dependencies to correct install problem
+
 ## 0.1.5 - 2202-0422
 
 -   Removed data type issued for create_codebook that would sometimes
