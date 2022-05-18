@@ -9,13 +9,13 @@
 #' labels wit the type option.  Output is in html format and is best viewed by
 #' launching outside R/Rstudio.
 #' @param data Name of the dataframe from which to build the dictionary.  Required.
-#' @param select_vars List of variables to be included in a dplyr::select statement
-#' just before the dictionary is created to limit variables included. Default: everything()
 #' @param output Character string containing the path and file name of the html
 #' file.  If nothing is specified it will default to \"Dictionary.html\" in the
 #' working folder.  Required.
 #' @param type A setting to indicate if the default output or the simple output
 #' should be returned. Default: 'default'
+#' @param select_vars List of variables to be included in a dplyr::select statement
+#' just before the dictionary is created to limit variables included. Default: everything()
 #' @param ... Any additional parameters to be passed onto sjPlot::view_df.
 #' @return Returns an html file to the location and with the name specified in output
 #' @examples
@@ -26,13 +26,14 @@
 #' }
 #' @export
 #' @importFrom fs path_ext file_exists path_dir path file_delete
+#' @importFrom dplyr select mutate_if
 #' @importFrom sjPlot view_df
 #' @importFrom rlang enquo f_name
 
 create_dictionary <- function(data,
-                              select_vars=everything(),
                               output=NULL,
                               type="default",
+                              select_vars=everything(),
                               ...){
 
   # Checks ------------------------------------------------------------------
@@ -75,12 +76,14 @@ create_dictionary <- function(data,
 
     data %>%
       dplyr::select({{select_vars}}) %>%
+      dplyr::mutate_if(is.numeric, as.factor) %>%
       sjPlot::view_df(x=., file=rlang::f_name(OUTPUT), ...)
 
   }  else {
 
     data %>%
       dplyr::select({{select_vars}}) %>%
+      dplyr::mutate_if(is.numeric, as.factor) %>%
       sjPlot::view_df(x=.,
                       file=rlang::f_name(OUTPUT),
                       show.type=TRUE,

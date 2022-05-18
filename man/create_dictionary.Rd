@@ -6,17 +6,14 @@
 \usage{
 create_dictionary(
   data,
-  select_vars = everything(),
   output = NULL,
   type = "default",
+  select_vars = everything(),
   ...
 )
 }
 \arguments{
 \item{data}{Name of the dataframe from which to build the dictionary.  Required.}
-
-\item{select_vars}{List of variables to be included in a dplyr::select statement
-just before the dictionary is created to limit variables included. Default: everything()}
 
 \item{output}{Character string containing the path and file name of the html
 file.  If nothing is specified it will default to \"Dictionary.html\" in the
@@ -24,6 +21,9 @@ working folder.  Required.}
 
 \item{type}{A setting to indicate if the default output or the simple output
 should be returned. Default: 'default'}
+
+\item{select_vars}{List of variables to be included in a dplyr::select statement
+just before the dictionary is created to limit variables included. Default: everything()}
 
 \item{...}{Any additional parameters to be passed onto sjPlot::view_df.}
 }

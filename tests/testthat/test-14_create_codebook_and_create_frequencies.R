@@ -4,6 +4,8 @@ current_setup_start <- Sys.getenv("QPACK_SETUP_ROOT")
 current_setup_folders <- Sys.getenv("QPACK_SETUP_FOLDERS")
 current_setup_outside <- Sys.getenv("QPACK_SETUP_EXTERNAL_DESCRIPTOR")
 
+Sys.setenv("OVERRIDE_FOR_TESTING"="TRUE")
+
 back_to_normal <- function(){
 
   Sys.setenv("HOME"=current_home)
