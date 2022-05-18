@@ -130,10 +130,16 @@ create_frequencies <- function(data, output=NULL, level_cutoff=55){
         qpack::write_xlsx(data=Key, file=output, sheet="Key", overfile=TRUE)
       }
 
-      pb <- txtProgressBar(min = 0, max = length(names(data)), style = 3, width = 50, char = "=")
+      if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
+        pb <- txtProgressBar(min = 0, max = length(names(data)), style = 3, width = 50, char = "=")
+      }
 
       for (var in 1:length(names(data))){
-        setTxtProgressBar(pb, var)
+
+        if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
+          setTxtProgressBar(pb, var)
+        }
+
         qpack::write_xlsx(data=frequencies[[var]], file=output,
                           sheet=as.character(Key$Number[[var]]), keepna=FALSE, overfile=FALSE)
       }
@@ -146,5 +152,8 @@ create_frequencies <- function(data, output=NULL, level_cutoff=55){
     }
   }
 
-  beepr::beep()
+  if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
+    beepr::beep()
+  }
+
 }

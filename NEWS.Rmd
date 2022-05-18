@@ -16,21 +16,26 @@ knitr::opts_chunk$set(
 
 # Version History
 
+## 0.1.7 - 2022-0518
+
+* Updated create_dictionary to correctly show frequencies with numeric data
+* Updated tests for create_dictionary, create_frequencies, create_qconfig to correctly reset or pass during testing
+
 ## 0.1.6 - 2202-0423
 
 * Updated dependencies to correct install problem
 
-## 0.1.5 - 2202-0422
+## 0.1.5 - 2022-0422
 
 * Removed data type issued for create_codebook that would sometimes cause an error
 * Added a progress bar and beepr:beep to create_frequencies
 * Added create_dictionary
 
-## 0.1.4 - 2202-0314
+## 0.1.4 - 2022-0314
 
 * Added filters to archive_project to remove .tmp and .qconfig files
 
-## 0.1.3 - 2202-02-08
+## 0.1.3 - 2022-02-08
 
 * Added create_frequencies and separated function from create_codebook
 * Cleaned up NEWS and README

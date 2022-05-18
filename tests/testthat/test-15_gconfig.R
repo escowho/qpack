@@ -45,4 +45,6 @@ test_that("Clean Run",{
 })
 
 back_to_normal()
+Sys.unsetenv("QUALTRICS_API_KEY")
+Sys.unsetenv("QUALTRICS_BASE_URL")
 
