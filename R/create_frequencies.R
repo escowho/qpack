@@ -70,34 +70,34 @@ create_frequencies <- function(data, output=NULL, level_cutoff=55){
   run_freq <- function(data, variable, value_labels){
     VARIABLE <- rlang::enquo(variable)
     output <- qpack::freq(data, !!VARIABLE) %>%
-      dplyr::rename(value = !!VARIABLE)
+      dplyr::rename(VALUE = !!VARIABLE)
 
-    labs <- dplyr::select(value_labels, value, !!VARIABLE) %>%
-      dplyr::mutate(value = as.character(value)) %>%
+    labs <- dplyr::select(value_labels, VALUE, !!VARIABLE) %>%
+      dplyr::mutate(VALUE = as.character(VALUE)) %>%
       tidyr::drop_na(!!VARIABLE)
 
     if (nrow(labs) > 0) {
-      output <- dplyr::full_join(output, labs, by="value") %>%
+      output <- dplyr::full_join(output, labs, by="VALUE") %>%
         dplyr::rename(label = !!VARIABLE) %>%
-        dplyr::relocate(label, .after="value")
+        dplyr::relocate(label, .after="VALUE")
 
       title <- tibble::tibble(x = character(),
-                              value = character(),
+                              VALUE = character(),
                               label = character(),
                               n = numeric(),
                               percent = character())
 
       output <- dplyr::bind_rows(title, output) %>%
         dplyr::rename(!!rlang::quo_name(VARIABLE) := x)  %>%
-        dplyr::mutate(label = ifelse(is.na(label) & value == "Total", "Total", label))
+        dplyr::mutate(label = ifelse(is.na(label) & VALUE == "Total", "Total", label))
 
     } else {
       output <- output %>%
         dplyr::mutate(label = NA) %>%
-        dplyr::relocate(label, .after="value")
+        dplyr::relocate(label, .after="VALUE")
 
       title <- tibble::tibble(x = character(),
-                              value = character(),
+                              VALUE = character(),
                               label = character(),
                               n = numeric(),
                               percent = character())
