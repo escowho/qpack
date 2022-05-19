@@ -16,7 +16,7 @@ test_that("Clean Run",{
   expect_equal(test$variable_labels[[2,2]], "Please indicate your age (in years).")
   expect_equal(test$variable_labels[[6,2]], "Thinking back to 2020, which of the following categories best describes your total household income for that year?")
   expect_equal(test$variable_labels[[8,2]], "Region")
-  expect_equal(names(test$value_labels), c("value", "response_id", "q1", "q2", "q3", "q4", "q5", "q6", "region", "prob1", "prob2", "prob3"))
+  expect_equal(names(test$value_labels), c("VALUE", "response_id", "q1", "q2", "q3", "q4", "q5", "q6", "region", "prob1", "prob2", "prob3"))
   expect_equal(test$value_labels[[1,1]], 1)
   expect_equal(test$value_labels[[2,3]], "45-64")
   expect_equal(test$value_labels[[3,4]], "Other")

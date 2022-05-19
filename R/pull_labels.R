@@ -47,13 +47,13 @@ pull_labels <- function(data){
     VARIABLE <- rlang::enquo(variable)
     if(is.null(attr(x[[variable]],'labels'))){
       tibble::tribble(~x, ~y, NA_integer_, NA_integer_) %>%
-        magrittr::set_colnames(c("value", variable))
+        magrittr::set_colnames(c("VALUE", variable))
     } else {
       x[[variable]] %>%
         attr('labels') %>%
         utils::stack() %>%
         tibble::as_tibble() %>%
-        magrittr::set_colnames(c("value", variable)) %>%
+        magrittr::set_colnames(c("VALUE", variable)) %>%
         dplyr::mutate_if(is.factor, as.character)
     }
   }
@@ -79,8 +79,8 @@ pull_labels <- function(data){
   }
 
   var_lbls <- hold %>%
-    purrr::reduce(dplyr::full_join, by="value") %>%
-    dplyr::arrange(value)
+    purrr::reduce(dplyr::full_join, by="VALUE") %>%
+    dplyr::arrange(VALUE)
 
   output <- list(variable_labels=var_labs, value_labels=var_lbls)
   return(output)

@@ -109,15 +109,15 @@ test_that("Clean Run 4 - Files",{
   expect_silent(create_frequencies(test1, "test4-2.xlsx"))
   expect_true(file.exists(file.path(tempdir(), "test4-2.xlsx")))
   test4_2 <- readxl::read_xlsx(file.path(tempdir(), "test4-2.xlsx"), sheet=2)
-  expect_equal(names(test4_2), c("response_id", "value", "label", "n", "percent"))
-  expect_equal(test4_2$value, c("More than 55 levels detected, frequency not generated", "Total"))
+  expect_equal(names(test4_2), c("response_id", "VALUE", "label", "n", "percent"))
+  expect_equal(test4_2$VALUE, c("More than 55 levels detected, frequency not generated", "Total"))
   expect_equal(test4_2$n, c(200, 200))
 
 
   expect_silent(create_codebook(test1, "test4-3.xlsx", freqs=TRUE))
   expect_true(file.exists(file.path(tempdir(), "test4-3.xlsx")))
   test4_3 <- readxl::read_xlsx(file.path(tempdir(), "test4-3.xlsx"), sheet=3)
-  expect_equal(names(test4_3), c("q1", "value", "label", "n", "percent"))
+  expect_equal(names(test4_3), c("q1", "VALUE", "label", "n", "percent"))
   expect_equal(test4_3$label, c("18-44", "45-64", "65+", "Total"))
   expect_equal(test4_3$n, c(52, 108, 40, 200))
 })

@@ -8,6 +8,8 @@
     data
 -   Updated tests for create_dictionary, create_frequencies,
     create_qconfig to correctly reset or pass during testing
+-   Updated pull_labels to account for name problem if variable named
+    value
 
 ## 0.1.6 - 2202-0423
 
