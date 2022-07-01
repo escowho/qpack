@@ -2,6 +2,7 @@ BotX
 EDA
 NA's
 NA’s
+PARAM
 Qualtrics
 README
 Renviron
@@ -32,6 +33,7 @@ outputed
 overfile
 oversheet
 qconfig
+qkey
 qualtRics
 quartiles
 quasiquotation

@@ -14,6 +14,8 @@ An R Package to assist with CS data science projects at Qualtrics
         folders inside a project folder. Ignores the .git and
         .Rproj.user folder. Creates a zip file names after the study in
         the general study directory.
+-   clear_qkey
+    -   more to come on qkey
 -   create_codebook
     -   Creates a codebook or data dictionary for a dataframe in
         dataframe format that can be exported to Excel. Provides a list
@@ -44,15 +46,9 @@ An R Package to assist with CS data science projects at Qualtrics
         dataframe and exports a list of tables that can be exported to
         Excel.
 -   create_qconfig
-    -   Create an invisible qconfig file with credentials necessary for
-        qualtRics
-    -   Create an invisible .qconfig file in the current working
-        directory that holds the credentials necessary to access
-        Qualtrics surveys and data through the Qualtrics API using the
-        qualtRics package. It will prompt you to paste your API Key and
-        your Base URL that will be stored in the .qconfig file. This
-        file is automatically read in as environment variables every
-        time qpack::set_up is run.
+    -   Deprecated in favor of qkey family of functions
+-   create_qkey
+    -   more to come on qkey
 -   delete_project
     -   Wrapper function that uses janitor::clean_names on a data set
     -   Convenience wrapper that uses janitor::clean_names to clean up
@@ -60,7 +56,9 @@ An R Package to assist with CS data science projects at Qualtrics
         original variable names and data = the original data with
         cleaned variables names.
 -   delete_qconfig
-    -   Delete the current .qconfig file, if found.
+    -   Deprecated in favor of qkey family of functions
+-   get_qkey
+    -   more to come on qkey
 -   set_up
     -   Set-up code to create project directories and load needed
         packages
@@ -68,9 +66,10 @@ An R Package to assist with CS data science projects at Qualtrics
         directories, sets the working directory, loads specified
         packages, and sources a functions file and config file, if
         specified. Option to load qpack package.
+-   show_token
+    -   more to come on qkey
 -   view_qconfig
-    -   View and edit the contents of the current .qconfig file, if
-        found.
+    -   Deprecated in favor of qkey family of functions
 
 ### Data Functions
 

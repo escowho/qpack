@@ -327,10 +327,14 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
   }
 
 
-  # QCONFIG -----------------------------------------------------------------
+  # QKEY --------------------------------------------------------------------
 
-  if(file.exists(".qconfig")){
-    readRenviron(".qconfig")
+
+  if (dir.exists("./.qkey/")){
+    f <- fs::dir_info("./.qkey/", all=TRUE)
+    if (nrow(f)==1){
+      get_qkey(f$path[[1]])
+    }
   }
 
 }
