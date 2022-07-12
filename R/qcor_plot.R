@@ -89,7 +89,8 @@ qcor_plot <- function(data=NULL, names=NULL, colors=NULL, output=NULL){
                        #pch.cex lowered from 2 to 1.5 for screen
                        pch.cex=1.5)
   } else {
-    jpeg(file_plot, width=5000, height=5000, res=300, pointsize=15)
+    #pointsize was 15 prior to 7/12
+    jpeg(file_plot, width=5000, height=5000, res=300, pointsize=16)
     corrplot::corrplot(corr=corrs$r,
                        col=colors,
                        method="color",
@@ -100,7 +101,8 @@ qcor_plot <- function(data=NULL, names=NULL, colors=NULL, output=NULL){
                        tl.col="black",
                        tl.srt=45,
                        addCoef.col="black",
-                       number.cex=1,
+                       #was 1 prior to 7/12
+                       number.cex=1.3,
                        number.digits=2,
                        p.mat=corrs$p,
                        insig="pch",
