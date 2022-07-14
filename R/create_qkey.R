@@ -56,7 +56,7 @@ create_qkey <- function(name=NULL, url=NULL, token=NULL){
   }
 
   if (file.exists(paste0("./.qkey/", file_name))){
-    file.unlink(paste0("./.qkey/", file_name), force=TRUE)
+    unlink(paste0("./.qkey/", file_name), force=TRUE)
   }
 
   cat(paste0("Sys.setenv(\"QUALTRICS_API_KEY\" = keyring::key_get(\"", name, "\"))"),
