@@ -2,6 +2,7 @@ BotX
 EDA
 NA's
 NA’s
+QUALTRICS
 Qualtrics
 README
 Renviron
@@ -22,6 +23,7 @@ df
 dplyr
 github
 keepna
+keyring
 labelled
 magrittr
 maxval
@@ -32,6 +34,7 @@ outputed
 overfile
 oversheet
 qconfig
+qkey
 qualtRics
 quartiles
 quasiquotation

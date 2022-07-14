@@ -2,6 +2,10 @@
 
 # Version History
 
+## 0.1.8.9000 2022-0701
+
+-   Deprecating qconfig in place of qkey family of functions
+
 ## 0.1.7 - 2022-0518
 
 -   Updated create_dictionary to correctly show frequencies with numeric

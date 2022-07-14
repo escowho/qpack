@@ -2,20 +2,10 @@
 % Please edit documentation in R/create_qconfig.R
 \name{view_qconfig}
 \alias{view_qconfig}
-\title{View and edit the contents of the current .qconfig file}
+\title{Deprecated function to view and edit the contents of the current .qconfig file}
 \usage{
 view_qconfig()
 }
-\value{
-Nothing is returned but the qconfig file is opened
-}
 \description{
-View and edit the contents of the current .qconfig file, if found.
-}
-\examples{
-\dontrun{
-if(interactive()){
- view_qconfig()
- }
-}
+All qconfig functions now found in the qkey family of functions (create_qkey, get_qkey, clear_qkey, show_token).
 }

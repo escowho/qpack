@@ -2,20 +2,10 @@
 % Please edit documentation in R/create_qconfig.R
 \name{delete_qconfig}
 \alias{delete_qconfig}
-\title{Delete the current .qconfig file}
+\title{Deprecated function to delete the current .qconfig file}
 \usage{
 delete_qconfig()
 }
-\value{
-Nothing is returned but the qconfig file is deleted
-}
 \description{
-Delete the current .qconfig file, if found.
-}
-\examples{
-\dontrun{
-if(interactive()){
- delete_qconfig()
- }
-}
+All qconfig functions now found in the qkey family of functions (create_qkey, get_qkey, clear_qkey, show_token).
 }
