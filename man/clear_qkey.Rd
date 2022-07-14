@@ -2,20 +2,21 @@
 % Please edit documentation in R/create_qkey.R
 \name{clear_qkey}
 \alias{clear_qkey}
-\title{FUNCTION_TITLE}
+\title{Clears out any active system variable entries created by a qkey function}
 \usage{
 clear_qkey()
 }
 \value{
-OUTPUT_DESCRIPTION
+Nothing is returned.
 }
 \description{
-FUNCTION_DESCRIPTION
+Clears out current system variables used by the qualtRics
+package (), e.g. QUALTRICS_API_KEY and QUALTRICS_BASE_URL.
 }
 \examples{
 \dontrun{
 if(interactive()){
- #EXAMPLE1
+ clear_qkey()
  }
 }
 }

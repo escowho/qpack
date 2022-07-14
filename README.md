@@ -15,7 +15,10 @@ An R Package to assist with CS data science projects at Qualtrics
         .Rproj.user folder. Creates a zip file names after the study in
         the general study directory.
 -   clear_qkey
-    -   more to come on qkey
+    -   Clears out any active system variable entries created by a qkey
+        function
+    -   Clears out current system variables used by the qualtRics
+        package (), e.g. QUALTRICS_API_KEY and QUALTRICS_BASE_URL.
 -   create_codebook
     -   Creates a codebook or data dictionary for a dataframe in
         dataframe format that can be exported to Excel. Provides a list
@@ -28,17 +31,18 @@ An R Package to assist with CS data science projects at Qualtrics
         separate Excel file.
 -   create_dictionary
     -   wrapper function that uses sjPlot::view_df to create an html
-        data dictionary +Convenience wrapper that uses sjPlot::view_df
-        to create an html data dictionary. sjPlot::view_df is
-        particularly good at pulling out labelled data that is usually
-        found in Qualtrics datasets downloaded via the API or from an
-        SPSS file. The default output will list the variable name, type,
-        label (if found), number of missing, values, value labels (if
-        found), and frequencies. Options set to also display limited
-        number of character variables. A more basic version is also
-        available that just shows variable labels and values labels wit
-        the type option. Output is in html format and is best viewed by
-        launching outside R/Rstudio.
+        data dictionary
+    -   Convenience wrapper that uses sjPlot::view_df to create an html
+        data dictionary. sjPlot::view_df is particularly good at pulling
+        out labelled data that is usually found in Qualtrics datasets
+        downloaded via the API or from an SPSS file. The default output
+        will list the variable name, type, label (if found), number of
+        missing, values, value labels (if found), and frequencies.
+        Options set to also display limited number of character
+        variables. A more basic version is also available that just
+        shows variable labels and values labels wit the type option.
+        Output is in html format and is best viewed by launching outside
+        R/Rstudio.
 -   create_frequencies
     -   Creates a set of frequency tables for each variable in a
         dataframe
@@ -48,7 +52,21 @@ An R Package to assist with CS data science projects at Qualtrics
 -   create_qconfig
     -   Deprecated in favor of qkey family of functions
 -   create_qkey
-    -   more to come on qkey
+    -   Create an invisible qkey file that triggers credentials for
+        using the API and qualtRics package
+    -   Create an invisible qkey file inside an invisible folder within
+        the current working directory that holds the credentials
+        necessary to access Qualtrics surveys and data through the
+        Qualtrics API using the qualtRics package. Credentials are
+        automatically saved in your operating system’s credential store
+        using the keyring package. It will prompt you to name the key,
+        paste your API Key and your Base URL. The API Key will be saved
+        in the data store under the name provided and syntax for loading
+        the credentials are stored in the qkey file itself. This file is
+        automatically read in as environment variables every time
+        qpack::set_up is run if only one qkey file is detected. Can also
+        be loaded using get_qkey function and removed with clear_qkey
+        function.
 -   delete_project
     -   Wrapper function that uses janitor::clean_names on a data set
     -   Convenience wrapper that uses janitor::clean_names to clean up
@@ -58,7 +76,13 @@ An R Package to assist with CS data science projects at Qualtrics
 -   delete_qconfig
     -   Deprecated in favor of qkey family of functions
 -   get_qkey
-    -   more to come on qkey
+    -   Automatically reads stored qkey credentials and creates the
+        necessary system variables for qualtRics package to access
+        surveys through the API
+    -   Executes code stored in the hidden qkey file that accesses the
+        credential store and creates the necessary system variables used
+        by the qualtRics package (), e.g. QUALTRICS_API_KEY and
+        QUALTRICS_BASE_URL.
 -   set_up
     -   Set-up code to create project directories and load needed
         packages
@@ -67,7 +91,9 @@ An R Package to assist with CS data science projects at Qualtrics
         packages, and sources a functions file and config file, if
         specified. Option to load qpack package.
 -   show_token
-    -   more to come on qkey
+    -   Show the saved token for a given qkey name
+    -   Useful when troubleshooting a duplicate name within a key store,
+        the function shows the saved token for a given name.
 -   view_qconfig
     -   Deprecated in favor of qkey family of functions
 

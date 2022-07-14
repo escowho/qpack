@@ -2,27 +2,43 @@
 % Please edit documentation in R/create_qkey.R
 \name{create_qkey}
 \alias{create_qkey}
-\title{FUNCTION_TITLE}
+\title{Create an invisible qkey file that triggers credentials for using the API and qualtRics package}
 \usage{
 create_qkey(name = NULL, url = NULL, token = NULL)
 }
 \arguments{
-\item{name}{PARAM_DESCRIPTION, Default: NULL}
+\item{name}{the name of the key entry under which the token will be stored in
+the OS credential store.  Must be unique and recommended to be short.  Used
+with get_qkey if accessing multiple credentials in one session.}
 
-\item{url}{PARAM_DESCRIPTION, Default: NULL}
+\item{url}{the Qualtrics Base URL.  It is assumed you will not specify this
+in syntax and so will be prompted to paste the value into the console for the
+function to set.  But provided as an option. Default: NULL}
 
-\item{token}{PARAM_DESCRIPTION, Default: NULL}
+\item{token}{the Qualtrics API Key.  It is assumed you will not specify this
+in syntax and so will be prompted to paste the value into the console for the
+function to set.  But provided as an option. Default: NULL}
 }
 \value{
-OUTPUT_DESCRIPTION
+creates a hidden text file named qkey in the hidden folder inside the
+current working directory
 }
 \description{
-FUNCTION_DESCRIPTION
+Create an invisible qkey file inside an invisible folder within
+the current working directory that holds the credentials necessary to access
+Qualtrics surveys and data through the Qualtrics API using the qualtRics package.
+Credentials are automatically saved in your operating system's credential store
+using the keyring package.  It will prompt you to name the key, paste your
+API Key and your Base URL.  The API Key will be saved in the data store under
+the name provided and syntax for loading the credentials are stored in the
+qkey file itself.  This file is automatically read in as environment variables
+every time qpack::set_up is run if only one qkey file is detected.  Can also
+be loaded using get_qkey function and removed with clear_qkey function.
 }
 \examples{
 \dontrun{
 if(interactive()){
- #EXAMPLE1
+ create_qkey()
  }
 }
 }

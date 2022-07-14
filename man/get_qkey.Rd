@@ -2,23 +2,27 @@
 % Please edit documentation in R/create_qkey.R
 \name{get_qkey}
 \alias{get_qkey}
-\title{FUNCTION_TITLE}
+\title{Automatically reads stored qkey credentials and creates the necessary
+system variables for qualtRics package to access surveys through the API}
 \usage{
 get_qkey(name = NULL)
 }
 \arguments{
-\item{name}{PARAM_DESCRIPTION, Default: NULL}
+\item{name}{Character string of the name of a qkey created previously with
+create_qkey. Required.}
 }
 \value{
-OUTPUT_DESCRIPTION
+Nothing is returned but two system variables will be created.
 }
 \description{
-FUNCTION_DESCRIPTION
+Executes code stored in the hidden qkey file that accesses the
+credential store and creates the necessary system variables used by the qualtRics
+package (), e.g. QUALTRICS_API_KEY and QUALTRICS_BASE_URL.
 }
 \examples{
 \dontrun{
 if(interactive()){
- #EXAMPLE1
+ get_qkey("Study Name")
  }
 }
 }

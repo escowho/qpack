@@ -2,7 +2,7 @@ BotX
 EDA
 NA's
 NA’s
-PARAM
+QUALTRICS
 Qualtrics
 README
 Renviron
@@ -23,6 +23,7 @@ df
 dplyr
 github
 keepna
+keyring
 labelled
 magrittr
 maxval

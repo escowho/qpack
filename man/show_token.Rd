@@ -2,23 +2,25 @@
 % Please edit documentation in R/create_qkey.R
 \name{show_token}
 \alias{show_token}
-\title{FUNCTION_TITLE}
+\title{Show the saved token for a given qkey name}
 \usage{
 show_token(name = NULL)
 }
 \arguments{
-\item{name}{PARAM_DESCRIPTION, Default: NULL}
+\item{name}{Character string of the name of a qkey created previously with
+create_qkey. Required.}
 }
 \value{
-OUTPUT_DESCRIPTION
+returns the saved token to the console
 }
 \description{
-FUNCTION_DESCRIPTION
+Useful when troubleshooting a duplicate name within a key store,
+the function shows the saved token for a given name.
 }
 \examples{
 \dontrun{
 if(interactive()){
- #EXAMPLE1
+ show_token("Study Name")
  }
 }
 }
