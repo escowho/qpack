@@ -20,6 +20,7 @@ Imports:
     openxlsx (>= 4.2.5),
     psych (>= 2.2.5),
     purrr (>= 0.3.4),
+    qualtRics (>= 3.1.6),
     remotes (>= 2.4.2),
     rlang (>= 1.0.2),
     rstudioapi (>= 0.13),
