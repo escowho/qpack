@@ -4,7 +4,7 @@
 \alias{qcor_plot}
 \title{FUNCTION_TITLE}
 \usage{
-qcor_plot(data = NULL, names = NULL, colors = NULL, output = NULL)
+qcor_plot(data = NULL, names = NULL, colors = NULL, output = NULL, sort = TRUE)
 }
 \arguments{
 \item{data}{PARAM_DESCRIPTION, Default: NULL}
@@ -14,6 +14,8 @@ qcor_plot(data = NULL, names = NULL, colors = NULL, output = NULL)
 \item{colors}{PARAM_DESCRIPTION, Default: NULL}
 
 \item{output}{PARAM_DESCRIPTION, Default: NULL}
+
+\item{sort}{PARAM_DESCRIPTION, Default: NULL}
 }
 \value{
 OUTPUT_DESCRIPTION

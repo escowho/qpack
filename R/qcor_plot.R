@@ -4,6 +4,7 @@
 #' @param names PARAM_DESCRIPTION, Default: NULL
 #' @param colors PARAM_DESCRIPTION, Default: NULL
 #' @param output PARAM_DESCRIPTION, Default: NULL
+#' @param sort PARAM_DESCRIPTION, Default: NULL
 #' @return OUTPUT_DESCRIPTION
 #' @examples
 #' \dontrun{
@@ -17,7 +18,7 @@
 #' @importFrom corrplot corrplot
 #' @importFrom tibble rownames_to_column
 
-qcor_plot <- function(data=NULL, names=NULL, colors=NULL, output=NULL){
+qcor_plot <- function(data=NULL, names=NULL, colors=NULL, output=NULL, sort=TRUE){
 
   # Checks ------------------------------------------------------------------
 
@@ -67,6 +68,12 @@ qcor_plot <- function(data=NULL, names=NULL, colors=NULL, output=NULL){
 
   corrs <- psych::corr.test(data)
 
+  if(sort==TRUE){
+    order_entry <- "hclust"
+  } else {
+    order_entry <- "original"
+  }
+
   # Screen Version ----------------------------------------------------------
 
   if(is.null(output)){
@@ -76,7 +83,7 @@ qcor_plot <- function(data=NULL, names=NULL, colors=NULL, output=NULL){
                        type="lower",
                        diag=FALSE,
                        outline=TRUE,
-                       order="hclust",
+                       order=order_entry,
                        tl.col="black",
                        tl.srt=45,
                        addCoef.col="black",
@@ -97,7 +104,7 @@ qcor_plot <- function(data=NULL, names=NULL, colors=NULL, output=NULL){
                        type="lower",
                        diag=FALSE,
                        outline=TRUE,
-                       order="hclust",
+                       order=order_entry,
                        tl.col="black",
                        tl.srt=45,
                        addCoef.col="black",
