@@ -329,11 +329,26 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
 
   # QKEY --------------------------------------------------------------------
 
-
   if (dir.exists("./.qkey/")){
     f <- fs::dir_info("./.qkey/", all=TRUE)
     if (nrow(f)==1){
-      get_qkey(f$path[[1]])
+      tryCatch(
+        #try to do this
+        {
+          get_qkey(f$path[[1]])
+        },
+        #if an error occurs, tell me the error
+        error=function(e) {
+          message('A qkey Error Occurred')
+          print(e)
+        },
+        #if a warning occurs, tell me the warning
+        warning=function(w) {
+          message('A qkey Warning Occurred')
+          print(w)
+          return(NA)
+        }
+      )
     }
   }
 
