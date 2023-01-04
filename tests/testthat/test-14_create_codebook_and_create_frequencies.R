@@ -98,7 +98,7 @@ test_that("Clean Run 3 - Crosstab, freqs=THREE",{
 
 test_that("Clean Run 4 - Files",{
   setwd(tempdir())
-  expect_silent(create_codebook(test1, "test4-1.xlsx"))
+  expect_silent(create_codebook(test1, output="test4-1.xlsx"))
   expect_true(file.exists(file.path(tempdir(), "test4-1.xlsx")))
   test4_1 <- readxl::read_xlsx(file.path(tempdir(), "test4-1.xlsx"), sheet=1)
   expect_equal(names(test4_1), c("Number", "Variable", "Description", "Example", "Type", "Unique", "Missing", "Note"))
@@ -106,7 +106,7 @@ test_that("Clean Run 4 - Files",{
   expect_equal(test4_1$Unique, c(200, 3, 3, 4, 3, 8, 4, 4, 3, 3, 3))
 
 
-  expect_silent(create_frequencies(test1, "test4-2.xlsx"))
+  expect_silent(create_frequencies(test1, output="test4-2.xlsx"))
   expect_true(file.exists(file.path(tempdir(), "test4-2.xlsx")))
   test4_2 <- readxl::read_xlsx(file.path(tempdir(), "test4-2.xlsx"), sheet=2)
   expect_equal(names(test4_2), c("response_id", "VALUE", "label", "n", "percent"))
@@ -114,12 +114,27 @@ test_that("Clean Run 4 - Files",{
   expect_equal(test4_2$n, c(200, 200))
 
 
-  expect_silent(create_codebook(test1, "test4-3.xlsx", freqs=TRUE))
+  expect_silent(create_codebook(test1, output="test4-3.xlsx", freqs=TRUE))
   expect_true(file.exists(file.path(tempdir(), "test4-3.xlsx")))
   test4_3 <- readxl::read_xlsx(file.path(tempdir(), "test4-3.xlsx"), sheet=3)
   expect_equal(names(test4_3), c("q1", "VALUE", "label", "n", "percent"))
   expect_equal(test4_3$label, c("18-44", "45-64", "65+", "Total"))
   expect_equal(test4_3$n, c(52, 108, 40, 200))
+})
+
+test_that("Clean Run 5 - Metadata",{
+  setwd(tempdir())
+  expect_silent(create_codebook(test2, metadata=meta2, output="test5-1.xlsx", freqs=TRUE))
+  expect_true(file.exists(file.path(tempdir(), "test5-1.xlsx")))
+  test5_1 <- readxl::read_xlsx(file.path(tempdir(), "test5-1.xlsx"), sheet=1)
+  expect_equal(names(test5_1), c("Number", "Variable", "Description", "Example", "Type", "Unique", "Missing", "Note"))
+  expect_equal(test5_1$Variable, c("q1", "q2", "q3_nps_group", "q3"))
+  expect_equal(test5_1$Unique, c(4,4,3,11))
+
+  test5_2 <- readxl::read_xlsx(file.path(tempdir(), "test5-1.xlsx"), sheet=2)
+  expect_equal(names(test5_2), c("q1", "VALUE", "label", "n", "percent"))
+  expect_equal(test5_2$label, c("18 to 24", "25 to 39", "40 to 59", "60 Plus", "Total"))
+  expect_equal(test5_2$n, c(44, 58, 51, 47, 200))
 })
 
 back_to_normal()

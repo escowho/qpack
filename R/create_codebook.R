@@ -5,8 +5,16 @@
 #' variable (Type), identifies the number of unique levels (Unique) as well as
 #' the percent of records that are missing (Missing).  Leaves spaces for a
 #' Description and a Note in the file.  Option to also create frequencies for
-#' each variable in the dataframe and export to a separate Excel file.
+#' each variable in the dataframe and export to a separate Excel file.  Changes
+#' to API mean that value labels are no longer exported directly.  It is recommended
+#' that you download an SPSS file and read in using haven::read_spss to preserve
+#' these labels, however, a metadata option is provided if this is not possible.
+#' Please be aware that the application of value labels from metadata is not perfect
+#' and may result in unusual or incorrect label application, so use at your own
+#' risk.
 #' @param data Name of the dataframe upon which to build the codebook.  Required.
+#' @param metadata Name of the list output from qualtRics::metadata('surveyID').
+#' Optional.
 #' @param output Character string containing the complete path and file name of
 #' an XLSX file for exporting the resulting dataframe to Excel format.  If
 #' frequencies are also created, the name of the frequency file will be identical
@@ -17,11 +25,16 @@
 #' @param level_cutoff A cut-off value for printing frequencies.  A variable with
 #' this number of values or less will have a frequency table generated, if specified,
 #' otherwise a frequency table will not be generated. Default: 55
+#' @param keep_na A logical value indicating if NA values should be excluded when
+#' output to Excel.  In most instances, this value should be kept at FALSE but
+#' on some occasions, output excluding NA's creates problems with formatting.
+#' Default: FALSE
 #' @return Either a dataframe or exports an Excel file in .xlsx format.
 #' @examples
 #' \dontrun{
 #' if(interactive()){
 #'  create_codebook(caddat)
+#'  create_codebookd(dat1, metadata=mdata1)
 #'  create_codebook(test1, freqs=TRUE)
 #'  }
 #' }
@@ -34,7 +47,7 @@
 #' @importFrom fs path_dir file_exists file_delete
 #' @importFrom openxlsx createStyle createWorkbook addWorksheet writeData setColWidths addStyle saveWorkbook
 
-create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
+create_codebook <- function(data, metadata=NULL, output=NULL, level_cutoff=55, keep_na=FALSE, freqs=FALSE){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
@@ -54,7 +67,7 @@ create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
 
   data <- dplyr::mutate_if(data, is.character, dplyr::na_if, "")
 
-  label_data <- qpack::pull_labels(data)
+  label_data <- qpack::pull_labels(data, metadata=metadata)
 
   c1 <- label_data$variable_labels %>%
     dplyr::mutate(n = 1:nrow(.)) %>%
@@ -101,7 +114,7 @@ create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
       wb <- openxlsx::createWorkbook()
       openxlsx::addWorksheet(wb, sheet="Codebook")
       openxlsx::writeData(wb=wb, sheet="Codebook", x=codebook,
-                          keepNA=FALSE, rowNames=FALSE)
+                          keepNA=keep_na, rowNames=FALSE)
       openxlsx::setColWidths(wb, sheet="Codebook", cols=c(1:8),
                              widths=c(10, 20, 50, 25, 10.78, 10.78, 10.78, 50))
       openxlsx::addStyle(wb, sheet="Codebook", style=comma_style, rows=1:ncol(data)+1, cols=6)
@@ -109,7 +122,8 @@ create_codebook <- function(data, output=NULL, level_cutoff=55, freqs=FALSE){
       openxlsx::saveWorkbook(wb, file = output, overwrite = TRUE)
 
       if (freqs==TRUE){
-        create_frequencies(data, output=output, level_cutoff=level_cutoff)
+        create_frequencies(data, output=output, metadata=metadata,
+                           level_cutoff=level_cutoff, keep_na=keep_na)
       }
 
     }

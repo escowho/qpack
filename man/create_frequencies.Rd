@@ -4,10 +4,24 @@
 \alias{create_frequencies}
 \title{Creates a set of frequency tables for each variable in a dataframe}
 \usage{
-create_frequencies(data, output = NULL, level_cutoff = 55)
+create_frequencies(
+  data,
+  metadata = NULL,
+  output = NULL,
+  level_cutoff = 55,
+  keep_na = FALSE
+)
 }
 \arguments{
 \item{data}{Name of the dataframe upon which to build the codebook.  Required.}
+
+\item{metadata}{Name of the list output from qualtRics::metadata('surveyID').
+Changes to Qualtrics API mean that value labels are no longer exported directly.
+It is recommended that you download an SPSS file and read in using haven::read_spss
+to preserve these labels, however, a metadata option is provided if this is not
+possible.  Please be aware that the application of value labels from metadata
+is not perfect and may result in unusual or incorrect label application, so
+use at your own risk.  Optional.}
 
 \item{output}{Character string containing the complete path and file name of
 an XLSX file for exporting the resulting dataframe to Excel format.  Optional.}
@@ -15,6 +29,11 @@ an XLSX file for exporting the resulting dataframe to Excel format.  Optional.}
 \item{level_cutoff}{A cut-off value for printing frequencies.  A variable with
 this number of values or less will have a frequency table generated, if specified,
 otherwise a frequency table will not be generated. Default: 55}
+
+\item{keep_na}{A logical value indicating if NA values should be excluded when
+output to Excel.  In most instances, this value should be kept at FALSE but
+on some occasions, output excluding NA's creates problems with formatting.
+Default: FALSE}
 }
 \value{
 Either a dataframe or exports an Excel file in .xlsx format.

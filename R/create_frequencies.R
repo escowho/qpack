@@ -2,8 +2,19 @@
 #' @description Creates a set of frequency tables for each variable in a dataframe
 #' and exports a list of tables that can be exported to Excel.
 #' @param data Name of the dataframe upon which to build the codebook.  Required.
+#' @param metadata Name of the list output from qualtRics::metadata('surveyID').
+#' Changes to Qualtrics API mean that value labels are no longer exported directly.
+#' It is recommended that you download an SPSS file and read in using haven::read_spss
+#' to preserve these labels, however, a metadata option is provided if this is not
+#' possible.  Please be aware that the application of value labels from metadata
+#' is not perfect and may result in unusual or incorrect label application, so
+#' use at your own risk.  Optional.
 #' @param output Character string containing the complete path and file name of
 #' an XLSX file for exporting the resulting dataframe to Excel format.  Optional.
+#' @param keep_na A logical value indicating if NA values should be excluded when
+#' output to Excel.  In most instances, this value should be kept at FALSE but
+#' on some occasions, output excluding NA's creates problems with formatting.
+#' Default: FALSE
 #' @param level_cutoff A cut-off value for printing frequencies.  A variable with
 #' this number of values or less will have a frequency table generated, if specified,
 #' otherwise a frequency table will not be generated. Default: 55
@@ -22,7 +33,7 @@
 #' @importFrom tibble tibble
 #' @importFrom fs path_dir file_exists
 
-create_frequencies <- function(data, output=NULL, level_cutoff=55){
+create_frequencies <- function(data, metadata=NULL, output=NULL, level_cutoff=55, keep_na=FALSE){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
@@ -44,8 +55,6 @@ create_frequencies <- function(data, output=NULL, level_cutoff=55){
       dplyr::filter(Unique > level_cutoff) %>%
       dplyr::select(Column) %>%
       purrr::pluck(1)
-
-    label_data <- qpack::pull_labels(data)
   } else {
     flist <- codebook %>%
       dplyr::filter(Unique > level_cutoff) %>%
@@ -53,7 +62,11 @@ create_frequencies <- function(data, output=NULL, level_cutoff=55){
       purrr::pluck(1)
   }
 
-
+  if (is.null(metadata)){
+    label_data <- qpack::pull_labels(data=data)
+  } else {
+    label_data <- qpack::pull_labels(data=data, metadata=metadata)
+  }
 
   # Helper Function ---------------------------------------------------------
   too_many <- function(x, cutoff=level_cutoff){
@@ -141,7 +154,7 @@ create_frequencies <- function(data, output=NULL, level_cutoff=55){
         }
 
         qpack::write_xlsx(data=frequencies[[var]], file=output,
-                          sheet=as.character(Key$Number[[var]]), keepna=FALSE, overfile=FALSE)
+                          sheet=as.character(Key$Number[[var]]), keepna=keep_na, overfile=FALSE)
       }
     }
   } else {
