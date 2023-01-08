@@ -33,7 +33,8 @@
 #' @importFrom tibble tibble
 #' @importFrom fs path_dir file_exists
 
-create_frequencies <- function(data, metadata=NULL, output=NULL, level_cutoff=55, keep_na=FALSE){
+create_frequencies <- function(data, metadata=NULL, output=NULL, level_cutoff=55,
+                               keep_na=FALSE){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
@@ -46,8 +47,6 @@ create_frequencies <- function(data, metadata=NULL, output=NULL, level_cutoff=55
   } else {
     from_create_codebook <- FALSE
   }
-
-  frequencies <- vector(mode="list", length = 0)
 
   if (from_create_codebook==FALSE){
     flist  <- purrr::map_dfr(data, dplyr::n_distinct) %>%
@@ -69,29 +68,53 @@ create_frequencies <- function(data, metadata=NULL, output=NULL, level_cutoff=55
   }
 
   # Helper Function ---------------------------------------------------------
-  too_many <- function(x, cutoff=level_cutoff){
-    x <- paste0("More than ", cutoff, " levels detected, frequency not generated")
-  }
-  # -------------------------------------------------------------------------
+  run_freq <- function(data, variable, cutoff, problems=flist,
+                       value_labels=label_data$value_labels){
 
-
-
-  data <- data %>%
-    dplyr::mutate_at(dplyr::vars(dplyr::all_of(flist)), too_many, level_cutoff)
-
-  # Helper Function ---------------------------------------------------------
-  run_freq <- function(data, variable, value_labels){
     VARIABLE <- rlang::enquo(variable)
-    output <- qpack::freq(data, !!VARIABLE) %>%
-      dplyr::rename(VALUE = !!VARIABLE)
 
-    labs <- dplyr::select(value_labels, VALUE, !!VARIABLE) %>%
+    data <- data %>%
+      labelled::remove_labels(data)
+
+    #if(rlang::f_text(VARIABLE) %in% problems){
+    #if(variable %in% problems){
+    if({{variable}} %in% problems){
+
+      new_level <- as.numeric(paste(rep(9, nchar(cutoff)+1), collapse=""))
+
+      acceptable_levels <- data %>%
+        dplyr::select(dplyr::all_of({{variable}})) %>%
+        dplyr::rename(x={{variable}}) %>%
+        dplyr::mutate(y=1) %>%
+        dplyr::group_by(x) %>%
+        dplyr::tally() %>%
+        dplyr::slice(1:cutoff) %>%
+        dplyr::select(-n) %>%
+        dplyr::pull()
+
+      recode_level <- function(x){
+        x <- ifelse(!x %in% acceptable_levels, new_level, x)
+      }
+
+      output <- data %>%
+        dplyr::select(dplyr::all_of({{variable}})) %>%
+        dplyr::rename(VALUE={{variable}}) %>%
+        dplyr::mutate_at(dplyr::vars(VALUE), recode_level) %>%
+        qpack::freq(., VALUE)
+
+    } else {
+      output <- data %>%
+        dplyr::rename(VALUE={{variable}}) %>%
+        qpack::freq(., VALUE)
+    }
+
+    labs <- dplyr::select(value_labels, VALUE, dplyr::all_of(!!VARIABLE)) %>%
       dplyr::mutate(VALUE = as.character(VALUE)) %>%
-      tidyr::drop_na(!!VARIABLE)
+      tidyr::drop_na(dplyr::all_of(!!VARIABLE))
 
     if (nrow(labs) > 0) {
       output <- dplyr::full_join(output, labs, by="VALUE") %>%
-        dplyr::rename(label = !!VARIABLE) %>%
+        dplyr::rename(label = {{variable}}) %>%
         dplyr::relocate(label, .after="VALUE")
 
       title <- tibble::tibble(x = character(),
@@ -101,8 +124,9 @@ create_frequencies <- function(data, metadata=NULL, output=NULL, level_cutoff=55
                               percent = character())
 
       output <- dplyr::bind_rows(title, output) %>%
-        dplyr::rename(!!rlang::quo_name(VARIABLE) := x)  %>%
-        dplyr::mutate(label = ifelse(is.na(label) & VALUE == "Total", "Total", label))
+        dplyr::rename({{variable}} := x)  %>%
+        dplyr::mutate(label = ifelse(is.na(label) & VALUE == "Total", "Total", label)) %>%
+        dplyr::mutate(label = ifelse(VALUE=="999", "All other values (only a sample shown)", label))
 
     } else {
       output <- output %>%
@@ -117,15 +141,19 @@ create_frequencies <- function(data, metadata=NULL, output=NULL, level_cutoff=55
 
       output <- dplyr::bind_rows(title, output) %>%
         dplyr::mutate(x = ifelse(is.na(x), NA_character_, x)) %>%
-        dplyr::rename(!!rlang::quo_name(VARIABLE) := x)
+        dplyr::rename({{variable}} := x) %>%
+        dplyr::mutate(label = ifelse(VALUE=="999", "All other values (only a sample shown)", label))
+
     }
 
     return(output)
+
   }
   # -------------------------------------------------------------------------
 
+  frequencies <- vector(mode="list", length = 0)
   for (var in names(data)){
-    frequencies[[var]] <- run_freq(data, {{var}}, label_data$value_labels)
+    frequencies[[var]] <- run_freq(data, variable=var, cutoff=level_cutoff)
   }
 
   Key <- label_data$variable_labels %>%
@@ -154,7 +182,8 @@ create_frequencies <- function(data, metadata=NULL, output=NULL, level_cutoff=55
         }
 
         qpack::write_xlsx(data=frequencies[[var]], file=output,
-                          sheet=as.character(Key$Number[[var]]), keepna=keep_na, overfile=FALSE)
+                          sheet=as.character(Key$Number[[var]]),
+                          keepna=keep_na, overfile=FALSE)
       }
     }
   } else {

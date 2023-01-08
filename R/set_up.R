@@ -63,7 +63,7 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
                    descriptor=NULL, folders=NULL, pack_load=NULL, pack_check=NULL,
                    source=NULL, qpack=TRUE){
 
-  # Rstudio Check -----------------------------------------------------------
+  # Basic Checks ------------------------------------------------------------
 
   if (rstudioapi::isAvailable() != TRUE & (is.null(root) | is.null(folders))){
     warning(call. = FALSE,
@@ -72,12 +72,19 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
                    "Expect warnings below unless using root option AND specifying folders."))
   }
 
-
-  # CLIENT/PROJECT or PROJECT Check -----------------------------------------
-
-  if (is.null(project) | project=="") {
+  if (is.null(project)) {
+    stop(call. = FALSE, "A project must be specified.  Client is optional.")
+  } else if(nchar(trimws(project))==0){
     stop(call. = FALSE, "A project must be specified.  Client is optional.")
   }
+
+  if (is.null(descriptor)){
+    stop(call. = FALSE, "Descriptor must be specified.")
+  } else if(nchar(trimws(descriptor))==0){
+    stop(call. = FALSE, "Descriptor must be specified.")
+  }
+
+  # Type Check --------------------------------------------------------------
 
   if (!is.null(client)) {
     if (client != ""){
@@ -87,8 +94,6 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
     client_true <- 0
   }
 
-  # PROJECT/TASK Check ------------------------------------------------------
-
   if (!is.null(task)) {
     if (task != ""){
       task_true <- 1
@@ -97,17 +102,25 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
     task_true <- 0
   }
 
-  # DESCRIPTOR CHECK --------------------------------------------------------
+  # GET NAMES ---------------------------------------------------------------
 
-    if (is.null(descriptor) | nchar(trimws(descriptor))==0){
-      stop(call. = FALSE, "Descriptor must be specified.")
-    }
+  #Rproj Name
+  if (task_true==1){
+    Rproj_name <- paste0(project, " (", task, ")")
+  } else {
+    Rproj_name <- project
+  }
 
-  # SET START_PATH ----------------------------------------------------------
+  #Inside Name
+
+  #Outside Name
+
+  # GET PATHS ---------------------------------------------------------------
+
+  #start_path >- Manual or QPACK_SETUP_ROOT or Default
 
   #Manual Start Path
   if (is.null(root) == FALSE){
-
     if (fs::dir_exists(root) == FALSE){
       stop(call. = FALSE,
            paste0("Specified root path does not exist:",
@@ -115,19 +128,19 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
     } else {
       start_path <- fs::path(root)
     }
-  #Read QPACK_SETUP_ROOT Path
+
+  #Read QPACK_SETUP_ROOT Path or Default
   } else if (Sys.getenv("QPACK_SETUP_ROOT")=="") {
-      start_path <- Sys.getenv("HOME")
-      warning(call. = FALSE,
-              paste0("QPACK_SETUP_ROOT not found in .Renviron file.",
-                     "\n",
-                     "Using the default path instead: ", start_path))
+    start_path <- Sys.getenv("HOME")
+    warning(call. = FALSE,
+            paste0("QPACK_SETUP_ROOT not found in .Renviron file.",
+                   "\n",
+                   "Using the default path instead: ", start_path))
   } else {
-      start_path <- Sys.getenv("QPACK_SETUP_ROOT")
+    start_path <- Sys.getenv("QPACK_SETUP_ROOT")
   }
 
-  # SET PROJECT_PATH --------------------------------------------------------
-
+  #inside_path and outside_path based on project type
   if (client_true == 1) {
     if (task_true == 1){
       inside_path <- fs::path(start_path, client, project, task)
@@ -147,92 +160,40 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
     }
   }
 
-  # RPROJ and Working Directory ---------------------------------------------
+  #Rproj Path
+  Rproj_path <- fs::path(inside_path, paste0(Rproj_name, ".Rproj"))
 
-  #Set up name of RPROJ File
-  if (task_true==1){
-    Rproj_file <- paste0(project, " (", task, ")")
-  } else {
-    Rproj_file <- project
-  }
-  Rproj_path <- fs::path(inside_path, paste0(Rproj_file, ".Rproj"))
+  # LOCATION CHECK AND SET WORKING DIRECTORY --------------------------------
 
   already_in_wd <- FALSE
   matches_setup <- TRUE
-
   #if the override isn't set
   if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
     #if the Rproj file is found in the working directory
-    if (file.exists(paste0(Rproj_file, ".Rproj"))==TRUE){
+    if (file.exists(paste0(Rproj_name, ".Rproj"))==TRUE){
       #if the location of the Rproj file matches the current working directory
-      if (fs::path_dir(fs::path_abs(paste0(Rproj_file, ".Rproj"))) == getwd()){
+      if (fs::path_dir(fs::path_abs(paste0(Rproj_name, ".Rproj"))) == getwd()){
         already_in_wd <- TRUE
       }
       #if the current Rproj is where the set_up file thinks it should be
-      if (fs::path_dir(fs::path_abs(paste0(Rproj_file, ".Rproj"))) != inside_path){
+      if (fs::path_dir(fs::path_abs(paste0(Rproj_name, ".Rproj"))) != inside_path){
         matches_setup <- FALSE
       }
     }
   }
 
-  # SET WORKING DIRECTORY ---------------------------------------------------
-
   if (already_in_wd==TRUE & matches_setup==TRUE){
     #do nothing
   } else if (already_in_wd==TRUE & matches_setup==FALSE){
-    if (Sys.getenv('QPACK_SETUP_WORK_CHECK')!=FALSE){
-      warning(call. = FALSE,
-              paste0("Working directory set by Rproj file is different from the location implied by qpack::set_up."))
-    }
     #fix paths to match current
-    inside_path <- fs::path_dir(fs::path_abs(paste0(Rproj_file, ".Rproj")))
+    inside_path <- fs::path_dir(fs::path_abs(paste0(Rproj_name, ".Rproj")))
     outside_path <- fs::path_split(inside_path)[[1]]
     outside_path <- fs::path_join(outside_path[1:length(outside_path)-1])
-    Rproj_path <- fs::path_abs(paste0(Rproj_file, ".Rproj"))
-    setwd(file.path(inside_path))
+    Rproj_path <- fs::path_abs(paste0(Rproj_name, ".Rproj"))
   } else if (already_in_wd==FALSE) {
     fs::dir_create(inside_path)
-    setwd(file.path(inside_path))
   }
-
-  # CREATE RPROJ FILE -------------------------------------------------------
-
-  #If Rproj doesn't exist then create
-  if (!fs::file_exists(Rproj_path)) {
-    x <- c("Version: 1.0",
-           "",
-           "RestoreWorkspace: Default",
-           "SaveWorkspace: Default",
-           "AlwaysSaveHistory: Default",
-           "",
-           "EnableCodeIndexing: Yes",
-           "Encoding: UTF-8",
-           "",
-           "AutoAppendNewline: Yes",
-           "StripTrailingWhitespace: Yes",
-           "LineEndingConversion: Posix",
-           "",
-           "BuildType: Package",
-           "PackageUseDevtools: Yes",
-           "PackageInstallArgs: --no-multiarch --with-keep.source",
-           "PackageRoxygenize: rd,collate,namespace")
-
-    cat(paste(x, collapse="\n"), file=Rproj_path)
-  }
-
-  # LOAD FUNCS AND CONFIG ---------------------------------------------------
-
-  load_source <- function(source_file){
-    if (!file.exists(source_file)){
-      stop(call. = FALSE, sprintf("%s not found in the working directory", source_file))
-    } else {
-      source(source_file)
-    }
-  }
-
-  if (!is.null(source)){
-    invisible(lapply(source, load_source))
-  }
+  setwd(file.path(inside_path))
 
   # CREATE SUB DIRECTORIES --------------------------------------------------
 
@@ -259,17 +220,40 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
 
   invisible(lapply(sub_directories, create_subdirectory, project_path=inside_path))
 
-  # CREATE EXTERIOR DESCRIPTOR ----------------------------------------------
+  # CREATE FILES ------------------------------------------------------------
 
+  #Rproj File
+  if (!fs::file_exists(Rproj_path)) {
+    x <- c("Version: 1.0",
+           "",
+           "RestoreWorkspace: Default",
+           "SaveWorkspace: Default",
+           "AlwaysSaveHistory: Default",
+           "",
+           "EnableCodeIndexing: Yes",
+           "Encoding: UTF-8",
+           "",
+           "AutoAppendNewline: Yes",
+           "StripTrailingWhitespace: Yes",
+           "LineEndingConversion: Posix",
+           "",
+           "BuildType: Package",
+           "PackageUseDevtools: Yes",
+           "PackageInstallArgs: --no-multiarch --with-keep.source",
+           "PackageRoxygenize: rd,collate,namespace")
+
+    cat(paste(x, collapse="\n"), file=Rproj_path)
+  }
+
+  #Exterior Descriptor
   if (Sys.getenv("QPACK_SETUP_EXTERNAL_DESCRIPTOR") != FALSE) {
     desc_outside <- fs::path(outside_path, paste0("_", project, " - ", descriptor, ".txt"))
     if (!fs::file_exists(desc_outside) & task_true == 0) {
       fs::file_create(desc_outside)
     }
-    }
+  }
 
-  # ADD INTERIOR DESCRIPTOR WITH SETTINGS -----------------------------------
-
+  #Interior Descriptor
   if (task_true==1){
     descriptor_file <- paste0(descriptor, " (", task, ")")
   } else {
@@ -279,6 +263,20 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
 
   if (!fs::file_exists(desc_inside)) {
     fs::file_create(desc_inside)
+  }
+
+  # LOAD SOURCE FILES -------------------------------------------------------
+
+  load_source <- function(source_file){
+    if (!file.exists(source_file)){
+      stop(call. = FALSE, sprintf("%s not found in the working directory", source_file))
+    } else {
+      source(source_file)
+    }
+  }
+
+  if (!is.null(source)){
+    invisible(lapply(source, load_source))
   }
 
   # LOAD PACKAGES -----------------------------------------------------------
@@ -299,8 +297,7 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
     invisible(lapply(packs_to_load, require, character.only=TRUE))
   }
 
-
-# VERIFY INSTALLED BUT NOT LOADED PACKAGES --------------------------------
+  # VERIFY INSTALLED BUT NOT LOADED PACKAGES --------------------------------
 
   if (is.null(pack_check)) {
     packs_to_check <- ""
@@ -325,7 +322,6 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
       warning(paste("Package from pack_check not found:", check, sep=" "))
     }
   }
-
 
   # QKEY --------------------------------------------------------------------
 
