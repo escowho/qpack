@@ -47,7 +47,7 @@
 #' @importFrom fs path_dir file_exists file_delete
 #' @importFrom openxlsx createStyle createWorkbook addWorksheet writeData setColWidths addStyle saveWorkbook
 
-create_codebook <- function(data, metadata=NULL, output=NULL, level_cutoff=55, keep_na=FALSE, freqs=FALSE){
+create_codebook <- function(data, output=NULL, metadata=NULL, level_cutoff=55, keep_na=FALSE, freqs=FALSE){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){

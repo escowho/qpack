@@ -6,8 +6,8 @@
 \usage{
 create_codebook(
   data,
-  metadata = NULL,
   output = NULL,
+  metadata = NULL,
   level_cutoff = 55,
   keep_na = FALSE,
   freqs = FALSE
@@ -16,13 +16,13 @@ create_codebook(
 \arguments{
 \item{data}{Name of the dataframe upon which to build the codebook.  Required.}
 
-\item{metadata}{Name of the list output from qualtRics::metadata('surveyID').
-Optional.}
-
 \item{output}{Character string containing the complete path and file name of
 an XLSX file for exporting the resulting dataframe to Excel format.  If
 frequencies are also created, the name of the frequency file will be identical
 but have " - Frequencies" appended.  Optional.}
+
+\item{metadata}{Name of the list output from qualtRics::metadata('surveyID').
+Optional.}
 
 \item{level_cutoff}{A cut-off value for printing frequencies.  A variable with
 this number of values or less will have a frequency table generated, if specified,

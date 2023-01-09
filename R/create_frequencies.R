@@ -33,7 +33,7 @@
 #' @importFrom tibble tibble
 #' @importFrom fs path_dir file_exists
 
-create_frequencies <- function(data, metadata=NULL, output=NULL, level_cutoff=55,
+create_frequencies <- function(data, output=NULL, metadata=NULL, level_cutoff=55,
                                keep_na=FALSE){
 
   # Checks ------------------------------------------------------------------

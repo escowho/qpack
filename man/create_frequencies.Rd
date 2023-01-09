@@ -6,14 +6,17 @@
 \usage{
 create_frequencies(
   data,
-  metadata = NULL,
   output = NULL,
+  metadata = NULL,
   level_cutoff = 55,
   keep_na = FALSE
 )
 }
 \arguments{
 \item{data}{Name of the dataframe upon which to build the codebook.  Required.}
+
+\item{output}{Character string containing the complete path and file name of
+an XLSX file for exporting the resulting dataframe to Excel format.  Optional.}
 
 \item{metadata}{Name of the list output from qualtRics::metadata('surveyID').
 Changes to Qualtrics API mean that value labels are no longer exported directly.
@@ -22,9 +25,6 @@ to preserve these labels, however, a metadata option is provided if this is not
 possible.  Please be aware that the application of value labels from metadata
 is not perfect and may result in unusual or incorrect label application, so
 use at your own risk.  Optional.}
-
-\item{output}{Character string containing the complete path and file name of
-an XLSX file for exporting the resulting dataframe to Excel format.  Optional.}
 
 \item{level_cutoff}{A cut-off value for printing frequencies.  A variable with
 this number of values or less will have a frequency table generated, if specified,
