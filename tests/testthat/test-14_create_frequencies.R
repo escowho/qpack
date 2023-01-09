@@ -54,16 +54,12 @@ test_that("Clean Run 1 - Frequencies",{
 test_that("Clean Run 2 - Files",{
   setwd(tempdir())
 
-  expect_silent(create_frequencies(test1, output="test4-2.xlsx"))
+  expect_silent(create_frequencies(test2, output="test4-2.xlsx"))
   expect_true(file.exists(file.path(tempdir(), "test4-2.xlsx")))
   test4_2 <- readxl::read_xlsx(file.path(tempdir(), "test4-2.xlsx"), sheet=2)
-  expect_equal(names(test4_2), c("response_id", "VALUE", "label", "n", "percent"))
-  expect_equal(test4_2$VALUE, c("1","10","100","101","102","103","104","105","106","107","108","109","11",
-                                "110","111","112","113","114","115","116","117","118","119","12","120","121",
-                                "122","123","124","125","126","127","128","129","13","130","131","132","133",
-                                "134","135","136","137","138","139","14","140","141","142","143","144","145",
-                                "146","147","148","999","Total"))
-  expect_equal(test4_2$n, c(rep(1, 55), 145, 200))
+  expect_equal(names(test4_2), c("q1", "VALUE", "label", "n", "percent"))
+  expect_equal(test4_2$VALUE, c("1", "2", "3", "4","Total"))
+  expect_equal(test4_2$n, c(44,58,51,47,200))
 })
 
 test_that("Clean Run 5 - Metadata",{

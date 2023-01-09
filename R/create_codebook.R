@@ -67,7 +67,11 @@ create_codebook <- function(data, metadata=NULL, output=NULL, level_cutoff=55, k
 
   data <- dplyr::mutate_if(data, is.character, dplyr::na_if, "")
 
-  label_data <- qpack::pull_labels(data, metadata=metadata)
+  if (is.null(metadata)){
+    label_data <- qpack::pull_labels(data=data)
+  } else {
+    label_data <- qpack::pull_labels(data=data, meta_file=metadata)
+  }
 
   c1 <- label_data$variable_labels %>%
     dplyr::mutate(n = 1:nrow(.)) %>%

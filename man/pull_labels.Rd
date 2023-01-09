@@ -4,12 +4,12 @@
 \alias{pull_labels}
 \title{Generate Variable and Value Labels Exported Data Containing Labels}
 \usage{
-pull_labels(data, metadata = NULL)
+pull_labels(data, meta_file = NULL)
 }
 \arguments{
 \item{data}{Name of the dataframe after importing.  Required.}
 
-\item{metadata}{Name of the list output from qualtRics::metadata('surveyID').
+\item{meta_file}{Name of the list output from qualtRics::metadata('surveyID').
 Optional.}
 }
 \value{
@@ -26,14 +26,14 @@ label information that is found from Qualtrics and exported via qualtRics::fetch
 or imported from an SPSS .sav file using haven::read_spss. Changes to API
 mean that value labels are no longer exported directly.  It is recommended that
 you download an SPSS file and read in using haven::read_spss to preserve these
-labels, however, a metadata option is provided if this is not possible.  Please
+labels, however, a meta_file option is provided if this is not possible.  Please
 be aware that the application of value labels from metadata is not perfect and
 may result in unusual or incorrect label application, so use at your own risk.
 }
 \examples{
 \dontrun{
 if(interactive()){
- pull_labels(dat1, metadata=mdat1)
+ pull_labels(dat1, meta_file=mdat1)
  }
 }
 }

@@ -4,11 +4,11 @@
 #' or imported from an SPSS .sav file using haven::read_spss. Changes to API
 #' mean that value labels are no longer exported directly.  It is recommended that
 #' you download an SPSS file and read in using haven::read_spss to preserve these
-#' labels, however, a metadata option is provided if this is not possible.  Please
+#' labels, however, a meta_file option is provided if this is not possible.  Please
 #' be aware that the application of value labels from metadata is not perfect and
 #' may result in unusual or incorrect label application, so use at your own risk.
 #' @param data Name of the dataframe after importing.  Required.
-#' @param metadata Name of the list output from qualtRics::metadata('surveyID').
+#' @param meta_file Name of the list output from qualtRics::metadata('surveyID').
 #' Optional.
 #' @return A list containing two dataframes; var_labels and val_labels.  var_labels
 #' contains two columns, variable and variable_label and each row lists the name
@@ -19,7 +19,7 @@
 #' @examples
 #' \dontrun{
 #' if(interactive()){
-#'  pull_labels(dat1, metadata=mdat1)
+#'  pull_labels(dat1, meta_file=mdat1)
 #'  }
 #' }
 #' @export
@@ -32,7 +32,7 @@
 #' @importFrom dplyr mutate_if slice mutate full_join arrange filter select left_join
 #' @importFrom stringr str_replace_all
 
-pull_labels <- function(data, metadata=NULL){
+pull_labels <- function(data, meta_file=NULL){
 
   # Checks ------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ pull_labels <- function(data, metadata=NULL){
     }
   }
 
-  #Helper when using metadata file
+  #Helper when using meta_file file
   get_labels <- function(data, question){
 
     output <- data %>%
@@ -112,9 +112,9 @@ pull_labels <- function(data, metadata=NULL){
       purrr::reduce(dplyr::full_join, by="VALUE") %>%
       dplyr::arrange(VALUE)
 
-  if (is.null(metadata)==FALSE){
+  if (is.null(meta_file)==FALSE){
 
-    mdat <- metadata %>%
+    mdat <- meta_file %>%
       .[["questions"]]
 
     var_names <- purrr::map(mdat, ~.[["questionName"]]) %>%

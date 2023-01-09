@@ -76,12 +76,12 @@ test_that("Clean Run 3 - Files",{
 })
 
 test_that("Clean Run 4 - Files with freqs",{
-  expect_silent(create_codebook(test1, output="test4-3.xlsx", freqs=TRUE))
+  expect_silent(create_codebook(test2, output="test4-3.xlsx", freqs=TRUE))
   expect_true(file.exists(file.path(tempdir(), "test4-3.xlsx")))
   test4_3 <- readxl::read_xlsx(file.path(tempdir(), "test4-3.xlsx"), sheet=3)
-  expect_equal(names(test4_3), c("q1", "VALUE", "label", "n", "percent"))
-  expect_equal(test4_3$label, c("18-44", "45-64", "65+", "Total"))
-  expect_equal(test4_3$n, c(52, 108, 40, 200))
+  expect_equal(names(test4_3), c("q2", "VALUE", "label", "n", "percent"))
+  expect_equal(test4_3$label, c(rep(NA, 5)))
+  expect_equal(test4_3$n, c(57,41,49,53,200))
 })
 
 test_that("Clean Run 5 - Metadata",{

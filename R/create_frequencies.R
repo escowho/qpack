@@ -64,7 +64,7 @@ create_frequencies <- function(data, metadata=NULL, output=NULL, level_cutoff=55
   if (is.null(metadata)){
     label_data <- qpack::pull_labels(data=data)
   } else {
-    label_data <- qpack::pull_labels(data=data, metadata=metadata)
+    label_data <- qpack::pull_labels(data=data, meta_file=metadata)
   }
 
   # Helper Function ---------------------------------------------------------
