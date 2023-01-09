@@ -149,16 +149,38 @@ create_frequencies <- function(data, output=NULL, metadata=NULL, level_cutoff=55
     return(output)
 
   }
+
+  if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
+    cat("Running Frequencies:\n")
+  }
+
+
   # -------------------------------------------------------------------------
 
+
   frequencies <- vector(mode="list", length = 0)
+
+  if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
+    pb1 <- txtProgressBar(min = 0, max = length(names(data)), style = 3, width = 50, char = "=")
+  }
+
   for (var in names(data)){
+    k <- which(names(data)==var)
+
+    if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
+      setTxtProgressBar(pb1, k)
+    }
+
     frequencies[[var]] <- run_freq(data, variable=var, cutoff=level_cutoff)
   }
 
   Key <- label_data$variable_labels %>%
     dplyr::mutate(Number = 1:nrow(.)) %>%
     dplyr::select(Number, Variable=variable)
+
+  if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
+    cat("\nExporting Frequencies:\n")
+  }
 
   if (is.null(output) == FALSE){
     if (file.exists(fs::path_dir(output))==FALSE){
@@ -172,13 +194,13 @@ create_frequencies <- function(data, output=NULL, metadata=NULL, level_cutoff=55
       }
 
       if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
-        pb <- txtProgressBar(min = 0, max = length(names(data)), style = 3, width = 50, char = "=")
+        pb2 <- txtProgressBar(min = 0, max = length(names(data)), style = 3, width = 50, char = "=")
       }
 
       for (var in 1:length(names(data))){
 
         if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
-          setTxtProgressBar(pb, var)
+          setTxtProgressBar(pb2, var)
         }
 
         qpack::write_xlsx(data=frequencies[[var]], file=output,

@@ -26,6 +26,28 @@ test_that("Remove -99 with no error",{
   actual <- 43
 
   expect_equal(actual, expect, tol=.1)
+  on.exit(rm(test_1, test_2))
+})
+
+test_that("Remove blank with no error",{
+
+  set.seed(423234)
+  test_1 <- tibble(var1=sample(c("a", "b", "c", ""), 10, replace=TRUE),
+                  var2=sample(c("a", "b", "c", ""), 10, replace=TRUE))
+
+  expect <- sum(complete.cases(test_1))
+  actual <- 10
+  expect_equal(actual, expect, tol=.1)
+
+  test_2 <- test_1 %>%
+    create_na("blank")
+
+  expect <- sum(complete.cases(test_2))
+  actual <- 4
+
+  expect_equal(actual, expect, tol=.1)
+  on.exit(rm(test_1, test_2))
 
 })
+
 
