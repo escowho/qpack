@@ -1,7 +1,9 @@
 BotX
 EDA
+LTR
 NA's
 NA’s
+NPS
 PARAM
 QUALTRICS
 Qualtrics
@@ -26,6 +28,7 @@ github
 keepna
 keyring
 labelled
+lubridate
 magrittr
 maxval
 minval
