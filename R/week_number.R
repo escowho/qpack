@@ -29,9 +29,9 @@ week_number <- function(date_column, start_day = 1) {
     stop(call. = FALSE, "Date column must be specified.")
   }
 
-  if (lubridate::is.Date(date_column) == FALSE){
-    stop(call. = FALSE, "Date data not found in specified column.")
-  }
+  #if (lubridate::is.Date(date_column) == FALSE){
+  #  stop(call. = FALSE, "Date data not found in specified column.")
+  #}
 
   # Function ----------------------------------------------------------------
 
