@@ -2,31 +2,80 @@
 % Please edit documentation in R/qcor_plot.R
 \name{qcor_plot}
 \alias{qcor_plot}
-\title{FUNCTION_TITLE}
+\title{Wrapper for corrplot that generates a reasonably consistent corrplot}
 \usage{
-qcor_plot(data = NULL, names = NULL, colors = NULL, output = NULL, sort = TRUE)
+qcor_plot(
+  data = NULL,
+  first = NULL,
+  names = NULL,
+  colors = NULL,
+  output = NULL,
+  sort = TRUE,
+  skeleton = FALSE,
+  ...
+)
 }
 \arguments{
-\item{data}{PARAM_DESCRIPTION, Default: NULL}
+\item{data}{Name of the dataframe upon which to build the corrplot.  All variables
+will be included.  Required.}
 
-\item{names}{PARAM_DESCRIPTION, Default: NULL}
+\item{first}{The name of a variable to appear first, or left-most, on the corrplot.
+Use of the first parameter disables sorting.  Be sure to change the order of
+any supplied names when using the first option. Optional.}
 
-\item{colors}{PARAM_DESCRIPTION, Default: NULL}
+\item{names}{Vector of quoted strings to be used in place of the variable names
+in the resulting plot.  Must be the same number of names as variables in the
+data. Optional.}
 
-\item{output}{PARAM_DESCRIPTION, Default: NULL}
+\item{colors}{Vector of quoted hexadecimal color codes to be used for coloring
+the correlations.  Default is to go from dark green to light green for positive
+correlations, white for no correlation, and light red to dark red for negative
+correlations. Optional.}
 
-\item{sort}{PARAM_DESCRIPTION, Default: NULL}
+\item{output}{Character string containing the complete path and file name of
+a jpg file of the resulting corrplot.  If not provided, the plot will be shown
+on the screen instead but may not be optimized for screen viewing.  The underlying
+correlation table and p values is also automatically exported with the same
+name but with an .xlsx extension. Optional.}
+
+\item{sort}{A logical value to indicate if the output should be ordered by
+strength of correlation.  If set to TRUE, this sets the parameter order = c("hclust")
+in the corrplot function. Default: TRUE}
+
+\item{skeleton}{A logical value to indicate if the syntax should be printed to
+the console.  This is useful if the default selections need tweaking so the
+user can see the raw syntax that can be used in place of the function.
+Default: FALSE}
+
+\item{...}{Pass additional parameters to corrplot.  Optional.}
 }
 \value{
-OUTPUT_DESCRIPTION
+Outputs a jpg file of the corrplot if output path specified, otherwise
+generates plot on screen.
 }
 \description{
-FUNCTION_DESCRIPTION
+Generates a corrplot that tends to look good in most situations.
+The corrplot will be exported as a jpg if the output parameter is specified.
+The underlying correlation table and p values is also automatically exported
+with the same name but with an .xlsx extension.
+Note that the on-screen version is not optimally designed and that this function
+is optimized for the outputted jpg version.  Possible to provide a list of names
+to replace variable names (the default action).  Can also specify colors but
+there is a standardized set of colors as default from red to white to green for
+correlation color coding.  Option to sort based on overall correlation size
+(happens by default).  Can identify the name of a variable that show first in
+the output, which is particularly useful for dependent variables like NPS score
+(but this will disengage any other sorting).
 }
 \examples{
 \dontrun{
 if(interactive()){
- #EXAMPLE1
+ test1 \%>\%
+ dplyr::select(q1:q6) \%>\%
+   qcor_plot(., names=c("Age", "Gender", "Race", "Insurance", "Income", "Education"))
+ test1 \%>\%
+   dplyr::select(q1:q6) \%>\%
+   qcor_plot(data=., first="q5", sort=FALSE)
  }
 }
 }

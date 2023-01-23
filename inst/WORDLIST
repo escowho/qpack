@@ -4,7 +4,6 @@ LTR
 NA's
 NA’s
 NPS
-PARAM
 QUALTRICS
 Qualtrics
 README
@@ -21,10 +20,14 @@ botbox
 caddat
 codebook
 config
+corrplot
+corrplots
 crosstab
 df
 dplyr
 github
+hclust
+jpg
 keepna
 keyring
 labelled
@@ -33,11 +36,13 @@ magrittr
 maxval
 minval
 na
+nps
 openxlsx
 outputed
 overfile
 oversheet
 qconfig
+qcor
 qkey
 qualtRics
 quartiles

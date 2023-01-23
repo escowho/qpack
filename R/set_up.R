@@ -1,7 +1,8 @@
 #' @title Set-up code to create project directories and load needed packages
 #' @description Part of the qpack package of functions, this sets up project
 #' directories, sets the working directory, loads specified packages, and sources
-#' functions and/or config files, if specified.  Option to load qpack package.
+#' functions and/or config files, if specified.  Can automatically load a discovered
+#' qkey file.  Option to load qpack package.
 #' @param client An optional character string of the client name.  If specified,
 #' will be a parent folder inside of which the project folder will be located,
 #' i.e. client/project.  Optional.

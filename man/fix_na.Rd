@@ -2,7 +2,8 @@
 % Please edit documentation in R/fix_na.R
 \name{fix_na}
 \alias{fix_na}
-\title{Function to fill NA's with either a specified value or the mean}
+\title{Function to fill NA's with either a specified value, the mean, or the
+median}
 \usage{
 fix_na(data, replace = NULL)
 }

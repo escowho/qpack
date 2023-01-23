@@ -1,4 +1,5 @@
-#' @title Function to fill NA's with either a specified value or the mean
+#' @title Function to fill NA's with either a specified value, the mean, or the
+#' median
 #' @description Works on vectors or data frames.  If a value is provided, like 0,
 #' then each NA will be replaced with the value.  If replace=\"mean\" is specified,
 #' then all NA's will be replaced by the mean value for that column.  This works
