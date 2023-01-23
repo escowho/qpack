@@ -20,6 +20,7 @@ An R Package to assist with CS data science projects at Qualtrics
     -   Clears out current system variables used by the qualtRics
         package (), e.g. QUALTRICS_API_KEY and QUALTRICS_BASE_URL.
 -   create_codebook
+    -   Creates a codebook or data dictionary for a dataframe
     -   Creates a codebook or data dictionary for a dataframe in
         dataframe format that can be exported to Excel. Provides a list
         of the variables (Column), randomly pulls an example value for
@@ -28,7 +29,13 @@ An R Package to assist with CS data science projects at Qualtrics
         percent of records that are missing (Missing). Leaves spaces for
         a Description and a Note in the file. Option to also create
         frequencies for each variable in the dataframe and export to a
-        separate Excel file.
+        separate Excel file. Changes to API mean that value labels are
+        no longer exported directly. It is recommended that you download
+        an SPSS file and read in using haven::read_spss to preserve
+        these labels, however, a metadata option is provided if this is
+        not possible. Please be aware that the application of value
+        labels from metadata is not perfect and may result in unusual or
+        incorrect label application, so use at your own risk.
 -   create_dictionary
     -   wrapper function that uses sjPlot::view_df to create an html
         data dictionary
@@ -88,8 +95,9 @@ An R Package to assist with CS data science projects at Qualtrics
         packages
     -   Part of the qpack package of functions, this sets up project
         directories, sets the working directory, loads specified
-        packages, and sources a functions file and config file, if
-        specified. Option to load qpack package.
+        packages, and sources functions and/or config files, if
+        specified. Can automatically load a discovered qkey file. Option
+        to load qpack package.
 -   show_token
     -   Show the saved token for a given qkey name
     -   Useful when troubleshooting a duplicate name within a key store,
@@ -124,16 +132,30 @@ An R Package to assist with CS data science projects at Qualtrics
         There’s an option to keep the original id variable (default) or
         to remove the original id variable (remove = TRUE). The ID value
         will be in the first position.
+-   create_na
+    -   Function to fill a value with NA’s, defaults to -99
+    -   Works on vectors or data frames. If a value is provided, then
+        each will occurrence with be replaced with an NA. Defaults to
+        look for the value -99, the common NA value in Qualtrics survey
+        datasets. Can also be used to replace blanks in character
+        vectors with NA values using the “blank” value parameter.
 -   fix_na
-    -   Function to fill NA’s with either a specified value or the mean
+    -   Function to fill NA’s with either a specified value, the mean,
+        or the median
     -   Works on vectors or data frames. If a value is provided, like 0,
-        then each NA will be replaced with the value. If replace=“mean”
+        then each NA will be replaced with the value. If replace="mean"
         is specified, then all NA’s will be replaced by the mean value
         for that column. This works across the dataframe per column.
+        Median may also be chosen.
 -   flip
     -   Transposes a dataframe with t() but outputs a Tibble
     -   Uses t() to transpose a dataframe but outputs a Tibble instead.
         Maintains the row names that a Tibble typically removes.
+-   nps_score
+    -   Function to calculate NPS score from Likelihood to Recommend
+        data
+    -   Calculates the NPS Score (100, 0, -100) from vector of data
+        containing 0 to 10 Likelihood to Recommend data.
 -   rescale
     -   Function to rescale a vector to a new minimum and maximum range
     -   Rescales a vector so that range conforms to a defined minimum
@@ -153,6 +175,9 @@ An R Package to assist with CS data science projects at Qualtrics
         indicated (maxval) but the function will find the maximum in the
         data if not provided. The replacena logical allows for replacing
         any NA with 0, if desired.
+-   week_number
+    -   Function to calculate the week number from data data
+    -   Calculates the week number for a vector of date data.
 
 ### Analysis Functions
 
@@ -183,7 +208,29 @@ An R Package to assist with CS data science projects at Qualtrics
     -   Generates a list of two dataframes containing variable and value
         label information that is found from Qualtrics and exported via
         qualtRics::fetch_survey or imported from an SPSS .sav file using
-        haven::read_spss.
+        haven::read_spss. Changes to API mean that value labels are no
+        longer exported directly. It is recommended that you download an
+        SPSS file and read in using haven::read_spss to preserve these
+        labels, however, a meta_file option is provided if this is not
+        possible. Please be aware that the application of value labels
+        from metadata is not perfect and may result in unusual or
+        incorrect label application, so use at your own risk.
+
+\*qcor_plot + Wrapper for corrplot that generates a reasonably
+consistent corrplot + Generates a corrplot that tends to look good in
+most situations. The corrplot will be exported as a jpg if the output
+parameter is specified. The underlying correlation table and p values is
+also automatically exported with the same name but with an .xlsx
+extension. Note that the on-screen version is not optimally designed and
+that this function is optimized for the outputted jpg version. Possible
+to provide a list of names to replace variable names (the default
+action). Can also specify colors but there is a standardized set of
+colors as default from red to white to green for correlation color
+coding. Option to sort based on overall correlation size (happens by
+default). Can identify the name of a variable that show first in the
+output, which is particularly useful for dependent variables like NPS
+score (but this will disengage any other sorting).
+
 -   threeway
     -   Performs 3-way crosstab using qpack::crosstab split on a third
         variable

@@ -1,8 +1,9 @@
-#' @title Function to fill NA's with either a specified value or the mean
+#' @title Function to fill NA's with either a specified value, the mean, or the
+#' median
 #' @description Works on vectors or data frames.  If a value is provided, like 0,
 #' then each NA will be replaced with the value.  If replace=\"mean\" is specified,
 #' then all NA's will be replaced by the mean value for that column.  This works
-#' across the dataframe per column.
+#' across the dataframe per column.  Median may also be chosen.
 #' @param data a vector or dataframe object. Required.
 #' @param replace either a value or the quoted character string \"mean\". Default: Mean.
 #' @return A vector or dataframe object, depending on what was originally specified
@@ -20,15 +21,28 @@
 #' @export
 #' @importFrom tibble tibble
 
-fix_na <- function(data, replace="mean"){
+fix_na <- function(data, replace=NULL){
 
-  if (missing(replace) == TRUE){
-    stop(call. = FALSE, "Must specify a replacement value or the quoted string mean.")
+  # Checks ------------------------------------------------------------------
+
+  if (missing(data) == TRUE){
+    stop(call. = FALSE, "Data must be specified.")
   }
+
+  #if (missing(data) == FALSE & is.data.frame(data) == FALSE){
+  #  stop(call. = FALSE, "Data must be specified.")
+  #}
+
+  if (is.null(replace) == TRUE){
+    warning("Replace not specified; choosing replace=\"mean\" by default.")
+    replace <- "mean"
+  }
+
+  # Function ----------------------------------------------------------------
 
   if (is.character(replace)==TRUE){
 
-    if (replace=="mean"){
+    if (tolower(replace)=="mean"){
 
       if (is.data.frame(data)){
         data <- lapply(data, function(x) replace(x, is.na(x), mean(x, na.rm = TRUE))) %>%
@@ -38,8 +52,18 @@ fix_na <- function(data, replace="mean"){
         data[is.na(data)] <- replace
       }
 
+    } else if (tolower(replace)=="median"){
+
+      if (is.data.frame(data)){
+        data <- lapply(data, function(x) replace(x, is.na(x), median(x, na.rm = TRUE))) %>%
+          tibble::as_tibble()
+      } else {
+        replace <- median(data, na.rm=TRUE)
+        data[is.na(data)] <- replace
+      }
+
     } else {
-      stop(call. = FALSE, "Replace must be either a numeric value or the quoted string mean.")
+      stop(call. = FALSE, "Replace must be either a numeric value, \"mean\" or \"median\".")
     }
 
   } else {

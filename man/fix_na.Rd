@@ -2,9 +2,10 @@
 % Please edit documentation in R/fix_na.R
 \name{fix_na}
 \alias{fix_na}
-\title{Function to fill NA's with either a specified value or the mean}
+\title{Function to fill NA's with either a specified value, the mean, or the
+median}
 \usage{
-fix_na(data, replace = "mean")
+fix_na(data, replace = NULL)
 }
 \arguments{
 \item{data}{a vector or dataframe object. Required.}
@@ -18,7 +19,7 @@ A vector or dataframe object, depending on what was originally specified
 Works on vectors or data frames.  If a value is provided, like 0,
 then each NA will be replaced with the value.  If replace=\"mean\" is specified,
 then all NA's will be replaced by the mean value for that column.  This works
-across the dataframe per column.
+across the dataframe per column.  Median may also be chosen.
 }
 \examples{
 \dontrun{

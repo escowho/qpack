@@ -74,7 +74,8 @@ does not return any object.
 \description{
 Part of the qpack package of functions, this sets up project
 directories, sets the working directory, loads specified packages, and sources
-functions and/or config files, if specified.  Option to load qpack package.
+functions and/or config files, if specified.  Can automatically load a discovered
+qkey file.  Option to load qpack package.
 }
 \examples{
 \dontrun{

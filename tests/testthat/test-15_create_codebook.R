@@ -34,13 +34,6 @@ test_that("Not specifying data results in error",{
   )
 })
 
-test_that("Not specifying data results in error",{
-  expect_error(
-    test <- create_frequencies(),
-    'Data must be specified.'
-  )
-})
-
 test_that("Clean Run 1 - Codebook",{
   expect_silent(test1 <- create_codebook(test1))
 
@@ -56,31 +49,7 @@ test_that("Clean Run 1 - Codebook",{
   on.exit(rm(test1))
 })
 
-test_that("Not specifying data results in error",{
-  expect_error(
-    test <- create_frequencies(),
-    'Data must be specified.'
-  )
-})
-
-test_that("Clean Run 2 - Frequencies",{
-  expect_silent(test2 <- create_frequencies(test1))
-
-  expect_equal(names(test2), c("key", "frequencies"))
-  expect_equal(names(test2$key), c("Number", "Variable"))
-  expect_equal(names(test2$frequencies), c("response_id", "q1", "q2", "q3", "q4", "q5", "q6",
-                                           "region", "prob1", "prob2", "prob3"))
-
-  test2_q6 <- test2$frequencies[["q6"]]
-
-  expect_equal(test2_q6[[2]], c("1", "2", "3", "4", "Total"))
-  expect_equal(test2_q6[[1,3]], "High School or Less")
-  expect_equal(test2_q6[[5,3]], "Total")
-  expect_equal(test2_q6[[4]], c(27, 88, 49, 36, 200))
-  on.exit(rm(test2, test2_q6))
-})
-
-test_that("Clean Run 3 - Crosstab, freqs=THREE",{
+test_that("Clean Run 2 - Crosstab, freqs=THREE",{
   expect_silent(test3 <- create_codebook(test1, freqs=TRUE))
 
   expect_equal(names(test3), c("codebook", "frequencies"))
@@ -96,30 +65,33 @@ test_that("Clean Run 3 - Crosstab, freqs=THREE",{
   on.exit(rm(test3, test3_q6))
 })
 
-test_that("Clean Run 4 - Files",{
+test_that("Clean Run 3 - Files",{
   setwd(tempdir())
-  expect_silent(create_codebook(test1, "test4-1.xlsx"))
+  expect_silent(create_codebook(test1, output="test4-1.xlsx"))
   expect_true(file.exists(file.path(tempdir(), "test4-1.xlsx")))
   test4_1 <- readxl::read_xlsx(file.path(tempdir(), "test4-1.xlsx"), sheet=1)
   expect_equal(names(test4_1), c("Number", "Variable", "Description", "Example", "Type", "Unique", "Missing", "Note"))
   expect_equal(test4_1$Variable, c("response_id", "q1", "q2", "q3", "q4", "q5", "q6", "region", "prob1", "prob2", "prob3"))
   expect_equal(test4_1$Unique, c(200, 3, 3, 4, 3, 8, 4, 4, 3, 3, 3))
+})
 
-
-  expect_silent(create_frequencies(test1, "test4-2.xlsx"))
-  expect_true(file.exists(file.path(tempdir(), "test4-2.xlsx")))
-  test4_2 <- readxl::read_xlsx(file.path(tempdir(), "test4-2.xlsx"), sheet=2)
-  expect_equal(names(test4_2), c("response_id", "VALUE", "label", "n", "percent"))
-  expect_equal(test4_2$VALUE, c("More than 55 levels detected, frequency not generated", "Total"))
-  expect_equal(test4_2$n, c(200, 200))
-
-
-  expect_silent(create_codebook(test1, "test4-3.xlsx", freqs=TRUE))
+test_that("Clean Run 4 - Files with freqs",{
+  expect_silent(create_codebook(test2, output="test4-3.xlsx", freqs=TRUE))
   expect_true(file.exists(file.path(tempdir(), "test4-3.xlsx")))
   test4_3 <- readxl::read_xlsx(file.path(tempdir(), "test4-3.xlsx"), sheet=3)
-  expect_equal(names(test4_3), c("q1", "VALUE", "label", "n", "percent"))
-  expect_equal(test4_3$label, c("18-44", "45-64", "65+", "Total"))
-  expect_equal(test4_3$n, c(52, 108, 40, 200))
+  expect_equal(names(test4_3), c("q2", "VALUE", "label", "n", "percent"))
+  expect_equal(test4_3$label, c(rep(NA, 5)))
+  expect_equal(test4_3$n, c(57,41,49,53,200))
+})
+
+test_that("Clean Run 5 - Metadata",{
+  setwd(tempdir())
+  expect_silent(create_codebook(test2, metadata=meta2, output="test5-1.xlsx", freqs=TRUE))
+  expect_true(file.exists(file.path(tempdir(), "test5-1.xlsx")))
+  test5_1 <- readxl::read_xlsx(file.path(tempdir(), "test5-1.xlsx"), sheet=1)
+  expect_equal(names(test5_1), c("Number", "Variable", "Description", "Example", "Type", "Unique", "Missing", "Note"))
+  expect_equal(test5_1$Variable, c("q1", "q2", "q3_nps_group", "q3"))
+  expect_equal(test5_1$Unique, c(4,4,3,11))
 })
 
 back_to_normal()

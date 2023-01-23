@@ -5,6 +5,8 @@
 #' 75\%, 90\%, and maximum value quartiles.  Currently limited to numeric data only;
 #' will exclude any non-numeric data from output and listed as NA in output.
 #' @param data Dataframe to be described.  Required.
+#' @param round A logical value indicating if output should be rounded for
+#' legibility. Default: TRUE
 #' @return Outputs a tibble with the summary statistics
 #' @examples
 #' \dontrun{
@@ -20,7 +22,7 @@
 #' @importFrom tibble tibble
 #' @importFrom labelled remove_labels
 
-describe <- function(data){
+describe <- function(data, round=TRUE){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
@@ -63,5 +65,21 @@ describe <- function(data){
 
   n <- tibble::tibble(Variable=all) %>%
     dplyr::left_join(., n, by="Variable")
+
+  if (round==TRUE){
+    n <- n %>%
+      dplyr::mutate(Mean = round(Mean, 2),
+                    SD = round(SD, 2),
+                    n = round(n, 1),
+                    Missing = round(Missing, 1),
+                    Min = round(Min, 1),
+                    Q10 = round(Q10, 1),
+                    Q25 = round(Q25, 1),
+                    Med = round(Med, 1),
+                    Q75 = round(Q75, 1),
+                    Q90 = round(Q90, 1),
+                    Max = round(Max, 1))
+  }
+
   return(n)
 }

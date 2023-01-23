@@ -2,7 +2,41 @@
 
 # Version History
 
-## 0.1.8.9000 2022-0701
+## 0.1.9 2023-0123
+
+-   Updated set_up to work properly even if qkey details fail to import
+    properly and to execute correctly if existing project launched by
+    Rproj file in another location
+
+-   Updated fix_na to include a median replace option and removed a
+    potentially faulty error check
+
+-   Updated describe to round output for improved readability, added
+    round parameter so user can control as needed
+
+-   Updated pull_labels to use supplied metadata due to Qualtrics API
+    changes
+
+-   Updated create_frequencies to use supplied metadata due to Qualtrics
+    API changes and added separate progress bars for generating
+    frequencies and for exporting to Excel
+
+-   Updated create_codebook to use supplied metadata due to Qualtrics
+    API changes
+
+-   Added create_na to easily replace values, like -99 or “blanks” with
+    NA instead
+
+-   Added nps_score convenience function to easy calculate NPS score for
+    LTR data
+
+-   Added qcor_plot to generate corrplots with some reasonable visual
+    settings
+
+-   Added week_number convenience function to easy calculate a week
+    number from date data
+
+## 0.1.8 2022-0701
 
 -   Deprecating qconfig in place of qkey family of functions
 

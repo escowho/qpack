@@ -1,6 +1,6 @@
 Package: qpack
 Title: Set of functions written by Matt to assist in data science projects
-Version: 0.1.8.9006
+Version: 0.1.9
 Authors@R: 
     person("Matthew", "Sheffer", , "msheffer@qualtrics.com", role = c("aut", "cre"))
 Description: Set of functions to assist in data science projects.
@@ -20,6 +20,7 @@ Imports:
     openxlsx (>= 4.2.5),
     psych (>= 2.2.5),
     purrr (>= 0.3.4),
+    qualtRics (>= 3.1.6),
     remotes (>= 2.4.2),
     rlang (>= 1.0.2),
     rstudioapi (>= 0.13),
@@ -36,4 +37,4 @@ Suggests:
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3

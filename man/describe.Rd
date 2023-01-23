@@ -4,10 +4,13 @@
 \alias{describe}
 \title{Provides descriptive statistics for a dataframe, similar to Python's Describe}
 \usage{
-describe(data)
+describe(data, round = TRUE)
 }
 \arguments{
 \item{data}{Dataframe to be described.  Required.}
+
+\item{round}{A logical value indicating if output should be rounded for
+legibility. Default: TRUE}
 }
 \value{
 Outputs a tibble with the summary statistics
