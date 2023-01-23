@@ -215,22 +215,23 @@ An R Package to assist with CS data science projects at Qualtrics
         possible. Please be aware that the application of value labels
         from metadata is not perfect and may result in unusual or
         incorrect label application, so use at your own risk.
-
-\*qcor_plot + Wrapper for corrplot that generates a reasonably
-consistent corrplot + Generates a corrplot that tends to look good in
-most situations. The corrplot will be exported as a jpg if the output
-parameter is specified. The underlying correlation table and p values is
-also automatically exported with the same name but with an .xlsx
-extension. Note that the on-screen version is not optimally designed and
-that this function is optimized for the outputted jpg version. Possible
-to provide a list of names to replace variable names (the default
-action). Can also specify colors but there is a standardized set of
-colors as default from red to white to green for correlation color
-coding. Option to sort based on overall correlation size (happens by
-default). Can identify the name of a variable that show first in the
-output, which is particularly useful for dependent variables like NPS
-score (but this will disengage any other sorting).
-
+-   qcor_plot
+    -   Wrapper for corrplot that generates a reasonably consistent
+        corrplot
+    -   Generates a corrplot that tends to look good in most situations.
+        The corrplot will be exported as a jpg if the output parameter
+        is specified. The underlying correlation table and p values is
+        also automatically exported with the same name but with an .xlsx
+        extension. Note that the on-screen version is not optimally
+        designed and that this function is optimized for the outputted
+        jpg version. Possible to provide a list of names to replace
+        variable names (the default action). Can also specify colors but
+        there is a standardized set of colors as default from red to
+        white to green for correlation color coding. Option to sort
+        based on overall correlation size (happens by default). Can
+        identify the name of a variable that show first in the output,
+        which is particularly useful for dependent variables like NPS
+        score (but this will disengage any other sorting).
 -   threeway
     -   Performs 3-way crosstab using qpack::crosstab split on a third
         variable
