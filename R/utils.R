@@ -46,3 +46,12 @@ rm()
 #
 #")
 }
+
+#' Convenience function to pull qpack version number
+#'
+#' @keywords internal
+#' @export
+
+version <- function(){
+  packageVersion("qpack")
+}
