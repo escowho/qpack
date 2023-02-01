@@ -25,3 +25,20 @@ test_that("Clean Run",{
   on.exit(rm(test))
 })
 
+test_that("Clean Run with Metadata",{
+  expect_silent(test <- pull_labels(test2, meta_file=meta2))
+
+  expect_equal(names(test), c("variable_labels", "value_labels"))
+  expect_equal(names(test$variable_labels), c("variable", "variable_label"))
+  expect_equal(test$variable_labels[[2,1]], "q2")
+  expect_equal(test$variable_labels[[4,1]], "q3")
+  expect_equal(test$variable_labels[[2,2]], "What is your gender?")
+  expect_equal(test$variable_labels[[4,2]], "How likely are you to recommend Awesome Company to a friend or colleague?")
+  expect_equal(names(test$value_labels), c("VALUE", "q1", "q2", "q3_nps_group", "q3"))
+  expect_equal(test$value_labels[[1,1]], 0)
+  expect_equal(test$value_labels[[2,2]], "18 to 24")
+  expect_equal(test$value_labels[[3,3]], "Female")
+  expect_equal(is.na(test$value_labels[[4,4]]), TRUE)
+  on.exit(rm(test))
+})
+

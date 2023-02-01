@@ -16,6 +16,10 @@ knitr::opts_chunk$set(
 
 # Version History
 
+## 0.1.10 2023-0201
+
+* Bug fixes related to updates to dplyr 1.1.0 and tidyr 1.3.0
+
 ## 0.1.9 2023-0123
 
 * Updated set_up to work properly even if qkey details fail to import properly and to execute correctly if existing project launched by Rproj file in another location

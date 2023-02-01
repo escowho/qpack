@@ -120,7 +120,7 @@ pull_labels <- function(data, meta_file=NULL){
     var_names <- purrr::map(mdat, ~.[["questionName"]]) %>%
       tibble::enframe() %>%
       tidyr::unnest(cols=c(value)) %>%
-      tidyr::pivot_wider(name, names_from="value") %>%
+      tidyr::pivot_wider(id_cols = "name", names_from="value") %>%
       qpack::clean_names() %>%
       tidyr::pivot_longer(-name, names_to="variable") %>%
       dplyr::filter(!is.na(value)) %>%

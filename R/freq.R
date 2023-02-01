@@ -23,12 +23,12 @@ freq <- function(data, var, ...){
   if (missing(var)){
     janitor::tabyl(data, ...) %>%
       janitor::adorn_totals() %>%
-  janitor::adorn_pct_formatting()
+      janitor::adorn_pct_formatting(,,,percent)
   } else {
     DATA <- rlang::enquo(data)
     VAR <- rlang::enquo(var)
     janitor::tabyl(dat = rlang::eval_tidy(DATA), var1 = !!VAR, ...) %>%
       janitor::adorn_totals() %>%
-  janitor::adorn_pct_formatting()
+      janitor::adorn_pct_formatting(,,,percent)
   }
 }
