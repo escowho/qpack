@@ -2,6 +2,15 @@
 
 # Version History
 
+## 0.1.11 2023-0625
+
+-   Added get_dates to find typical date values from Qualtrics data
+    files
+-   Added response_calendar to visualize what which dates have records
+    associated with them based on typical date values from Qualtrics
+    data files
+-   Added a convenience version function
+
 ## 0.1.10 2023-0201
 
 -   Bug fixes related to updates to dplyr 1.1.0 and tidyr 1.3.0

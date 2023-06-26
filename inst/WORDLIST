@@ -18,11 +18,14 @@ YY
 beepr
 botbox
 caddat
+calendR
+choropleth
 codebook
 config
 corrplot
 corrplots
 crosstab
+descriptives
 df
 dplyr
 github
@@ -44,6 +47,7 @@ oversheet
 qconfig
 qcor
 qkey
+qplot
 qualtRics
 quartiles
 quasiquotation

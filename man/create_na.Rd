@@ -18,7 +18,7 @@ A vector or dataframe object, depending on what was originally specified
 }
 \description{
 Works on vectors or data frames.  If a value is provided, then
-each will occurrence with be replaced with an NA.  Defaults to look for the
+each occurrence with be replaced with an NA.  Defaults to look for the
 value -99, the common NA value in Qualtrics survey datasets.  Can also be used
 to replace blanks in character vectors with NA values using the "blank" value
 parameter.
