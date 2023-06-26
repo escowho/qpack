@@ -82,6 +82,16 @@ An R Package to assist with CS data science projects at Qualtrics
         cleaned variables names.
 -   delete_qconfig
     -   Deprecated in favor of qkey family of functions
+-   get_dates
+    -   Pulls basic descriptives for the three common date fields from a
+        Qualtrics dataset
+    -   Pulls the min and max values for start_date, end_date, and
+        recorded_date, if found. Also calculates the percent of days
+        between the min and max value that contains a record in the
+        dataframe in order to assess if data collection is ongoing
+        (higher percentages) or only at specific times (lower
+        percentages). Will only pull descriptives for the three typical
+        data fields.
 -   get_qkey
     -   Automatically reads stored qkey credentials and creates the
         necessary system variables for qualtRics package to access
@@ -90,6 +100,13 @@ An R Package to assist with CS data science projects at Qualtrics
         credential store and creates the necessary system variables used
         by the qualtRics package (), e.g. QUALTRICS_API_KEY and
         QUALTRICS_BASE_URL.
+-   response_calendar
+    -   Creates choropleth calendar that shows the relative occurrence
+        of observations from typical Qualtrics date fields
+    -   Creates a choropleth calendar using the calendR function. It
+        shows a yearly calendar where every day that registers an
+        observation is colored a shade of red such that the darker the
+        red, the more observations recorded for that date.
 -   set_up
     -   Set-up code to create project directories and load needed
         packages
@@ -215,7 +232,7 @@ An R Package to assist with CS data science projects at Qualtrics
         possible. Please be aware that the application of value labels
         from metadata is not perfect and may result in unusual or
         incorrect label application, so use at your own risk.
--   qcor_plot
+-   qplot_cor
     -   Wrapper for corrplot that generates a reasonably consistent
         corrplot
     -   Generates a corrplot that tends to look good in most situations.

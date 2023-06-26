@@ -10,6 +10,15 @@
 #' @usage lhs \%>\% rhs
 NULL
 
+#' Convenience Function to Pull Version
+#'
+#' @keywords internal
+#' @export
+
+version <- function(){
+  packageVersion("qpack")
+}
+
 #' Skeleton Syntax Printer for Set Up
 #'
 #' @keywords internal
