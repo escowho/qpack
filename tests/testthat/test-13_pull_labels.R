@@ -6,7 +6,7 @@ test_that("Not specifying data results in error",{
 })
 
 test_that("Clean Run",{
-  expect_silent(test <- pull_labels(test1))
+  expect_silent(test <- pull_labels(qpack::test1))
 
   expect_equal(names(test), c("variable_labels", "value_labels"))
   expect_equal(names(test$variable_labels), c("variable", "variable_label"))
@@ -22,11 +22,10 @@ test_that("Clean Run",{
   expect_equal(test$value_labels[[3,4]], "Other")
   expect_equal(test$value_labels[[7,7]], "$200,000 or more")
   expect_equal(is.na(test$value_labels[[8,8]]), TRUE)
-  on.exit(rm(test))
 })
 
 test_that("Clean Run with Metadata",{
-  expect_silent(test <- pull_labels(test2, meta_file=meta2))
+  expect_silent(test <- pull_labels(qpack::test2, meta_file=qpack::meta2))
 
   expect_equal(names(test), c("variable_labels", "value_labels"))
   expect_equal(names(test$variable_labels), c("variable", "variable_label"))

@@ -22,13 +22,14 @@
 #' }
 #' @export
 #' @importFrom fs path dir_exists dir_delete dir_info file_delete file_exists
-
+#' @importFrom cli cli_abort cli_warn
+#'
 delete_project <- function(project, client, root=NULL, override_archive_check=FALSE){
 
   # CLIENT/PROJECT or PROJECT Check -----------------------------------------
 
   if (missing(project)) {
-    stop(call. = FALSE, "A project must be specified.  Client is optional.")
+    cli::cli_abort("A project must be specified.  Client is optional.")
   }
 
   if (!missing(client)) {
@@ -45,19 +46,14 @@ delete_project <- function(project, client, root=NULL, override_archive_check=FA
   if (is.null(root) == FALSE){
 
     if (fs::dir_exists(root) == FALSE){
-      stop(call. = FALSE,
-           paste0("Specified root does not exist:",
-                  "\n",root))
+      cli::cli_abort("Specified root does not exist: {root}")
     } else {
       start_path <- fs::path(root)
     }
     #Read QPACK_SETUP_ROOT Path
   } else if (Sys.getenv("QPACK_SETUP_ROOT")=="") {
     start_path <- Sys.getenv("HOME")
-    warning(call. = FALSE,
-            paste0("QPACK_SETUP_ROOT not found in .Renviron file.",
-                   "\n",
-                   "Using the default path instead: ", start_path))
+    cli::cli_warn("QPACK_SETUP_ROOT not found in .Renviron file. Using the default path instead: {start_path}")
   } else {
     start_path <- Sys.getenv("QPACK_SETUP_ROOT")
   }
@@ -73,7 +69,7 @@ delete_project <- function(project, client, root=NULL, override_archive_check=FA
   }
 
   if (!fs::dir_exists(QPACK_SETUP_ROOT)){
-    stop(call. = FALSE, paste0(QPACK_SETUP_ROOT, " cannot be found."))
+    cli::cli_abort("{QPACK_SETUP_ROOT} cannot be found.")
   }
 
   # ARCHIVE FILE CHECK ------------------------------------------------------
@@ -81,9 +77,7 @@ delete_project <- function(project, client, root=NULL, override_archive_check=FA
   if (override_archive_check != TRUE){
     archive_path <- fs::path(start_path, project, ext="zip")
     if (!fs::file_exists(archive_path)){
-      stop(call. = FALSE, paste0("The archive file ", archive_path,
-                                 " must be found to delete the project.\n",
-                                 "Run archive_project first, and try again."))
+      cli::cli_abort("The archive file {archive_path} must be found to delete the project. Run archive_project first, and try again.")
     }
   }
 

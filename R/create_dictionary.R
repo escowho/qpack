@@ -29,6 +29,7 @@
 #' @importFrom dplyr select mutate_if
 #' @importFrom sjPlot view_df
 #' @importFrom rlang enquo f_name
+#' @importFrom cli cli_abort cli_warn
 
 create_dictionary <- function(data,
                               output=NULL,
@@ -38,12 +39,11 @@ create_dictionary <- function(data,
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Data must be specified.")
+    cli::cli_abort("Data must be specified.")
   }
 
   if (is.null(output)){
-    warning(call. = FALSE,
-            paste0("Output not specified; will use \'dictionary.html\'."))
+    cli::cli_warn("Output not specified; will use \'dictionary.html\'.")
     output <- "dictionary.html"
   } else {
     if (fs::path_ext(output) != "html"){
@@ -51,9 +51,7 @@ create_dictionary <- function(data,
     }
 
     if (fs::file_exists(fs::path_dir(output))==FALSE){
-      stop(call. = FALSE,
-           paste0("Specified path does not exist:",
-                  "\n",fs::path_dir(output)))
+      cli::cli_abort("Specified path does not exist: {fs::path_dir(output)}")
     } else {
       if(fs::file_exists(fs::path(output))==TRUE){
         invisible(fs::file_delete(fs::path(output)))
@@ -62,9 +60,8 @@ create_dictionary <- function(data,
   }
 
   if (! type %in% c("default", "simple")){
-    warning(call. = FALSE,
-            paste0("Type specified not known, will use default instead:",
-                   "\n", type))
+    cli::cli_warn("Type specified, {type}, not known. Will use default instead.")
+
     type <- "default"
   }
 

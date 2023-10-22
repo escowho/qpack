@@ -16,6 +16,8 @@ start_date, end_date, or recorded date.  Default: recorded_date.}
 \item{year}{Numeric value indicating the year of the calendar to return.  If
 none is specified, one choropleth calendar for each year found in the data will
 be returned.  Optional.}
+
+\item{test}{Logical flag used in testing only.  Default: FALSE}
 }
 \value{
 calendR graph object

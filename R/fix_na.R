@@ -20,13 +20,14 @@
 #' }
 #' @export
 #' @importFrom tibble tibble
+#' @importFrom cli cli_abort cli_warn
 
 fix_na <- function(data, replace=NULL){
 
   # Checks ------------------------------------------------------------------
 
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Data must be specified.")
+    cli::cli_abort("Data must be specified.")
   }
 
   #if (missing(data) == FALSE & is.data.frame(data) == FALSE){
@@ -34,7 +35,7 @@ fix_na <- function(data, replace=NULL){
   #}
 
   if (is.null(replace) == TRUE){
-    warning("Replace not specified; choosing replace=\"mean\" by default.")
+    cli::cli_warn("Replace not specified; choosing replace=\"mean\" by default.")
     replace <- "mean"
   }
 
@@ -63,7 +64,7 @@ fix_na <- function(data, replace=NULL){
       }
 
     } else {
-      stop(call. = FALSE, "Replace must be either a numeric value, \"mean\" or \"median\".")
+      cli::cli_abort("Replace must be either a numeric value, \"mean\" or \"median\".")
     }
 
   } else {

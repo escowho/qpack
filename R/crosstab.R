@@ -14,17 +14,18 @@
 #' @export
 #' @importFrom janitor tabyl adorn_totals adorn_title adorn_percentages adorn_pct_formatting
 #' @importFrom rlang enquo eval_tidy
+#' @importFrom cli cli_abort
 
 crosstab <- function(data, var1, var2, ...){
 
   #tabyl's error checks mostly sufficient
 
   if (missing(var1) == TRUE & missing(var2)){
-    stop(call. = FALSE, "Variables must be specified")
+    cli::cli_abort("Variables must be specified")
   }
 
   if (missing(data) == FALSE & missing(var2)){
-    stop(call. = FALSE, "Missing either data or a variable specification")
+    cli::cli_abort("Missing either data or a variable specification")
   }
 
   DATA <- rlang::enquo(data)

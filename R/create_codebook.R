@@ -46,12 +46,13 @@
 #' @importFrom tidyr pivot_longer
 #' @importFrom fs path_dir file_exists file_delete
 #' @importFrom openxlsx createStyle createWorkbook addWorksheet writeData setColWidths addStyle saveWorkbook
+#' @importFrom cli cli_abort cli_warn
 
 create_codebook <- function(data, output=NULL, metadata=NULL, level_cutoff=55, keep_na=FALSE, freqs=FALSE){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Data must be specified.")
+    cli::cli_abort("Data must be specified.")
   }
 
   # Helper Functions --------------------------------------------------------
@@ -103,9 +104,7 @@ create_codebook <- function(data, output=NULL, metadata=NULL, level_cutoff=55, k
 
   if (is.null(output) == FALSE){
     if (file.exists(fs::path_dir(output))==FALSE){
-      stop(call. = FALSE,
-           paste0("Specified path does not exist:",
-                  "\n",fs::path_dir(output)))
+      cli::cli_abort("Specified path does not exist: {fs::path_dir(output)}")
     } else {
 
       if (fs::file_exists(output)==TRUE){

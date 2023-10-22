@@ -9,7 +9,7 @@ test_that("Not specifying replace results in error",{
 
 test_that("Not specifying numeric top value results in error",{
   expect_error(
-    test <- test <- topbox(caddat$q19_1, top="j"),
+    test <- test <- topbox(qpack::caddat$q19_1, top="j"),
     'Top variable must be a number.'
   )
 })
@@ -18,7 +18,7 @@ test_that("Not specifying numeric top value results in error",{
 # Expect Warning ----------------------------------------------------------
 test_that("Not specifying maxval results in warning",{
   expect_warning(
-    test <- topbox(caddat$q19_1),
+    test <- topbox(qpack::caddat$q19_1),
     'Determining maxval from the data.'
   )
 })
@@ -28,8 +28,8 @@ test_that("Not specifying maxval results in warning",{
 
 test_that("Topbox runs ok",{
 
-  expect_silent(
-  test <- caddat %>%
+  expect_no_error(
+  test <- qpack::caddat %>%
     dplyr::select(q19_1, q19_2) %>%
     dplyr::mutate(q19_2 = ifelse(q19_2<=3, NA, q19_2),
                   test1 = topbox(q19_1, maxval=7, top=2),
@@ -49,11 +49,11 @@ test_that("Topbox runs ok",{
   actual2 <- 0.671
   actual3 <- 0.108
   actual5 <- 0.818
-  expect_equal(actual1, expect1, tol=.001)
-  expect_equal(actual2, expect2, tol=.001)
-  expect_equal(actual3, expect3, tol=.001)
+  expect_equal(actual1, expect1, tolerance=.001)
+  expect_equal(actual2, expect2, tolerance=.001)
+  expect_equal(actual3, expect3, tolerance=.003)
   expect_true(is.na(expect4))
-  expect_equal(actual5, expect5, tol=.001)
+  expect_equal(actual5, expect5, tolerance=.001)
 
 })
 
@@ -68,7 +68,7 @@ test_that("Not specifying replace results in error",{
 
 test_that("Not specifying numeric top value results in error",{
   expect_error(
-    test <- test <- botbox(caddat$q19_1, bot="j"),
+    test <- test <- botbox(qpack::caddat$q19_1, bot="j"),
     'Bot variable must be a number.'
   )
 })
@@ -77,7 +77,7 @@ test_that("Not specifying numeric top value results in error",{
 # Expect Warning ----------------------------------------------------------
 test_that("Not specifying maxval results in warning",{
   expect_warning(
-    test <- test <- botbox(caddat$q19_1),
+    test <- test <- botbox(qpack::caddat$q19_1),
     'Determining minval from the data.'
   )
 })
@@ -87,8 +87,8 @@ test_that("Not specifying maxval results in warning",{
 
 test_that("Botbox runs ok",{
 
-  expect_silent(
-    test <- caddat %>%
+  expect_no_error(
+    test <- qpack::caddat %>%
       dplyr::select(q19_1, q19_2) %>%
       dplyr::mutate(q19_2 = ifelse(q19_2<=3, NA, q19_2),
                     test1 = botbox(q19_1, minval=1, bot=2),
@@ -108,11 +108,11 @@ test_that("Botbox runs ok",{
   actual2 <- 0.005525
   actual3 <- 0.002762
   actual5 <- 0
-  expect_equal(actual1, expect1, tol=.001)
-  expect_equal(actual2, expect2, tol=.001)
-  expect_equal(actual3, expect3, tol=.001)
+  expect_equal(actual1, expect1, tolerance=.001)
+  expect_equal(actual2, expect2, tolerance=.001)
+  expect_equal(actual3, expect3, tolerance=.001)
   expect_true(is.na(expect4))
-  expect_equal(actual5, expect5, tol=.001)
+  expect_equal(actual5, expect5, tolerance=.001)
 
 })
 

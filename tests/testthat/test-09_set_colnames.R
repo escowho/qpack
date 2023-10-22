@@ -10,13 +10,11 @@ test_that("Not specifying data results in error",{
 
 test_that("Minimum specifications results in no error",{
 
-    expect_silent(
-      test <- caddat %>%
+    expect_no_error(
+      test <- qpack::caddat %>%
         dplyr::select(1:2) %>%
         set_colnames(c("ralph", "stephanie"))
     )
   expect_true(("ralph" %in% names(test)))
   expect_true(("stephanie" %in% names(test)))
-
-  on.exit(rm(test))
   })

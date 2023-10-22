@@ -21,25 +21,23 @@
 #'   summary()
 #' }
 #' @export
+#' @importFrom cli cli_abort cli_warn
 
 topbox <- function(data, top=2, maxval, replacena=FALSE){
 
   # Checks ------------------------------------------------------------------
 
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Data must be specified.")
+    cli::cli_abort("Data must be specified.")
   }
 
   if (is.numeric(top)==FALSE){
-    stop(call. = FALSE, "Top variable must be a number.")
+    cli::cli_abort("Top variable must be a number.")
   }
 
   if (missing(maxval)){
     maxval <- max(data, na.rm=TRUE)
-    warning(call. = FALSE,
-            paste0("Determining maxval from the data.",
-                   "\n",
-                   "Using the maxval of ", maxval))
+    cli::cli_warn("Determining maxval from the data. Using the minval of {maxval}.")
   }
 
   # Function ----------------------------------------------------------------
@@ -88,27 +86,24 @@ topbox <- function(data, top=2, maxval, replacena=FALSE){
 #'   summary()
 #' }
 #' @export
+#' @importFrom cli cli_abort cli_warn
 
 botbox <- function(data, bot=2, minval, replacena=FALSE){
 
   # Checks ------------------------------------------------------------------
 
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Data must be specified.")
+    cli::cli_abort("Data must be specified.")
   }
 
   if (is.numeric(bot)==FALSE){
-    stop(call. = FALSE, "Bot variable must be a number.")
+    cli::cli_abort("Bot variable must be a number.")
   }
 
   if (missing(minval)){
     minval <- min(data, na.rm=TRUE)
-    warning(call. = FALSE,
-            paste0("Determining minval from the data.",
-                   "\n",
-                   "Using the minval of ", minval))
-  }
-
+    cli::cli_warn("Determining minval from the data. Using the minval of {minval}.")
+}
   # Function ----------------------------------------------------------------
 
   bb_fun <- function(data, minval, bot, replacena){

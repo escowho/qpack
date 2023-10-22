@@ -51,7 +51,7 @@ create_qkey <- function(name=NULL, url=NULL, token=NULL){
     warning(call. = FALSE,
             paste0("qkey created but keyring NOT updated; \"", name, "\" already found in keyring.\n",
                    "Use keyring::key_list() to find the key and keyring::key_delete(), if necessary."))
-  } else {
+     } else {
     keyring::key_set_with_value(service=name, password=token)
   }
 

@@ -38,7 +38,7 @@ rescale <- function(data, min_val, max_val, flip=FALSE){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Data must be specified.")
+    cli::cli_abort("Data must be specified.")
   }
 
   if (flip==TRUE){

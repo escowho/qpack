@@ -21,12 +21,13 @@
 #' @importFrom magrittr set_colnames
 #' @importFrom tibble tibble
 #' @importFrom labelled remove_labels
+#' @importFrom cli cli_abort
 
 describe <- function(data, round=TRUE){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Data must be specified.")
+    cli::cli_abort("Data must be specified.")
   }
 
   # Function ----------------------------------------------------------------

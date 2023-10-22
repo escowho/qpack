@@ -20,18 +20,15 @@
 #' }
 #' @export
 #' @importFrom lubridate is.Date floor_date
+#' @importFrom cli cli_abort
 
 week_number <- function(date_column, start_day = 1) {
 
   # Checks ------------------------------------------------------------------
 
   if (missing(date_column) == TRUE){
-    stop(call. = FALSE, "Date column must be specified.")
+    cli::cli_abort("Date column must be specified.")
   }
-
-  #if (lubridate::is.Date(date_column) == FALSE){
-  #  stop(call. = FALSE, "Date data not found in specified column.")
-  #}
 
   # Function ----------------------------------------------------------------
 

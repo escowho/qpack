@@ -1,7 +1,8 @@
 #' @title Archives a project into a zip file
 #' @description Uses base zip function to archive all the files and non-empty folders
 #' inside a project folder.  Ignores the .git and .Rproj.user folder.  Creates a zip
-#' file names after the study in the general study directory.
+#' file names after the study in the general study directory.  Contents of data
+#' folder are excluded by default, until data=TRUE parameter is used.
 #' @param client An optional character string of the client name.  If specified,
 #' will be a parent folder inside of which the project folder will have been
 #' located, i.e. client/project.
@@ -12,6 +13,8 @@
 #' locating the file path.  This would have been specified in the original set_up
 #' to override the default start_path that may have been set in the Renviron
 #' QPACK_SETUP_ROOT variable.
+#' @param data A logical indicating if the data subfolder should be included in
+#' the resulting archive file. Default: FALSE.
 #' @param silent A logical indicating if the zip output indicating compression progress
 #' should be suppressed or not.  Default: FALSE.
 #' @return Creates a zip file in the relevant folder structure containing all project
@@ -24,16 +27,17 @@
 #' }
 #' @export
 #' @importFrom fs path dir_exists path_split path_join dir_info path_rel
-
-archive_project <- function(project, client, root=NULL, silent=FALSE){
+#' @importFrom cli cli_abort cli_warn
+#'
+archive_project <- function(project=NULL, client=NULL, root=NULL, data=FALSE, silent=FALSE){
 
   # CLIENT/PROJECT or PROJECT Check -----------------------------------------
 
-  if (missing(project)) {
-    stop(call. = FALSE, "A project must be specified.  Client is optional.")
+  if (is.null(project)) {
+    cli::cli_abort("A project must be specified.  Client is optional.")
   }
 
-  if (!missing(client)) {
+  if (!is.null(client)) {
     c_check <- 1
   } else {
     c_check <- 0
@@ -45,19 +49,14 @@ archive_project <- function(project, client, root=NULL, silent=FALSE){
   if (is.null(root) == FALSE){
 
     if (fs::dir_exists(root) == FALSE){
-      stop(call. = FALSE,
-           paste0("Specified root does not exist:",
-                  "\n",root))
+      cli::cli_abort("Specified root does not exist: {root}")
     } else {
       start_path <- fs::path(root)
     }
     #Read QPACK_SETUP_ROOT Path
   } else if (Sys.getenv("QPACK_SETUP_ROOT")=="") {
     start_path <- Sys.getenv("HOME")
-    warning(call. = FALSE,
-            paste0("QPACK_SETUP_ROOT not found in .Renviron file.",
-                   "\n",
-                   "Using the default path instead: ", start_path))
+    cli::cli_warn("QPACK_SETUP_ROOT not found in .Renviron file. Using the default path instead: {start_path}")
   } else {
     start_path <- Sys.getenv("QPACK_SETUP_ROOT")
   }
@@ -73,33 +72,38 @@ archive_project <- function(project, client, root=NULL, silent=FALSE){
   }
 
   if (!fs::dir_exists(QPACK_SETUP_ROOT)){
-    stop(call. = FALSE, paste0(QPACK_SETUP_ROOT, " cannot be found."))
+    cli::cli_abort("{QPACK_SETUP_ROOT} cannot be found.")
   }
 
   start_wd <- getwd()
 
   # ARCHIVE FILES -----------------------------------------------------------
 
-  archive_path <- fs::path_split(QPACK_SETUP_ROOT)[[1]]
+  full_path <- fs::path_split(QPACK_SETUP_ROOT)[[1]]
+  name_path <- fs::path_join(full_path)
+  archive_path <- fs::path_join(full_path[1:length(full_path)-1])
 
-  if (c_check == 1){
-    name_path <- archive_path[-length(archive_path)]
-    archive_path <- archive_path[1:(length(archive_path)-1)]
-  } else {
-    name_path <- archive_path[-length(archive_path)]
-    archive_path <- archive_path[-length(archive_path)]
-  }
+  #if (c_check == 1){
+  #  name_path <- archive_path[-length(archive_path)]
+  #  archive_path <- archive_path[1:(length(archive_path)-1)]
+  #} else {
+  #  name_path <- archive_path[-length(archive_path)]
+  #  archive_path <- archive_path[-length(archive_path)]
+  #}
 
-  archive_path <- fs::path_join(archive_path)
-  name_path <- fs::path_join(name_path)
+  #archive_path <- fs::path_join(archive_path)
+  #name_path <- fs::path_join(name_path)
   archive_file <- fs::path(archive_path, project_name, ext="zip")
 
-  file_list <- fs::dir_info(QPACK_SETUP_ROOT, recurse = TRUE, all=TRUE, type="file")
+  file_list <- fs::dir_info(name_path, recurse = TRUE, all=TRUE, type="file")
   file_list <- file_list[!grepl("Rproj.user", file_list$path),]
   file_list <- file_list[!grepl(".git", file_list$path),]
   file_list <- file_list[!grepl(".DS_Store", file_list$path),]
-  file_list <- file_list[!grepl(".tmp", file_list$path),]
+  file_list <- file_list[!grepl(".tmp$", file_list$path),]
   file_list <- file_list[!grepl(".qconfig", file_list$path),]
+  if (data != TRUE){
+    file_list <- file_list[!grepl("/data/", file_list$path),]
+  }
   file_list$path <- fs::path_rel(file_list$path, start=archive_path)
   file_list <- file_list[["path"]]
 

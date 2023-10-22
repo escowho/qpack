@@ -18,15 +18,14 @@ test_that("Remove -99 with no error",{
 
   expect <- sum(test_1$V5)
   actual <- -254
-  expect_equal(actual, expect, tol=.1)
+  expect_equal(actual, expect, tolerance=.1)
 
   test_2 <- test_1 %>%
     create_na()
   expect <- sum(test_2$V5, na.rm=TRUE)
   actual <- 43
 
-  expect_equal(actual, expect, tol=.1)
-  on.exit(rm(test_1, test_2))
+  expect_equal(actual, expect, tolerance=.1)
 })
 
 test_that("Remove blank with no error",{
@@ -37,16 +36,24 @@ test_that("Remove blank with no error",{
 
   expect <- sum(complete.cases(test_1))
   actual <- 10
-  expect_equal(actual, expect, tol=.1)
+  expect_equal(actual, expect, tolerance=.1)
 
-  test_2 <- test_1 %>%
-    create_na("blank")
+  test_2 <- test_1$var1 %>%
+    qpack::create_na("blank")
 
   expect <- sum(complete.cases(test_2))
-  actual <- 4
+  actual <- 6
 
-  expect_equal(actual, expect, tol=.1)
-  on.exit(rm(test_1, test_2))
+  expect_equal(actual, expect, tolerance=.1)
+
+  test_3 <- test_1$var1 %>%
+    qpack::create_na()
+
+  expect <- sum(complete.cases(test_3))
+  actual <- 10
+
+  expect_equal(actual, expect, tolerance=.1)
+
 
 })
 

@@ -27,17 +27,18 @@
 #' }
 #' @export
 #' @import openxlsx
+#' @importFrom cli cli_abort
 
 write_xlsx <- function(data, file, sheet=NULL, over=FALSE, overfile=FALSE,
                        oversheet=TRUE, keepna=FALSE, rownames=FALSE){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Nothing specified to save.")
+    cli::cli_abort("Nothing specified to save.")
   }
 
   if (missing(file) == TRUE){
-    stop(call. = FALSE, "File name and path must be specified.")
+    cli::cli_abort("File name and path must be specified.")
   }
 
   # Function ----------------------------------------------------------------
@@ -52,18 +53,17 @@ write_xlsx <- function(data, file, sheet=NULL, over=FALSE, overfile=FALSE,
     oversheet = TRUE
   }
 
-  #File existance and overfile checks
+  #File existence and overfile checks
   if (file.exists(file) & overfile == TRUE){
     file.remove(file)
     wb <- openxlsx::createWorkbook()
   } else if (file.exists(file) & overfile != TRUE){
-    #This assumes we're adding to the workbook, could be a warning location
     wb <- openxlsx::loadWorkbook(file)
   } else {
     wb <- openxlsx::createWorkbook()
   }
 
-  #Sheet existance and oversheet checks
+  #Sheet existence and oversheet checks
   if (sheet %in% names(wb) & oversheet != TRUE){
     stop("call. = FALSE, Sheet already exists but oversheet set to FALSE")
   } else if (sheet %in% names(wb) & oversheet == TRUE){

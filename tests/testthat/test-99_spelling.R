@@ -1,10 +1,14 @@
-#NOTE: ../.. is necessary to point to the location of the directory for spelling
-#spell_test <- spelling::spell_check_package(pkg="../..")
-
-pkgroot <- test_package_root()
-spell_test <- spelling::spell_check_package(pkgroot)
-
-test_that("No Spelling Errors", {
+test_that("spelling", {
   skip_on_cran()
-  expect_equal(nrow(spell_test), 0)
+  skip_on_covr()
+  pkgroot <- test_package_root()
+  err <- spelling::spell_check_package(pkgroot)
+  num_spelling_errors <- nrow(err)
+  expect_true(
+    num_spelling_errors == 0,
+    info = paste(
+      c("\nSpelling errors:", capture.output(err)),
+      collapse = "\n"
+    )
+  )
 })

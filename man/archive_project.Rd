@@ -4,7 +4,13 @@
 \alias{archive_project}
 \title{Archives a project into a zip file}
 \usage{
-archive_project(project, client, root = NULL, silent = FALSE)
+archive_project(
+  project = NULL,
+  client = NULL,
+  root = NULL,
+  data = FALSE,
+  silent = FALSE
+)
 }
 \arguments{
 \item{project}{A character string with a short moniker to indicate either the
@@ -20,6 +26,9 @@ locating the file path.  This would have been specified in the original set_up
 to override the default start_path that may have been set in the Renviron
 QPACK_SETUP_ROOT variable.}
 
+\item{data}{A logical indicating if the data subfolder should be included in
+the resulting archive file. Default: FALSE.}
+
 \item{silent}{A logical indicating if the zip output indicating compression progress
 should be suppressed or not.  Default: FALSE.}
 }
@@ -31,7 +40,8 @@ not return any object.
 \description{
 Uses base zip function to archive all the files and non-empty folders
 inside a project folder.  Ignores the .git and .Rproj.user folder.  Creates a zip
-file names after the study in the general study directory.
+file names after the study in the general study directory.  Contents of data
+folder are excluded by default, until data=TRUE parameter is used.
 }
 \examples{
 \dontrun{

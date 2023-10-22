@@ -32,6 +32,7 @@
 #' }
 #' @export
 #' @importFrom rlang enquo quo_name f_text
+#' @importFrom cli cli_abort cli_warn
 
 create_id <- function(data, var1, var2, name, remove=FALSE){
   VAR1 <- rlang::enquo(var1)
@@ -44,17 +45,15 @@ create_id <- function(data, var1, var2, name, remove=FALSE){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Data must be specified.")
+    cli::cli_abort("Data must be specified.")
   }
 
   if (is.data.frame(data) == FALSE){
-    stop(call. = FALSE, "Specified file must be a dataframe.")
+    cli::cli_abort("Specified file must be a dataframe.")
   }
 
   if (rlang::quo_name(NAME) %in% colnames(data)){
-    stop(call. = FALSE, paste0("New ID variable = ",
-                               rlang::f_text(NAME),
-                               " already found in data.  Rename or drop existing variable."))
+    cli::cli_abort("New ID variable = {rlang::f_text(NAME)} already found in data.  Rename or drop existing variable.")
   }
 
 
@@ -73,10 +72,7 @@ create_id <- function(data, var1, var2, name, remove=FALSE){
     var1dupe <- nrow(unique(data[rlang::quo_name(VAR1)]))
 
     if (var1dupe != nrow(data)){
-      warning(call. = FALSE, paste0("Duplicates found when sorting on ",
-                                    rlang::f_text(VAR1), ".\n",
-                                    "Consider switching or adding a second variable ",
-                                    "(var2) to ensure ID is replicable."))
+      cli::cli_warn("Duplicates found when sorting on {rlang::f_text(VAR1)}. Consider switching or adding a second variable (var2) to ensure ID is replicable.")
     }
 
     data <- sort(data, by=rlang::quo_name(VAR1))
@@ -89,10 +85,7 @@ create_id <- function(data, var1, var2, name, remove=FALSE){
     bothdupe <- nrow(unique(z["v3"]))
 
     if (bothdupe != nrow(data)){
-      warning(call. = FALSE, paste0("Duplicates found when sorting on ",
-                                    rlang::f_text(VAR1), " and ",
-                                    rlang::f_text(VAR2), ".\n",
-                                    "ID may not be replicable."))
+      cli::cli_warn("Duplicates found when sorting on {rlang::f_text(VAR1)} and {rlang::f_text(VAR2)}.  ID may not be replicable.")
     }
 
     data <- sort(data, by=c(rlang::quo_name(VAR1), rlang::quo_name(VAR2)))
