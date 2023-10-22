@@ -32,13 +32,15 @@
 #' @importFrom rlang enquo quo_name
 #' @importFrom tibble tibble
 #' @importFrom fs path_dir file_exists
+#' @importFrom beepr beep
+#' @importFrom cli cli_abort
 
 create_frequencies <- function(data, output=NULL, metadata=NULL, level_cutoff=55,
                                keep_na=FALSE){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Data must be specified.")
+    cli::cli_abort("Data must be specified.")
   }
 
   # Determine if this was called from create_codebook or not ----------------

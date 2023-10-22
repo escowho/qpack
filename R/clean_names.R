@@ -20,12 +20,13 @@
 #' @export
 #' @importFrom janitor clean_names
 #' @importFrom tibble tibble
+#' @importFrom cli cli_abort
 
 clean_names <- function(data, create_list=FALSE){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Data must be specified.")
+    cli::cli_abort("Data must be specified.")
   }
 
   # Function ----------------------------------------------------------------

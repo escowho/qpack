@@ -10,6 +10,7 @@
 #' @param year Numeric value indicating the year of the calendar to return.  If
 #' none is specified, one choropleth calendar for each year found in the data will
 #' be returned.  Optional.
+#' @param test Logical flag used in testing only.  Default: FALSE
 #' @return calendR graph object
 #' @examples
 #' \dontrun{

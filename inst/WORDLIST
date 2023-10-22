@@ -26,10 +26,10 @@ corrplot
 corrplots
 crosstab
 descriptives
+devtools
 df
 dplyr
 github
-hclust
 jpg
 keepna
 keyring
@@ -62,8 +62,10 @@ rlang
 sav
 sjPlot
 spss
+subfolder
 surveyID
 tabyl
+testthat
 threeway
 tibble
 tibbles

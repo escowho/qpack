@@ -57,8 +57,10 @@
 #'  }
 #' }
 #' @export
-#' @importFrom fs dir_exists path path_dir dir_create file_exists file_create
 #' @importFrom rstudioapi isAvailable
+#' @importFrom cli cli_abort cli_warn
+#' @importFrom fs dir_exists path path_dir path_abs path_split path_join dir_create file_exists file_create dir_info
+#@importFrom qpack get_qkey
 
 set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
                    descriptor=NULL, folders=NULL, pack_load=NULL, pack_check=NULL,
@@ -66,23 +68,22 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
 
   # Basic Checks ------------------------------------------------------------
 
-  if (rstudioapi::isAvailable() != TRUE & (is.null(root) | is.null(folders))){
-    warning(call. = FALSE,
-            paste0("qpack assumes use of Rstudio IDE.",
-                   "\n",
-                   "Expect warnings below unless using root option AND specifying folders."))
+  if (Sys.getenv("QPACK_SETUP_TEST")!=TRUE){
+    if (rstudioapi::isAvailable() != TRUE & (is.null(root) | is.null(folders))){
+      cli::cli_warn("qpack assumes use of Rstudio IDE.  Expect warnings below unless using root option AND specifying folders.")
+    }
   }
 
-  if (is.null(project)) {
-    stop(call. = FALSE, "A project must be specified.  Client is optional.")
+  if (is.null(project)){
+    cli::cli_abort("A project must be specified.  Client is optional.")
   } else if(nchar(trimws(project))==0){
-    stop(call. = FALSE, "A project must be specified.  Client is optional.")
+    cli::cli_abort("A project must be specified.  Client is optional.")
   }
 
   if (is.null(descriptor)){
-    stop(call. = FALSE, "Descriptor must be specified.")
+    cli::cli_abort("Descriptor must be specified.")
   } else if(nchar(trimws(descriptor))==0){
-    stop(call. = FALSE, "Descriptor must be specified.")
+    cli::cli_abort("Descriptor must be specified.")
   }
 
   # Type Check --------------------------------------------------------------
@@ -123,9 +124,10 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
   #Manual Start Path
   if (is.null(root) == FALSE){
     if (fs::dir_exists(root) == FALSE){
-      stop(call. = FALSE,
-           paste0("Specified root path does not exist:",
-                  "\n",root))
+      #stop(call. = FALSE,
+      #     paste0("Specified root path does not exist:",
+      #            "\n",root))
+      cli::cli_abort("Specified root path does not exist: {root}")
     } else {
       start_path <- fs::path(root)
     }
@@ -133,10 +135,7 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
   #Read QPACK_SETUP_ROOT Path or Default
   } else if (Sys.getenv("QPACK_SETUP_ROOT")=="") {
     start_path <- Sys.getenv("HOME")
-    warning(call. = FALSE,
-            paste0("QPACK_SETUP_ROOT not found in .Renviron file.",
-                   "\n",
-                   "Using the default path instead: ", start_path))
+    cli::cli_warn("QPACK_SETUP_ROOT not found in .Renviron file.  Using the default path instead: {start_path}")
   } else {
     start_path <- Sys.getenv("QPACK_SETUP_ROOT")
   }
@@ -202,10 +201,7 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
   if (is.null(folders)){
     if (Sys.getenv("QPACK_SETUP_FOLDERS")==""){
       sub_directories <- c("data", "output")
-      warning(call. = FALSE,
-              paste0("No directories specified and QPACK_SETUP_FOLDERS not found in .Renviron file.",
-                     "\n",
-                     "Using two default sub-directories instead: data, output"))
+      cli::cli_warn("No directories specified and QPACK_SETUP_FOLDERS not found in .Renviron file. Using two default sub-directories instead: data, output")
     } else {
       sub_directories <- strsplit(Sys.getenv("QPACK_SETUP_FOLDERS"), ",")[[1]]
       sub_directories <- invisible(lapply(sub_directories, trimws))
@@ -270,7 +266,7 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
 
   load_source <- function(source_file){
     if (!file.exists(source_file)){
-      stop(call. = FALSE, sprintf("%s not found in the working directory", source_file))
+      cli::cli_warn("{source_file} not found in the working directory.")
     } else {
       source(source_file)
     }
@@ -294,8 +290,18 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
 
   packs_to_load <- unique(packs_to_load[packs_to_load != ""])
 
-  if (length(packs_to_load) > 0){
+  if (Sys.getenv('OVERRIDE_FOR_TESTING')==TRUE){
+    req_pack <- function(x){
+      suppressPackageStartupMessages(require(x, character.only=TRUE))
+    }
+
+    invisible(lapply(packs_to_load, req_pack))
+  } else {
     invisible(lapply(packs_to_load, require, character.only=TRUE))
+  }
+
+  if (length(packs_to_load) > 0){
+
   }
 
   # VERIFY INSTALLED BUT NOT LOADED PACKAGES --------------------------------
@@ -318,9 +324,9 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
 
     if (length(check) > 1){
       check <- paste(check, collapse=", ")
-      warning(paste("Packages from pack_check not found:", check, sep="\n"))
+      cli::cli_warn("Packages from pack_check not found: {check}")
     } else if(length(check) == 1){
-      warning(paste("Package from pack_check not found:", check, sep=" "))
+      cli::cli_warn("Packages from pack_check not found: {check}")
     }
   }
 
@@ -329,26 +335,12 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
   if (dir.exists("./.qkey/")){
     f <- fs::dir_info("./.qkey/", all=TRUE)
     if (nrow(f)==1){
-      tryCatch(
-        #try to do this
-        {
-          get_qkey(f$path[[1]])
-        },
-        #if an error occurs, tell me the error
-        error=function(e) {
-          message('A qkey Error Occurred')
-          print(e)
-        },
-        #if a warning occurs, tell me the warning
-        warning=function(w) {
-          message('A qkey Warning Occurred')
-          print(w)
-          return(NA)
-        }
-      )
-    }
-  }
+      qpack::get_qkey(f$path[[1]])
+    } else {
+      cli::cli_warn("More than 1 qkey file found. Check the .qkey directory, remove the redundancy, and try again.")
 
+    }
+}
 }
 
 

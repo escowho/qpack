@@ -31,13 +31,14 @@
 #' @importFrom utils stack
 #' @importFrom dplyr mutate_if slice mutate full_join arrange filter select left_join
 #' @importFrom stringr str_replace_all
+#' @importFrom cli cli_abort
 
 pull_labels <- function(data, meta_file=NULL){
 
   # Checks ------------------------------------------------------------------
 
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Data must be specified.")
+    cli::cli_abort("Data must be specified.")
   }
 
   # Helper Functions --------------------------------------------------------

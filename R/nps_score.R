@@ -13,19 +13,20 @@
 #' }
 #' @export
 #' @importFrom dplyr case_when
+#' @importFrom cli cli_abort
 
 nps_score <- function(data){
 
   # Checks ------------------------------------------------------------------
 
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Data column must be specified.")
+    cli::cli_abort("Data column must be specified.")
   }
 
 # Function ----------------------------------------------------------------
 
   if (is.data.frame(data)){
-    stop(call. = FALSE, "Function only works on vectors.")
+    cli::cli_abort("Function only works on vectors.")
   } else {
     dplyr::case_when(data >= 9 ~ 100,
               data >= 7 ~ 0,

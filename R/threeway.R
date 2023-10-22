@@ -17,11 +17,12 @@
 #' }
 #' @export
 #' @importFrom rlang enquo f_text
+#' @importFrom cli cli_abort
 
 threeway <- function(data, var1, var2, var3, ...){
 
   if (missing(data) | missing(var1) | missing(var2) | missing(var3)){
-    stop(call. = FALSE, "Must specify DATA and 3 VARIABLES")
+    cli::cli_abort("Must specify DATA and 3 VARIABLES")
   }
 
   DATA <- rlang::enquo(data)

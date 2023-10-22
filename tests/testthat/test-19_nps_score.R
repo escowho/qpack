@@ -7,15 +7,15 @@ test_that("Not specifying replace results in error",{
   )
 })
 
-set.seed(423234)
-testdat <- tibble(ltr=sample(0:11, 20, replace=TRUE)) %>%
-  dplyr::mutate(score = nps_score(ltr))
-
 # Clean Run with No Errors ------------------------------------------------
 
 test_that("clean run 1",{
 
-  expect_silent(
+  set.seed(423234)
+  testdat <- tibble(ltr=sample(0:11, 20, replace=TRUE)) %>%
+    dplyr::mutate(score = nps_score(ltr))
+
+  expect_no_error(
     test1 <- testdat %>%
       mutate(score = nps_score(ltr))
   )
@@ -25,5 +25,3 @@ test_that("clean run 1",{
   on.exit(rm(test1))
 })
 
-
-on.exit(rm(testdat))

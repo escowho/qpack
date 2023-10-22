@@ -1,31 +1,3 @@
-current_wd <- getwd()
-current_home <- Sys.getenv("HOME")
-current_setup_start <- Sys.getenv("QPACK_SETUP_ROOT")
-current_setup_folders <- Sys.getenv("QPACK_SETUP_FOLDERS")
-current_setup_outside <- Sys.getenv("QPACK_SETUP_EXTERNAL_DESCRIPTOR")
-
-Sys.setenv("OVERRIDE_FOR_TESTING"="TRUE")
-
-back_to_normal <- function(){
-
-  Sys.setenv("HOME"=current_home)
-  if (current_setup_start != ""){
-    Sys.setenv("QPACK_SETUP_ROOT"=current_setup_start)
-  }
-  if (current_setup_folders != ""){
-    Sys.setenv("QPACK_SETUP_FOLDERS"=current_setup_folders)
-  }
-  if (current_setup_outside !=""){
-    Sys.setenv("QPACK_SETUP_EXTERNAL_DESCRIPTOR"=current_setup_outside)
-  }
-  setwd(current_wd)
-}
-
-
-Sys.setenv("QPACK_SETUP_ROOT"=tempdir())
-Sys.setenv("QPACK_SETUP_FOLDERS"="")
-Sys.setenv("QPACK_SETUP_EXTERNAL_DESCRIPTOR"="TRUE")
-Sys.setenv("OVERRIDE_FOR_TESTING"="TRUE")
 
 test_that("Not specifying data results in error",{
   expect_error(
@@ -35,7 +7,11 @@ test_that("Not specifying data results in error",{
 })
 
 test_that("Clean Run 1 - Codebook",{
-  expect_silent(test1 <- create_codebook(test1))
+  withr:::local_envvar(
+    OVERRIDE_FOR_TESTING = TRUE,
+    .local_envir = parent.frame())
+
+  expect_no_error(test1 <- create_codebook(qpack::test1))
 
   expect_equal("tbl_df" %in% class(test1), TRUE)
   expect_equal(names(test1), c("Number", "Variable", "Description", "Example", "Type", "Unique", "Missing", "Note"))
@@ -50,7 +26,11 @@ test_that("Clean Run 1 - Codebook",{
 })
 
 test_that("Clean Run 2 - Crosstab, freqs=THREE",{
-  expect_silent(test3 <- create_codebook(test1, freqs=TRUE))
+  withr:::local_envvar(
+    OVERRIDE_FOR_TESTING = TRUE,
+    .local_envir = parent.frame())
+
+  expect_no_error(test3 <- create_codebook(qpack::test1, freqs=TRUE))
 
   expect_equal(names(test3), c("codebook", "frequencies"))
   expect_equal(names(test3$codebook), c("Number", "Variable", "Description", "Example", "Type", "Unique", "Missing", "Note"))
@@ -66,8 +46,13 @@ test_that("Clean Run 2 - Crosstab, freqs=THREE",{
 })
 
 test_that("Clean Run 3 - Files",{
-  setwd(tempdir())
-  expect_silent(create_codebook(test1, output="test4-1.xlsx"))
+  withr:::local_envvar(
+    OVERRIDE_FOR_TESTING = TRUE,
+    .local_envir = parent.frame())
+
+  withr::local_dir(tempdir())
+
+  expect_no_error(create_codebook(qpack::test1, output="test4-1.xlsx"))
   expect_true(file.exists(file.path(tempdir(), "test4-1.xlsx")))
   test4_1 <- readxl::read_xlsx(file.path(tempdir(), "test4-1.xlsx"), sheet=1)
   expect_equal(names(test4_1), c("Number", "Variable", "Description", "Example", "Type", "Unique", "Missing", "Note"))
@@ -76,7 +61,13 @@ test_that("Clean Run 3 - Files",{
 })
 
 test_that("Clean Run 4 - Files with freqs",{
-  expect_silent(create_codebook(test2, output="test4-3.xlsx", freqs=TRUE))
+  withr:::local_envvar(
+    OVERRIDE_FOR_TESTING = TRUE,
+    .local_envir = parent.frame())
+
+  withr::local_dir(tempdir())
+
+  expect_no_error(create_codebook(qpack::test2, output="test4-3.xlsx", freqs=TRUE))
   expect_true(file.exists(file.path(tempdir(), "test4-3.xlsx")))
   test4_3 <- readxl::read_xlsx(file.path(tempdir(), "test4-3.xlsx"), sheet=3)
   expect_equal(names(test4_3), c("q2", "VALUE", "label", "n", "percent"))
@@ -85,14 +76,17 @@ test_that("Clean Run 4 - Files with freqs",{
 })
 
 test_that("Clean Run 5 - Metadata",{
-  setwd(tempdir())
-  expect_silent(create_codebook(test2, metadata=meta2, output="test5-1.xlsx", freqs=TRUE))
+  withr:::local_envvar(
+    OVERRIDE_FOR_TESTING = TRUE,
+    .local_envir = parent.frame())
+
+  withr::local_dir(tempdir())
+
+  expect_no_error(create_codebook(qpack::test2, metadata=qpack::meta2, output="test5-1.xlsx", freqs=TRUE))
   expect_true(file.exists(file.path(tempdir(), "test5-1.xlsx")))
   test5_1 <- readxl::read_xlsx(file.path(tempdir(), "test5-1.xlsx"), sheet=1)
   expect_equal(names(test5_1), c("Number", "Variable", "Description", "Example", "Type", "Unique", "Missing", "Note"))
   expect_equal(test5_1$Variable, c("q1", "q2", "q3_nps_group", "q3"))
   expect_equal(test5_1$Unique, c(4,4,3,11))
 })
-
-back_to_normal()
 

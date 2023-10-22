@@ -1,32 +1,3 @@
-current_wd <- getwd()
-current_home <- Sys.getenv("HOME")
-current_setup_start <- Sys.getenv("QPACK_SETUP_ROOT")
-current_setup_folders <- Sys.getenv("QPACK_SETUP_FOLDERS")
-current_setup_outside <- Sys.getenv("QPACK_SETUP_EXTERNAL_DESCRIPTOR")
-
-Sys.setenv("OVERRIDE_FOR_TESTING"="TRUE")
-
-back_to_normal <- function(){
-
-  Sys.setenv("HOME"=current_home)
-  if (current_setup_start != ""){
-    Sys.setenv("QPACK_SETUP_ROOT"=current_setup_start)
-  }
-  if (current_setup_folders != ""){
-    Sys.setenv("QPACK_SETUP_FOLDERS"=current_setup_folders)
-  }
-  if (current_setup_outside !=""){
-    Sys.setenv("QPACK_SETUP_EXTERNAL_DESCRIPTOR"=current_setup_outside)
-  }
-  setwd(current_wd)
-}
-
-
-Sys.setenv("QPACK_SETUP_ROOT"=tempdir())
-Sys.setenv("QPACK_SETUP_FOLDERS"="")
-Sys.setenv("QPACK_SETUP_EXTERNAL_DESCRIPTOR"="TRUE")
-Sys.setenv("OVERRIDE_FOR_TESTING"="TRUE")
-
 test_that("Not specifying data results in error",{
   expect_error(
     test <- create_frequencies(),
@@ -35,7 +6,12 @@ test_that("Not specifying data results in error",{
 })
 
 test_that("Clean Run 1 - Frequencies",{
-  expect_silent(test2 <- create_frequencies(test1))
+
+  withr:::local_envvar(
+    OVERRIDE_FOR_TESTING = TRUE,
+    .local_envir = parent.frame())
+
+  expect_no_error(test2 <- create_frequencies(qpack::test1))
 
   expect_equal(names(test2), c("key", "frequencies"))
   expect_equal(names(test2$key), c("Number", "Variable"))
@@ -48,13 +24,16 @@ test_that("Clean Run 1 - Frequencies",{
   expect_equal(test2_q6[[1,3]], "High School or Less")
   expect_equal(test2_q6[[5,3]], "Total")
   expect_equal(test2_q6[[4]], c(27, 88, 49, 36, 200))
-  on.exit(rm(test2, test2_q6))
 })
 
 test_that("Clean Run 2 - Files",{
-  setwd(tempdir())
+  withr:::local_envvar(
+    OVERRIDE_FOR_TESTING = TRUE,
+    .local_envir = parent.frame())
 
-  expect_silent(create_frequencies(test2, output="test4-2.xlsx"))
+  withr::local_dir(tempdir())
+
+  expect_no_error(create_frequencies(qpack::test2, output="test4-2.xlsx"))
   expect_true(file.exists(file.path(tempdir(), "test4-2.xlsx")))
   test4_2 <- readxl::read_xlsx(file.path(tempdir(), "test4-2.xlsx"), sheet=2)
   expect_equal(names(test4_2), c("q1", "VALUE", "label", "n", "percent"))
@@ -63,8 +42,12 @@ test_that("Clean Run 2 - Files",{
 })
 
 test_that("Clean Run 5 - Metadata",{
-  setwd(tempdir())
-  expect_silent(create_frequencies(test2, metadata=meta2, output="test5-1.xlsx"))
+  withr:::local_envvar(
+    OVERRIDE_FOR_TESTING = TRUE,
+    .local_envir = parent.frame())
+
+  withr::local_dir(tempdir())
+  expect_no_error(create_frequencies(qpack::test2, metadata=qpack::meta2, output="test5-1.xlsx"))
   expect_true(file.exists(file.path(tempdir(), "test5-1.xlsx")))
   test5_1 <- readxl::read_xlsx(file.path(tempdir(), "test5-1.xlsx"), sheet=1)
   expect_equal(test5_1$Variable, c("q1", "q2", "q3_nps_group", "q3"))
@@ -74,6 +57,3 @@ test_that("Clean Run 5 - Metadata",{
   expect_equal(test5_2$label, c("18 to 24", "25 to 39", "40 to 59", "60 Plus", "Total"))
   expect_equal(test5_2$n, c(44, 58, 51, 47, 200))
 })
-
-back_to_normal()
-

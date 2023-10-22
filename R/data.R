@@ -290,3 +290,17 @@
 #' }
 "test1"
 
+#' @title test2 is an example dataset used for testing
+#'
+#' @description Dataset containing a data used for testing.
+"test2"
+
+#' @title test3 is an example dataset used for testing
+#'
+#' @description Dataset containing a data used for testing.
+"test3"
+
+#' @title meta2 is an example dataset used for testing
+#'
+#' @description Dataset containing a data used for testing.
+"meta2"

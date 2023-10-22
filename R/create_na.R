@@ -36,13 +36,14 @@
 #' }
 #' @export
 #' @importFrom tibble as_tibble
+#' @importFrom cli cli_abort
 
 create_na <- function(data, value=-99){
 
   # Checks ------------------------------------------------------------------
 
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Data must be specified.")
+    cli::cli_abort("Data must be specified.")
   }
 
   # Function ----------------------------------------------------------------

@@ -18,19 +18,20 @@
 #' @importFrom lubridate date
 #' @importFrom dplyr summarise_all everything left_join mutate mutate_all group_by slice ungroup summarize pull select n
 #' @importFrom tidyr pivot_longer
+#' @importFrom cli cli_abort
 
 get_dates <- function(data){
 
   # Checks ------------------------------------------------------------------
 
   if (missing(data)){
-    stop(call. = FALSE, "Data must be specified.")
+    cli::cli_abort("Data must be specified.")
   }
 
   if (!"start_date" %in% names(data) &
       !"end_date" %in% names(data) &
       !"recorded_date" %in% names(data)){
-    stop(call. = FALSE, "Cannot locate start_date, end_date, or recorded_date within dataframe.")
+    cli::cli_abort("Cannot locate start_date, end_date, or recorded_date within dataframe.")
   }
 
 
@@ -50,7 +51,6 @@ get_dates <- function(data){
 
   max_vals <- max_vals %>%
     tidyr::pivot_longer(dplyr::everything(), names_to="date", values_to="max")
-
 
   out <- dplyr::left_join(min_vals, max_vals, by="date") %>%
     dplyr::mutate(diff = as.numeric(difftime(max, min, units="days")),

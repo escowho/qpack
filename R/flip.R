@@ -11,16 +11,17 @@
 #' }
 #' @export
 #' @importFrom tibble as_tibble
+#' @importFrom cli cli_abort
 
 flip <- function(data){
 
   # Checks ------------------------------------------------------------------
   if (missing(data) == TRUE){
-    stop(call. = FALSE, "Data must be specified.")
+    cli::cli_abort("Data must be specified.")
   }
 
   if (is.data.frame(data) == FALSE){
-    stop(call. = FALSE, "Specified file must be a dataframe.")
+    cli::cli_abort("Specified file must be a dataframe.")
   }
 
   # Function ----------------------------------------------------------------

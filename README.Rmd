@@ -47,10 +47,6 @@ An R Package to assist with CS data science projects at Qualtrics
   + Creates a set of frequency tables for each variable in a dataframe and exports a list of tables that can be exported to Excel.
 
 
-* create_qconfig
-  + Deprecated in favor of qkey family of functions
-
-
 * create_qkey
   + Create an invisible qkey file that triggers credentials for using the API and qualtRics package
   + Create an invisible qkey file inside an invisible folder within the current working directory that holds the credentials necessary to access Qualtrics surveys and data through the Qualtrics API using the qualtRics package. Credentials are automatically saved in your operating system's credential store using the keyring package. It will prompt you to name the key, paste your API Key and your Base URL. The API Key will be saved in the data store under the name provided and syntax for loading the credentials are stored in the qkey file itself. This file is automatically read in as environment variables every time qpack::set_up is run if only one qkey file is detected. Can also be loaded using get_qkey function and removed with clear_qkey function.
@@ -59,10 +55,6 @@ An R Package to assist with CS data science projects at Qualtrics
 * delete_project
   + Wrapper function that uses janitor::clean_names on a data set
   + Convenience wrapper that uses janitor::clean_names to clean up variable names and returns a list where vars = tibble of original variable names and data = the original data with cleaned variables names.
-
-
-* delete_qconfig
-  + Deprecated in favor of qkey family of functions
 
 
 * get_dates
@@ -88,10 +80,6 @@ An R Package to assist with CS data science projects at Qualtrics
 * show_token
   + Show the saved token for a given qkey name
   + Useful when troubleshooting a duplicate name within a key store, the function shows the saved token for a given name.
-  
-
-* view_qconfig
-  + Deprecated in favor of qkey family of functions
 
 
 ### Data Functions
@@ -172,11 +160,6 @@ An R Package to assist with CS data science projects at Qualtrics
   + Generates a list of two dataframes containing variable and value label information that is found from Qualtrics and exported via qualtRics::fetch_survey or imported from an SPSS .sav file using haven::read_spss. Changes to API mean that value labels are no longer exported directly.  It is recommended that you download an SPSS file and read in using haven::read_spss to preserve these labels, however, a meta_file option is provided if this is not possible.  Please be aware that the application of value labels from metadata is not perfect and may result in unusual or incorrect label application, so use at your own risk.
 
 
-* qplot_cor
-  + Wrapper for corrplot that generates a reasonably consistent corrplot
-  + Generates a corrplot that tends to look good in most situations.  The corrplot will be exported as a jpg if the output parameter is specified.  The underlying correlation table and p values is also automatically exported with the same name but with an .xlsx extension.  Note that the on-screen version is not optimally designed and that this function is optimized for the outputted jpg version.  Possible to provide a list of names to replace variable names (the default action).  Can also specify colors but there is a standardized set of colors as default from red to white to green for correlation color coding.  Option to sort based on overall correlation size (happens by default).  Can identify the name of a variable that show first in the output, which is particularly useful for dependent variables like NPS score (but this will disengage any other sorting).
-
-
 * threeway
   + Performs 3-way crosstab using qpack::crosstab split on a third variable
   + Generates a 3-way crosstab, or a qpack::crosstab for each value of the third variable specified. Built on janitor::tabyl but outputs a dataframe to maintain visual elements suitable for exporting (but likely not for the console). Object shows counts, row percents, column percents, and total percents for each level of third variable. Also uses quasiquotation from rlang so that variables need not be quoted. var1 and var2 specify the crosstab and var3 specifies the split.
@@ -190,10 +173,12 @@ An R Package to assist with CS data science projects at Qualtrics
 ### Support Functions
 
 * refresh
-  + Refreshes github install of qpack
-  + Convenience function to perform a remotes::install_github for qpack.
+  + qpack::refresh() refreshes the github install of qpack
 
-* skeleton()
+* skeleton
     + creates complete skeleton syntax printed to the console for creating folder structures with all options
+    
+* version
+  + qpack::version() returns the version number of qpack
     
 

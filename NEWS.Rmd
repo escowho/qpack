@@ -16,6 +16,14 @@ knitr::opts_chunk$set(
 
 # Version History
 
+## 0.2.0 2023-1020
+
+* Removed deprecated qconfig functions
+* Removed set_colnames to re-export
+* Updated archive to default to exclude data directory, unless option evoked
+* Updates to all tests for testthat v3
+* Updates to improve devtools::check
+
 ## 0.1.11 2023-0625
 
 * Added get_dates to find typical date values from Qualtrics data files
