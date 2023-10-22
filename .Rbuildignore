@@ -5,4 +5,5 @@
 ^NEWS.Rmd$
 ^data-raw$
 ^temp$
-^~*.tmp
+^.*\.tmp
+^[\.]tmp$$
