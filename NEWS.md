@@ -2,6 +2,11 @@
 
 # Version History
 
+## 0.2.0.9000 2023-1028
+
+-   Updated refresh for testing
+-   Added qmod and qplot options to setup
+
 ## 0.2.0 2023-1020
 
 -   Removed deprecated qconfig functions

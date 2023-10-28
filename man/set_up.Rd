@@ -14,7 +14,9 @@ set_up(
   pack_load = NULL,
   pack_check = NULL,
   source = NULL,
-  qpack = TRUE
+  qpack = TRUE,
+  qmod = FALSE,
+  qplot = FALSE
 )
 }
 \arguments{
@@ -66,6 +68,14 @@ if  is housed in a sub-folder named "config".  Optional.}
 \item{qpack}{A logical indicating the preference to automatically load the
 qpack package after all other packages specified in packages parameter.
 Default: TRUE.}
+
+\item{qmod}{A logical indicating the preference to automatically load the
+qmod package after all other packages specified in packages parameter.
+Default: FALSE.}
+
+\item{qlot}{A logical indicating the preference to automatically load the
+qlot package after all other packages specified in packages parameter.
+Default: FALSE.}
 }
 \value{
 Creates a folder structure and generates two text files but otherwise

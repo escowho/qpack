@@ -422,12 +422,16 @@ test_that("pack_load correctly loads package + qpack",{
 
   set_up(project="XXX-0001",
          descriptor="Clean Run",
-         pack_load="fs", qpack=TRUE)
+         pack_load="fs", qpack=TRUE, qmod=TRUE, qplot=TRUE)
 
   expect_true("fs" %in% (.packages()))
   expect_true("qpack" %in% (.packages()))
+  expect_true("qmod" %in% (.packages()))
+  expect_true("qplot" %in% (.packages()))
   detach("package:fs")
   detach("package:qpack")
+  detach("package:qmod")
+  detach("package:qplot")
 
   path <- getwd()
   back_to_normal()

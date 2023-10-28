@@ -45,3 +45,15 @@ test_that("skeleton returns correct text",{
   expect_equal(x[5], "              root = \"\",")
 
 })
+
+# refresh -----------------------------------------------------------------
+
+test_that("update works correctly using QPACK_TEST option", {
+  withr:::local_envvar(
+    QPACK_TEST = TRUE,
+    .local_envir = parent.frame())
+
+  expect_equal(qpack:::refresh(), "update_pack")
+  expect_equal(qpack:::refresh(dev=TRUE), "update_dev")
+
+})
