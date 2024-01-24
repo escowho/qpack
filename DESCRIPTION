@@ -1,6 +1,6 @@
 Package: qpack
 Title: Set of functions written to assist in data science projects
-Version: 0.2.0.9000
+Version: 0.2.0.9001
 Authors@R: 
     person("Matthew", "Sheffer", , "msheffer@qualtrics.com", role = c("aut", "cre"))
 Description: Set of functions to assist in data science projects.
@@ -39,5 +39,5 @@ Suggests:
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.0
 Config/testthat/edition: 3
