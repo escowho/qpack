@@ -14,6 +14,11 @@ An R Package to assist with CS data science projects at Qualtrics
         folders inside a project folder. Ignores the .git and
         .Rproj.user folder. Creates a zip file names after the study in
         the general study directory.
+-   archive_email
+    -   Archive email within an email folder inside project
+    -   If an email folder is found within the current working
+        directory, all the folder contents will be zipped into a single
+        file called email.zip and the contents deleted.
 -   clear_qkey
     -   Clears out any active system variable entries created by a qkey
         function
@@ -56,8 +61,6 @@ An R Package to assist with CS data science projects at Qualtrics
     -   Creates a set of frequency tables for each variable in a
         dataframe and exports a list of tables that can be exported to
         Excel.
--   create_qconfig
-    -   Deprecated in favor of qkey family of functions
 -   create_qkey
     -   Create an invisible qkey file that triggers credentials for
         using the API and qualtRics package
@@ -80,8 +83,6 @@ An R Package to assist with CS data science projects at Qualtrics
         variable names and returns a list where vars = tibble of
         original variable names and data = the original data with
         cleaned variables names.
--   delete_qconfig
-    -   Deprecated in favor of qkey family of functions
 -   get_dates
     -   Pulls basic descriptives for the three common date fields from a
         Qualtrics dataset
@@ -119,8 +120,6 @@ An R Package to assist with CS data science projects at Qualtrics
     -   Show the saved token for a given qkey name
     -   Useful when troubleshooting a duplicate name within a key store,
         the function shows the saved token for a given name.
--   view_qconfig
-    -   Deprecated in favor of qkey family of functions
 
 ### Data Functions
 
@@ -232,23 +231,6 @@ An R Package to assist with CS data science projects at Qualtrics
         possible. Please be aware that the application of value labels
         from metadata is not perfect and may result in unusual or
         incorrect label application, so use at your own risk.
--   qplot_cor
-    -   Wrapper for corrplot that generates a reasonably consistent
-        corrplot
-    -   Generates a corrplot that tends to look good in most situations.
-        The corrplot will be exported as a jpg if the output parameter
-        is specified. The underlying correlation table and p values is
-        also automatically exported with the same name but with an .xlsx
-        extension. Note that the on-screen version is not optimally
-        designed and that this function is optimized for the outputted
-        jpg version. Possible to provide a list of names to replace
-        variable names (the default action). Can also specify colors but
-        there is a standardized set of colors as default from red to
-        white to green for correlation color coding. Option to sort
-        based on overall correlation size (happens by default). Can
-        identify the name of a variable that show first in the output,
-        which is particularly useful for dependent variables like NPS
-        score (but this will disengage any other sorting).
 -   threeway
     -   Performs 3-way crosstab using qpack::crosstab split on a third
         variable
@@ -273,9 +255,9 @@ An R Package to assist with CS data science projects at Qualtrics
 ### Support Functions
 
 -   refresh
-    -   Refreshes github install of qpack
-    -   Convenience function to perform a remotes::install_github for
-        qpack.
--   skeleton()
+    -   qpack::refresh() refreshes the github install of qpack
+-   skeleton
     -   creates complete skeleton syntax printed to the console for
         creating folder structures with all options
+-   version
+    -   qpack::version() returns the version number of qpack

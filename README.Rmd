@@ -25,6 +25,11 @@ An R Package to assist with CS data science projects at Qualtrics
 * archive_project
   + Archives a project into a zip file
   + Uses base zip function to archive all the files and non-empty folders inside a project folder. Ignores the .git and .Rproj.user folder. Creates a zip file names after the study in the general study directory.
+ 
+ 
+* archive_email
+  + Archive email within an email folder inside project
+  + If an email folder is found within the current working directory, all the folder contents will be zipped into a single file called email.zip and the contents deleted.
   
   
 * clear_qkey

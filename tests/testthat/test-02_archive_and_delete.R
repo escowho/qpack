@@ -247,15 +247,3 @@ test_that("Archive & Delete Function for No Default Root",{
   back_to_normal()
 })
 
-
-
-
-
-
-
-
-
-
-
-
-

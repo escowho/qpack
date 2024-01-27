@@ -42,6 +42,12 @@
 #' @param qpack A logical indicating the preference to automatically load the
 #' qpack package after all other packages specified in packages parameter.
 #' Default: TRUE.
+#' @param qmod A logical indicating the preference to automatically load the
+#' qmod package after all other packages specified in packages parameter.
+#' Default: FALSE.
+#' @param qplot A logical indicating the preference to automatically load the
+#' qlot package after all other packages specified in packages parameter.
+#' Default: FALSE.
 #' @return Creates a folder structure and generates two text files but otherwise
 #' does not return any object.
 #' @examples
@@ -64,7 +70,7 @@
 
 set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
                    descriptor=NULL, folders=NULL, pack_load=NULL, pack_check=NULL,
-                   source=NULL, qpack=TRUE){
+                   source=NULL, qpack=TRUE, qmod=FALSE, qplot=FALSE){
 
   # Basic Checks ------------------------------------------------------------
 
@@ -286,6 +292,14 @@ set_up <- function(client=NULL, project=NULL, task=NULL, root=NULL,
 
   if (qpack==TRUE){
     packs_to_load <- c(packs_to_load, "qpack")
+  }
+
+  if (qmod==TRUE){
+    packs_to_load <- c(packs_to_load, "qmod")
+  }
+
+  if (qplot==TRUE){
+    packs_to_load <- c(packs_to_load, "qplot")
   }
 
   packs_to_load <- unique(packs_to_load[packs_to_load != ""])
