@@ -73,7 +73,7 @@ Default: TRUE.}
 qmod package after all other packages specified in packages parameter.
 Default: FALSE.}
 
-\item{qlot}{A logical indicating the preference to automatically load the
+\item{qplot}{A logical indicating the preference to automatically load the
 qlot package after all other packages specified in packages parameter.
 Default: FALSE.}
 }

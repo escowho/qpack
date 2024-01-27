@@ -15,6 +15,7 @@ Tibble
 TopX
 XLSX
 YY
+addin
 beepr
 botbox
 caddat
@@ -22,7 +23,6 @@ calendR
 choropleth
 codebook
 config
-corrplot
 corrplots
 crosstab
 descriptives
@@ -30,7 +30,6 @@ devtools
 df
 dplyr
 github
-jpg
 keepna
 keyring
 labelled

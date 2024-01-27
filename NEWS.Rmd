@@ -16,6 +16,14 @@ knitr::opts_chunk$set(
 
 # Version History
 
+## 0.2.1 2024-0126
+
+* Updates to addin and set_up
+* Add archive_email
+* Complete revamp of unit tests
+* Added code coverage,>90%
+* Cleanly passes check
+
 ## 0.2.0.9000 2023-1028
 
 * Updated refresh for testing

@@ -45,7 +45,7 @@
 #' @param qmod A logical indicating the preference to automatically load the
 #' qmod package after all other packages specified in packages parameter.
 #' Default: FALSE.
-#' @param qlot A logical indicating the preference to automatically load the
+#' @param qplot A logical indicating the preference to automatically load the
 #' qlot package after all other packages specified in packages parameter.
 #' Default: FALSE.
 #' @return Creates a folder structure and generates two text files but otherwise
