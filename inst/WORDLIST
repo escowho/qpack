@@ -1,12 +1,18 @@
 BotX
 EDA
+IPAddress
 LTR
+LocationLatitude
+LocationLongitude
 NA's
 NA’s
 NPS
 QUALTRICS
 Qualtrics
 README
+RecipientEmail
+RecipientFirstName
+RecipientLastName
 Renviron
 Rescales
 Rproj
@@ -26,6 +32,7 @@ config
 corrplots
 crosstab
 descriptives
+det
 devtools
 df
 dplyr
@@ -43,6 +50,7 @@ openxlsx
 outputed
 overfile
 oversheet
+pii
 qconfig
 qcor
 qkey

@@ -1,6 +1,6 @@
 Package: qpack
 Title: Set of functions written to assist in data science projects
-Version: 0.2.1
+Version: 0.2.2.9000
 Authors@R: 
     person("Matthew", "Sheffer", , "msheffer@qualtrics.com", role = c("aut", "cre"))
 Description: Set of functions to assist in data science projects.
