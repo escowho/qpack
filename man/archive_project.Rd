@@ -4,13 +4,7 @@
 \alias{archive_project}
 \title{Archives a project into a zip file}
 \usage{
-archive_project(
-  project = NULL,
-  client = NULL,
-  root = NULL,
-  data = FALSE,
-  silent = FALSE
-)
+archive_project(project = NULL, client = NULL, root = NULL, data = FALSE)
 }
 \arguments{
 \item{project}{A character string with a short moniker to indicate either the
@@ -28,9 +22,6 @@ QPACK_SETUP_ROOT variable.}
 
 \item{data}{A logical indicating if the data subfolder should be included in
 the resulting archive file. Default: FALSE.}
-
-\item{silent}{A logical indicating if the zip output indicating compression progress
-should be suppressed or not.  Default: FALSE.}
 }
 \value{
 Creates a zip file in the relevant folder structure containing all project

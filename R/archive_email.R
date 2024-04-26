@@ -14,6 +14,7 @@
 #' }
 #' @export
 #' @importFrom cli cli_abort cli_warn cli_text cli_alert_success
+#' @importFrom zip zip
 
 archive_email <- function(delete=TRUE){
 
@@ -28,16 +29,19 @@ archive_email <- function(delete=TRUE){
   }
 
   file_list <- list.files(path="./email/", full.names=TRUE)
+  file_list <- fs::path_rel(file_list)
 
   if(length(file_list)==0){
     cli::cli_abort("No email to archive.")
   }
 
-  if (Sys.getenv("QPACK_SETUP_TEST")==TRUE){
-    invisible(zip(zip_file, file_list, flags="-qjX9"))
-  } else {
-    invisible(zip(zip_file, file_list, flags="-jX9"))
-  }
+  zip::zip(zip_file, file_list, recurse=FALSE)
+
+  #if (Sys.getenv("QPACK_SETUP_TEST")==TRUE){
+  #  invisible(zip(zip_file, file_list, flags="-qjX9"))
+  #} else {
+  #  invisible(zip(zip_file, file_list, flags="-jX9"))
+  #}
 
   if(delete != FALSE){
     cli::cli_text()

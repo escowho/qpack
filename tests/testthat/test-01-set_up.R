@@ -145,11 +145,11 @@ test_that("Project with external descriptor results in no error",{
   )
 
   skip_on_cran()
-  if(assertive::is_windows()){
+  if(Sys.info()[1]=="Windows"){
     expected_path <- fs::path(tempdir(), "XXX-0001")
-  } else if (assertive::is_osx()){
+  } else if (Sys.info()[1]=="Darwin"){
     expected_path <- fs::path("/private", tempdir(), "XXX-0001")
-  } else if (assertive::is_linux()) {
+  } else {
 
   }
 
@@ -222,11 +222,11 @@ test_that("Client specification results in no error",{
   )
 
   skip_on_cran()
-  if(assertive::is_windows()){
+  if(Sys.info()[1]=="Windows"){
     expected_path <- fs::path(tempdir(), "XXXXX", "0001")
-  } else if (assertive::is_osx()){
+  } else if (Sys.info()[1]=="Darwin"){
     expected_path <- fs::path("/private", tempdir(), "XXXXX", "0001")
-  } else if (assertive::is_linux()) {
+  } else {
 
   }
 
@@ -271,11 +271,11 @@ test_that("Marker files are created correctly when project and task",{
   #)
 
   skip_on_cran()
-  if(assertive::is_windows()){
+  if(Sys.info()[1]=="Windows"){
     expected_path <- fs::path(tempdir(), "XXX-0009", "eda")
-  } else if (assertive::is_osx()){
+  } else if (Sys.info()[1]=="Darwin"){
     expected_path <- fs::path("/private", tempdir(), "XXX-0009", "eda")
-  } else if (assertive::is_linux()) {
+  } else {
 
   }
 
@@ -315,11 +315,11 @@ test_that("Client specification with Task results in no error",{
   )
 
   skip_on_cran()
-  if(assertive::is_windows()){
+  if(Sys.info()[1]=="Windows"){
     expected_path <- fs::path(tempdir(), "XXXXX", "0001", "eda")
-  } else if (assertive::is_osx()){
+  } else if (Sys.info()[1]=="Darwin"){
     expected_path <- fs::path("/private", tempdir(), "XXXXX", "0001", "eda")
-  } else if (assertive::is_linux()) {
+  } else {
 
   }
 
@@ -543,11 +543,11 @@ test_that("Manual Path Working Directory Changes Appropriately",{
   )
 
   skip_on_cran()
-  if(assertive::is_windows()){
+  if(Sys.info()[1]=="Windows"){
     expected_path <- fs::path(tempdir(), "MP", "XXX-00MP")
-  } else if (assertive::is_osx()){
+  } else if (Sys.info()[1]=="Darwin"){
     expected_path <- fs::path("/private", tempdir(), "MP", "XXX-00MP")
-  } else if (assertive::is_linux()) {
+  } else {
 
   }
   actual_path <- fs::path(getwd())

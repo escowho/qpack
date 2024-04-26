@@ -15,8 +15,6 @@
 #' QPACK_SETUP_ROOT variable.
 #' @param data A logical indicating if the data subfolder should be included in
 #' the resulting archive file. Default: FALSE.
-#' @param silent A logical indicating if the zip output indicating compression progress
-#' should be suppressed or not.  Default: FALSE.
 #' @return Creates a zip file in the relevant folder structure containing all project
 #' files and non-empty folders (excluding .git and .Rproj.user) but otherwise does
 #' not return any object.
@@ -28,8 +26,9 @@
 #' @export
 #' @importFrom fs path dir_exists path_split path_join dir_info path_rel
 #' @importFrom cli cli_abort cli_warn
+#' @importFrom zip zip zip_append
 #'
-archive_project <- function(project=NULL, client=NULL, root=NULL, data=FALSE, silent=FALSE){
+archive_project <- function(project=NULL, client=NULL, root=NULL, data=FALSE){
 
   # CLIENT/PROJECT or PROJECT Check -----------------------------------------
 
@@ -109,11 +108,7 @@ archive_project <- function(project=NULL, client=NULL, root=NULL, data=FALSE, si
 
   setwd(archive_path)
 
-  if (silent==TRUE){
-    zip(archive_file, file_list, flags="-qX9")
-  } else {
-    zip(archive_file, file_list, flags="-X9")
-  }
+  zip::zip(archive_file, file_list)
 
 
 # ADD OUTSIDE DESCRIPTOR --------------------------------------------------
@@ -129,12 +124,9 @@ archive_project <- function(project=NULL, client=NULL, root=NULL, data=FALSE, si
     name_file <- name_file[grepl(".txt", name_file$path),]
     name_file <- name_file[grepl(name_part, name_file$path),]
     name_file <- name_file[["path"]]
+    name_file <- fs::path_rel(name_file)
 
-    if (silent==TRUE){
-      zip(archive_file, name_file, flags="-qujX9")
-    } else {
-      zip(archive_file, name_file, flags="-ujX9")
-    }
+    zip::zip_append(archive_file, name_file)
   }
 
   setwd(start_wd)
