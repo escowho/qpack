@@ -16,6 +16,17 @@ knitr::opts_chunk$set(
 
 # Version History
 
+## 0.2.3 2024-0426
+
+* Updates to archive and archive_email to use zip::zip instead of utils:zip
+* Removed old references to assertive functions in tests for set_up
+
+## 0.2.2 2024-0318
+
+* Add nps_segment but untested
+* Add pii_clean but untested
+* Add zap_labels but untested
+
 ## 0.2.1 2024-0126
 
 * Updates to addin and set_up
