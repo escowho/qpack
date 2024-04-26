@@ -22,11 +22,11 @@ test_that("Archive & Delete Function for Project File",{
   setwd(tempdir())
 
   expect_error(
-    archive_project(project=, silent=TRUE)
+    archive_project(project=)
     )
 
   expect_no_error(
-    archive_project(project="TAD-0001", silent=TRUE)
+    archive_project(project="TAD-0001")
   )
 
   unlink("TAD-0001.zip")
@@ -36,7 +36,7 @@ test_that("Archive & Delete Function for Project File",{
   )
 
   expect_no_error(
-    archive_project(project="TAD-0001", silent=TRUE)
+    archive_project(project="TAD-0001")
   )
 
   expect_true(
@@ -82,7 +82,7 @@ test_that("Archive Data Option works",{
   setwd(tempdir())
 
   expect_no_error(
-    archive_project(project="ZAD-0001", data=TRUE, silent=TRUE)
+    archive_project(project="ZAD-0001", data=TRUE)
   )
 
   expect_true(
@@ -119,7 +119,7 @@ test_that("Archive Data Option works",{
   setwd(tempdir())
 
   expect_no_error(
-    archive_project(project="ZAD-0001", silent=TRUE)
+    archive_project(project="ZAD-0001")
   )
 
   expect_true(
@@ -165,7 +165,7 @@ test_that("Archive & Delete Function for Project File with External File",{
   setwd(tempdir())
 
   expect_no_error(
-    archive_project(project="TAD-0001", silent=TRUE)
+    archive_project(project="TAD-0001")
   )
 
   expect_true(
@@ -203,11 +203,11 @@ test_that("Archive Function for Client File",{
   setwd(tempdir())
 
   expect_error(
-    archive_project(client="TAD", silent=TRUE)
+    archive_project(client="TAD")
   )
 
   expect_no_error(
-    archive_project(client="TAD", project="0001", silent=TRUE)
+    archive_project(client="TAD", project="0001")
   )
 
   expect_true(
@@ -241,7 +241,7 @@ test_that("Archive & Delete Function for No Default Root",{
   x <- fs::path_split(fs::path_wd())[[1]]
   setwd(fs::path_join(x[1:length(x)-1]))
 
-  expect_warning(archive_project("test", silent=TRUE))
+  expect_warning(archive_project("test"))
   expect_warning(delete_project("test"))
 
   back_to_normal()
