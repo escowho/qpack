@@ -1,6 +1,6 @@
 Package: qpack
 Title: Set of functions written to assist in data science projects
-Version: 0.2.3
+Version: 0.3.0.9000
 Authors@R: 
     person("Matthew", "Sheffer", , "msheffer@qualtrics.com", role = c("aut", "cre"))
 Description: Set of functions to assist in data science projects.
@@ -14,6 +14,7 @@ Imports:
 	  dplyr,
 	  fs,
 	  gtools,
+	  haven,
 	  janitor,
 	  keyring,
 	  labelled,
@@ -24,10 +25,12 @@ Imports:
 	  remotes,
 	  rlang,
 	  rstudioapi,
+	  sjlabelled,
 	  sjPlot,
 	  stringr,
 	  tibble,
-	  tidyr
+	  tidyr,
+	  zip
 Suggests: 
     assertive,
     qmod,
@@ -41,5 +44,5 @@ Suggests:
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Config/testthat/edition: 3

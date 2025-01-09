@@ -3,8 +3,11 @@ globalVariables(c(".", ":=", "Column", "Max", "Mean", "Med", "Min", "Missing",
                   "avg", "codebook", "column", "d", "days", "dev.off", "end_date",
                   "jpeg", "label", "med", "median", "nnn", "packageVersion",
                   "percent", "q10", "q25", "q75", "q90", "recorded_date",
-                  "setTxtProgressBar", "start_date", "stat", "std", "txtProgressBar",
-                  "value", "var", "var_label", "variable", "variable_label", "x", "xxx", "zip"))
+                  "setTxtProgressBar", "start_date", "stat", "std",
+                  "txtProgressBar", "value", "var", "var_label", "variable",
+                  "variable_label", "x", "xxx", "zip",
+                  "nps_pro", "nps_pas", "nps_det", "order1", "order2",
+                  "valid_percent"))
 
 #' Pipe operator
 #'
@@ -105,3 +108,5 @@ refresh <- function(dev=FALSE){
   }
 
 }
+
+

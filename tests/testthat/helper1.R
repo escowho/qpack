@@ -16,7 +16,6 @@ test_package_root <- function() {
   stop("Cannot find package root")
 }
 
-
 set_normal <- function() {
 
   if (interactive()==TRUE) {
@@ -36,13 +35,10 @@ set_normal <- function() {
       current_setup_folders=Sys.getenv("QPACK_SETUP_FOLDERS"),
       current_setup_outside=Sys.getenv("QPACK_SETUP_EXTERNAL_DESCRIPTOR"))
   }
-
 }
 set_normal()
 
 back_to_normal <- function(){
-
-
   Sys.setenv("HOME"=current_settings$current_home)
   if (current_settings$current_setup_start != ""){
     Sys.setenv("QPACK_SETUP_ROOT"=current_settings$current_setup_start)
