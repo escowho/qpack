@@ -371,7 +371,7 @@ create_frequencies <- function(data, output=NULL, metadata=NULL,
 
   if (Sys.getenv('OVERRIDE_FOR_TESTING')!=TRUE){
     beepr::beep()
-    cat("\nFile outputted.\n")
+    cat("\nExport complete.\n")
   }
 }
 
