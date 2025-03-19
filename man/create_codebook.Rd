@@ -17,9 +17,7 @@ create_codebook(
 \item{data}{Name of the dataframe upon which to build the codebook.  Required.}
 
 \item{output}{Character string containing the complete path and file name of
-an XLSX file for exporting the resulting dataframe to Excel format.  If
-frequencies are also created, the name of the frequency file will be identical
-but have " - Frequencies" appended.  Optional.}
+an XLSX file for exporting the resulting dataframe to Excel format. Optional.}
 
 \item{metadata}{Name of the list output from qualtRics::metadata('surveyID').
 Optional.}

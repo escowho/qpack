@@ -21,14 +21,23 @@ freq <- function(data, var, ...){
   #tabyl's error checks are sufficient
 
   if (missing(var)){
-    janitor::tabyl(data, ...) %>%
-      janitor::adorn_totals() %>%
-      janitor::adorn_pct_formatting(,,,percent)
+    output <- janitor::tabyl(data, ...)
+
   } else {
     DATA <- rlang::enquo(data)
     VAR <- rlang::enquo(var)
-    janitor::tabyl(dat = rlang::eval_tidy(DATA), var1 = !!VAR, ...) %>%
+    output <- janitor::tabyl(dat = rlang::eval_tidy(DATA), var1 = !!VAR, ...)
+  }
+
+  if ("valid_percent" %in% names(output)){
+    output <- output %>%
+      janitor::adorn_totals() %>%
+      janitor::adorn_pct_formatting(,,,percent:valid_percent)
+  } else {
+    output <- output %>%
       janitor::adorn_totals() %>%
       janitor::adorn_pct_formatting(,,,percent)
   }
+
+  return(output)
 }
